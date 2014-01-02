@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<form_config>
+  <form title="Feedback">
+    <input order="1" type="hidden" label="feedback_id" id="feedback_id" class="primaryKey"/>
+    <input order="1" type="text" label="client_id" id="client_id"/>
+    <input order="1" type="text" label="description" id="description"/>
+    <input order="1" type="text" label="feedback_date" id="feedback_date"/>
+    <input order="1" type="button" id="saveBtn" value="SAVE ENTRY" onclick="saveEntry('Feedback');"/>
+    <input order="1" type="button" id="deleteBtn" value="DELETE ENTRY" onclick="deleteEntry('Feedback');"/>
+  </form>
+</form_config>

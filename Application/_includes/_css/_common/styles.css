@@ -1,0 +1,49 @@
+/* 
+
+    Document   : styles
+
+    Created on : Oct 24, 2013
+
+    Author     : Bryan Lowe
+
+    Description:
+
+        This document contains the general css styles for fonts, background colors, 
+
+		background images, overlays, etc used across the website.
+
+*/
+
+.saveBtn_container, 
+.deleteBtn_container, 
+.matchSuccess_container,
+.matchFailure_container,
+#create_bll_settings_container, 
+#delete_bll_settings_container, 
+#create_bll_forms_container, 
+#delete_bll_forms_container {
+  float: left;
+  padding-right: 10px;
+}
+
+.hide {
+  display: none;
+}
+
+.clear {
+  clear: both;
+  padding: 10px;
+}
+
+#pleaseWaitDialog {
+    width: 400px;
+    height: 250px;
+    position: fixed;
+    top: 25%;
+    left: 50%;
+    margin-top: -25px;
+    margin-left: -200px;
+    padding: 20px;
+    background-color: #fff;
+    overflow-y: auto;
+}

@@ -1,0 +1,53 @@
+--Form Settings--
+
+Created based on the BLL Settings
+
+Structure:
+
+<form_config>
+  <form title="FormTitle">
+    <input row="1" type="hidden" label="field_label" id="field_id" class="primaryKey"/>
+    <input row="1" type="text" label="field_label" id="field_id"/>
+    <input row="1" type="text" label="field_label" id="field_id"/>
+    <input row="1" type="text" label="field_label" id="field_id"/>
+    <input row="1" type="text" label="field_label" id="field_id"/>
+    <input row="1" type="select" label="field_label" id="field_id">
+      <options>
+        <option>
+          <name>OptionName</name>
+          <value>OptionValue</value>
+        </option>
+        <option>
+          <name>OptionName</name>
+          <value>OptionValue</value>
+        </option>
+        <option>
+          <name>OptionName</name>
+          <value>OptionValue</value>
+        </option>
+      </options>
+    </input>
+    <input row="1" type="button" id="saveBtn" value="SAVE ENTRY" onclick="saveEntry('FormTitle');"/>
+    <input row="1" type="button" id="deleteBtn" value="DELETE ENTRY" onclick="deleteEntry('FormTitle');"/>
+  </form>
+</form_config>
+
+Form attributes:
+title: The title of the form.
+
+Input attributes:
+row: This dictates what order the form fields are printed. For instance all rows that are set as 1 are printed before all rows that are printed as 2, regardless as ordered in the structure. Each row is divided by a line break. All inputs on the same row are printed consecutively.
+
+type: This is form input type. The same as normal HTML input types. Supported types include text, hidden, password, textarea, checkbox, radio, and select. Whenever checkbox, radio or select are used, another option structure needs to be set as displayed above. If "inputOptions" is set in the BLL settings, this option feature is set automatically.
+
+label: Input label printed
+
+id: Input id printed
+
+class: CSS classes used on the input field. If the class is set to primaryKey, this input field is normally hidden and contains the primary key for this form entry.
+
+value: This is the chosen default value of the input field.
+
+javascript behavior: The current javascript events supported as onblur, onchange, onclick, onkeypress, onkeyup and onkeydown. When any of these attributes are set to the input, it behaves like a normal HTML input field with javascript behaviors.
+
+Any additional input nodes can be added to the structure as long as they follow the same rules as the above. The form will not collect information from any additional fields created that do not map to the database.

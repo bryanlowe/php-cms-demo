@@ -1,0 +1,19 @@
+{
+	"id": "client",
+	"form": {
+		"input1": { 
+			"order": 1, 
+			"required": 1, 
+			"type": "select", 
+			"id": "client-list",
+			"value": "",
+			"options": {
+				"opt1": {
+					"name": "Please select a client",
+					"value": ""
+				}			
+			},
+			"class": "form-control"
+		}
+	}
+}

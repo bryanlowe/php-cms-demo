@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<form_config>
+  <form title="Project Status">
+    <input order="1" type="hidden" label="project_status_id" id="project_status_id" class="primaryKey"/>
+    <input order="1" type="text" label="project_id" id="project_id"/>
+    <input order="1" type="text" label="status" id="status"/>
+    <input order="1" type="text" label="description" id="description"/>
+    <input order="1" type="text" label="project_status_date" id="project_status_date"/>
+    <input order="1" type="button" id="saveBtn" value="SAVE ENTRY" onclick="saveEntry('ProjectStatus');"/>
+    <input order="1" type="button" id="deleteBtn" value="DELETE ENTRY" onclick="deleteEntry('ProjectStatus');"/>
+  </form>
+</form_config>

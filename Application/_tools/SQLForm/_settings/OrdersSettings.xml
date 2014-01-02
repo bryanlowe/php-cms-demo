@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<form_config>
+  <form title="Orders">
+    <input order="1" type="hidden" label="order_id" id="order_id" class="primaryKey"/>
+    <input order="1" type="text" label="client_id" id="client_id"/>
+    <input order="1" type="text" label="description" id="description"/>
+    <input order="1" type="text" label="order_date" id="order_date"/>
+    <input order="1" type="button" id="saveBtn" value="SAVE ENTRY" onclick="saveEntry('Orders');"/>
+    <input order="1" type="button" id="deleteBtn" value="DELETE ENTRY" onclick="deleteEntry('Orders');"/>
+  </form>
+</form_config>

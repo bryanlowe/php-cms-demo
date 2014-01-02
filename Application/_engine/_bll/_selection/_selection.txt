@@ -1,0 +1,17 @@
+TableSelection
+
+The classes written to this directory are inherited from the Selection class. You can create table specific operations to these classes without rewriting the Selection class. The difference between this class and the Collection class is that this class only selects one specific table row, creates an object from it and provides operations on the row.
+
+Standard Selection Functions
+
+getByID - Gathers a table row by the id provided. Assigns all the values of the row to an associated array and returns a dal table object to perform database operations.
+
+updateByID - Gathers a table row by the id provided and updates the values of the row by the params provided. The params are saved to the table based on the id.
+
+deleteByID - Deletes a table row by the id.
+
+getDAL - Gathers a DAL Table object based on the objectName in the Selection class.
+
+save - Uses a DAL Table object to perform the DALTable class save operation.
+
+delete - Uses a DAL Table object to perform the DALTable class remove operation.

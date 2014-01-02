@@ -1,0 +1,20 @@
+{
+	"id": "webserver",
+	"form": {
+		"input1": { 
+			"order": 1, 
+			"required": 1, 
+			"type": "select", 
+			"id": "webserver-list",
+			"label": "Webservers",
+			"value": "",
+			"options": {
+				"opt1": {
+					"name": "Please select a webserver",
+					"value": ""
+				}			
+			},
+			"class": "form-control"
+		}
+	}
+}

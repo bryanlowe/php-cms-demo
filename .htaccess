@@ -1,0 +1,10 @@
+Options +FollowSymLinks
+RewriteEngine on
+
+RewriteRule ^Application/_includes(/|$) - [L,NC]
+RewriteRule ^Temporary(/|$) - [L,NC]
+RewriteRule ^Utilities(/|$) - [L,NC]
+
+RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-f
+RewriteRule ^(.*) Application/Controller.php?url=$1      [L,QSA]

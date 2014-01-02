@@ -1,0 +1,15 @@
+<?php
+  namespace Application\_engine\_bll\_collection;
+  use Framework\_engine\_dal\Collection as Collection;
+  
+  /**
+   * Class: |::|CLASSNAME|::|Collection
+   *    
+   * Collects a set database records from table |::|TABLENAME|::| and treats them as a collection of object
+   */
+  class |::|CLASSNAME|::|Collection extends Collection{
+    public function __construct(){
+      parent::__construct('|::|TABLENAME|::|');
+    }
+  }
+?>

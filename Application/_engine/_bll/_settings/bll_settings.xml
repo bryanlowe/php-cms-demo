@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<bll_config>
+  <inventory>
+    <item enabled="1">
+      <name>Appointments</name>
+      <table>appointments</table>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="1">appointment_id</feature>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="0">client_id</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">appointment_date</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">description</feature>
+    </item>
+    <item enabled="1">
+      <name>Clients</name>
+      <table>clients</table>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="1">client_id</feature>
+      <feature required="0" numeric="0" inputOptions="" visible="1" primaryKey="0">company</feature>
+      <feature required="0" numeric="0" inputOptions="" visible="1" primaryKey="0">client_name</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">email</feature>
+      <feature required="0" numeric="0" inputOptions="" visible="1" primaryKey="0">phone_number</feature>
+      <feature required="0" numeric="0" inputOptions="" visible="1" primaryKey="0">client_rate</feature>
+    </item>
+    <item enabled="1">
+      <name>Feedback</name>
+      <table>feedback</table>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="1">feedback_id</feature>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="0">client_id</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">description</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">feedback_date</feature>
+    </item>
+    <item enabled="1">
+      <name>Invoice Status</name>
+      <table>invoice_status</table>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="1">invoice_status_id</feature>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="0">invoice_id</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">description</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">invoice_status_date</feature>
+    </item>
+    <item enabled="1">
+      <name>Invoices</name>
+      <table>invoices</table>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="1">invoice_id</feature>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="0">client_id</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">description</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">total_cost</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">invoice_number</feature>
+    </item>
+    <item enabled="1">
+      <name>Orders</name>
+      <table>orders</table>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="1">order_id</feature>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="0">client_id</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">description</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">order_date</feature>
+    </item>
+    <item enabled="1">
+      <name>Project Status</name>
+      <table>project_status</table>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="1">project_status_id</feature>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="0">project_id</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">status</feature>
+      <feature required="0" numeric="0" inputOptions="" visible="1" primaryKey="0">description</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">project_status_date</feature>
+    </item>
+    <item enabled="1">
+      <name>Projects</name>
+      <table>projects</table>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="1">project_id</feature>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="0">client_id</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">description</feature>
+    </item>
+    <item enabled="1">
+      <name>User Group</name>
+      <table>user_group</table>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="1">user_group_id</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">group_name</feature>
+    </item>
+    <item enabled="1">
+      <name>Users</name>
+      <table>users</table>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="1">user_id</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">user_name</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">password</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">email</feature>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="0">user_group_id</feature>
+      <feature required="1" numeric="1" inputOptions="1,0" visible="1" primaryKey="0">status</feature>
+    </item>
+  </inventory>
+</bll_config>

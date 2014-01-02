@@ -1,0 +1,39 @@
+{
+	"id": "login",
+	"form": {
+		"input1": { 
+			"order": 1, 
+			"required": 1, 
+			"type": "hidden", 
+			"id": "login_type",
+			"value": "NORM"
+		},
+		"input2": { 
+			"order": 1, 
+			"required": 1, 
+			"type": "text", 
+			"id": "login_username",
+			"label": "User:",
+			"value": "",
+			"class": "form-control"
+		},
+		"input3": { 
+			"order": 2,
+			"required": 1, 
+			"type": "password",
+			"id": "login_password",
+			"label": "Password:",
+			"value": "",
+			"class": "form-control"
+		},
+		"input4": { 
+			"order": 3,  
+			"type": "button", 
+			"class": "action-button", 
+			"id": "submitBtn", 
+			"value": "LOG IN",
+			"onclick": "processLogin();",
+			"class": "btn btn-success" 
+		}
+	}
+}

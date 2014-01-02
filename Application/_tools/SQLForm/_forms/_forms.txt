@@ -1,0 +1,21 @@
+TableForms
+
+The Form classes created in this directory are inherited from the Form class. All of these classes use the same functionality of Form but are set to the specific table the class is named after. You can use these classes to override the Form class for specific tables without having to write directed into the Form class. This class is normally used to provide form operations on the database.
+
+Standard Form Functions
+
+generate - Used by the Launch class to create and display the table form.
+
+gatherRequiredFields - Gathers the required fields of the current form table.
+
+gatherNumericFields - Gathers the numeric fields of the current form table.
+
+getInputValue - Static function used to get the input value of the form table input. Used primarily in the XSLT transformation.
+
+createForm - XSLT transformation combining the XML settings for the form and the XSL stylesheet. The XSL stylesheet has the input form library used to create generic forms.
+
+save - Saves values from the form to the database. Validation called in this function.
+
+delete - Deletes a database entry by the primary ID.
+
+validate - Standard validation that checks for required and numeric fields in the form. It will compile a list of errors if the fields are not set properly. The list is returned as a string.

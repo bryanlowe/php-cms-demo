@@ -1,0 +1,11 @@
+TableCollection
+
+The classes written to this directory are inherited from the Collection class. You can create table specific operations to these classes without rewriting the Collection class. The difference between this class and the Selection class is that this class creates associated arrays of table rows.
+
+Standard Collection Functions
+
+getAll - selects all entries with a start and stop limit. The results can be adjusted with a where clause parameter and the order is controlled by the order parameter. The results returned are in the associated array.
+
+getByQuery - The results can be adjusted with a where clause parameter and the order is controlled by the order parameter. The results returned are in the associated array. The difference between this function and getAll is the where clause is required in this function.
+
+getCount - counts the records of the a table based on a where clause. This returns just the number of the count in an associated array.
