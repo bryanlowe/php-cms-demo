@@ -4,6 +4,7 @@
   use Framework\_engine\_core\Register as Register;
   use Application\_tools\JSONForm\_engine\_core\FormGenerator as FormGenerator;
   use Application\_engine\_bll\_collection\UsersCollection as UsersCollection;
+  use Framework\_engine\_core\Encryption as Encryption;
   
   /**
    * Class: LoginPage
