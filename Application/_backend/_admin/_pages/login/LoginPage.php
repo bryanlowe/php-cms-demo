@@ -2,7 +2,6 @@
   namespace Application\_Backend\_admin\_pages\login;
   use Application\_backend\Backend as Backend;
   use Framework\_engine\_core\Register as Register;
-  use Framework\_engine\_core\Encryption as Encryption;
   use Application\_tools\JSONForm\_engine\_core\FormGenerator as FormGenerator;
   use Application\_engine\_bll\_collection\UsersCollection as UsersCollection;
   
@@ -16,9 +15,9 @@
     /**
      * Encryption class object
      *
-     * @access private
+     * @access protected
      */
-    private $pass_enc = null;
+    protected $pass_enc = null;
 
     /**
      * Construct a new LoginPage object
@@ -74,15 +73,21 @@
      * @access public
      */
     public function processLogin($params){
-      $userCount = foo(new UsersCollection())->getLoginCount($params['values']['email'], $params['values']['password'], $params['values']['type']);
+      $userCount = foo(new UsersCollection())->getLoginCount($params['values']['email'], $params['values']['type']);
       if($userCount != 1){
-          echo 'restricted';
+        echo 'restricted';
       } else {
+        $userInfo = foo(new UsersCollection())->getByQuery('email = '.$this->db->quote($params['values']['email']));
+        $user = array_shift($userInfo);
+        $decryptedPassword = $this->pass_enc->decrypt(base64_decode($user['password']), $this->config->loginKey);
+        if($decryptedPassword == $params['values']['password']){
           $_SESSION[$this->config->sessionID]['LOGGED_IN'] = true;
           $_SESSION[$this->config->sessionID]['USER_TYPE'] = "ADMIN";
-          $userInfo = foo(new UsersCollection())->getByQuery('email = '.$this->db->quote($params['values']['email']).' AND password = '.$this->db->quote($params['values']['password']));
-          $_SESSION[$this->config->sessionID]['USER_INFO'] = array_shift($userInfo);
-          echo 'pass';
+          $_SESSION[$this->config->sessionID]['USER_INFO'] = $user;
+          echo 'pass';  
+        } else {
+          echo 'restricted';
+        }
       }
     }
   }

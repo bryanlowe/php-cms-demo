@@ -16,6 +16,7 @@
      */
     public function __construct(){
       parent::__construct();
+      $this->source = "client-templates";
     }
     
     /**
@@ -25,7 +26,7 @@
      */
     public function init(){
       parent::init();
-      $this->setTitle('EvTools CMS - Home');
+      $this->setTitle('CEM Dashboard - Home');
     }
 
     /**

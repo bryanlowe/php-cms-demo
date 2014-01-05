@@ -68,6 +68,7 @@
      */
     public function __construct($objectName = null, $objectID = null){
       $this->config = Register::getInstance()->get('config');
+      $this->db = Register::getInstance()->get('db');
       $this->objectName = $objectName;
       $this->objectID = $objectID;
       self::$item = foo(new Selection($objectName))->getByID($objectID);

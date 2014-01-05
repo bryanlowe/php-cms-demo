@@ -220,7 +220,7 @@
                  statechanging: function(e, from, to){},
                  statechanged: function(e, to){},
                 opacity: 0.6,
-                 zIndex: 999,
+                 zIndex: 9999,
                  overlayspeed: 'slow',
                  promptspeed: 'fast',
                    show: 'fadeIn',

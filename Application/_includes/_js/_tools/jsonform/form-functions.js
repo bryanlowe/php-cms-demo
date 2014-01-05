@@ -17,9 +17,7 @@ function processLogin(){
   var url = site_url+"login";
   if(values['type'] == "ADMIN"){
     url = site_url+"admin/login";
-  } else if(values['type'] == "WRITER"){
-    url = site_url+"writers/login";
-  } 
+  }
 
   var result = $.ajax({
     type: "POST",
@@ -42,8 +40,6 @@ function processLogin(){
     } else if(success == 'pass') {
       if($('#login_type').val() == 'ADMIN'){
         location.replace(site_url+'admin');  
-      } else if($('#login_type').val() == 'WRITER'){
-        location.replace(site_url+'writers');  
       } else {
         location.replace(site_url);  
       }

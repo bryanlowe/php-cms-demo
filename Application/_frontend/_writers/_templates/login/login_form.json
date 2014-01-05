@@ -6,13 +6,13 @@
 			"required": 1, 
 			"type": "hidden", 
 			"id": "login_type",
-			"value": "NORM"
+			"value": "WRITER"
 		},
 		"input2": { 
 			"order": 1, 
 			"required": 1, 
 			"type": "text", 
-			"id": "login_username",
+			"id": "login_email",
 			"label": "User:",
 			"value": "",
 			"class": "form-control"
@@ -33,7 +33,7 @@
 			"id": "submitBtn", 
 			"value": "LOG IN",
 			"onclick": "processLogin();",
-			"class": "btn btn-success" 
+			"class": "btn btn-success"
 		}
 	}
 }

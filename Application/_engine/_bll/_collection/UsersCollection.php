@@ -1,7 +1,6 @@
 <?php
   namespace Application\_engine\_bll\_collection;
   use Framework\_engine\_dal\Collection as Collection;
-  use Framework\_engine\_core\Encryption as Encryption;
   
   /**
    * Class: UsersCollection
@@ -19,7 +18,6 @@
 
     public function __construct(){
       parent::__construct('users');
-      $this->pass_enc = new Encryption(MCRYPT_BlOWFISH, MCRYPT_MODE_CBC);
     }
 
     /**
@@ -29,13 +27,13 @@
      * @param string $password
      * @param string $type
      */
-    public function getLoginCount($email, $password, $type){
+    public function getLoginCount($email, $type){
       if($type == "ADMIN"){
-        return $this->getCount('email = '.$this->db->quote($email).' AND password = '.$this->db->quote($password).' AND status = "1" AND user_group_id = "1"');
+        return $this->getCount('email = '.$this->db->quote($email).' AND status = "1" AND user_group_id = "1"');
       } else if($type == "WRITER"){
-        return $this->getCount('email = '.$this->db->quote($email).' AND password = '.$this->db->quote($password).' AND status = "1" AND user_group_id = "2"');
+        return $this->getCount('email = '.$this->db->quote($email).' AND status = "1" AND user_group_id = "2"');
       } else if($type == "CLIENT"){
-        return $this->getCount('username = '.$this->db->quote($email).' AND password = '.$this->db->quote($password).' AND status = "1" AND user_group_id = "3"');
+        return $this->getCount('email = '.$this->db->quote($email).' AND status = "1" AND user_group_id = "3"');
       }
     }
   }

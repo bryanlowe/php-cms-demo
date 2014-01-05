@@ -1,5 +1,5 @@
 <?php
-  namespace Application\_frontend\_pages\home;
+  namespace Application\_frontend\_writers\_pages\home;
   use Application\_frontend\Frontend as Frontend;
   
   /**
@@ -15,7 +15,13 @@
      * @access public
      */
     public function __construct(){
+      $this->source = "writer-templates";
+      $this->userType = "WRITER";
+      $this->siteDir = "/writers/";
       parent::__construct();
+      if(substr_count($this->config->homeURL, 'writers') == 0){
+        $this->config->homeURL = $this->config->homeURL . "/writers";
+      }
     }
     
     /**
@@ -25,7 +31,7 @@
      */
     public function init(){
       parent::init();
-      $this->setTitle('EvTools CMS - Home');
+      $this->setTitle('CEM Dashboard - Home');
     }
 
     /**

@@ -1,9 +1,10 @@
 <?php
-  namespace Application\_frontend\_pages\login;
+  namespace Application\_frontend\_clients\_pages\login;
   use Application\_frontend\Frontend as Frontend;
   use Framework\_engine\_core\Register as Register;
   use Application\_tools\JSONForm\_engine\_core\FormGenerator as FormGenerator;
   use Application\_engine\_bll\_collection\UsersCollection as UsersCollection;
+  use Framework\_engine\_core\Encryption as Encryption;
   
   /**
    * Class: LoginPage
@@ -11,6 +12,13 @@
    * Handles the Login Page
    */
   class LoginPage extends Frontend{
+
+    /**
+     * Encryption class object
+     *
+     * @access protected
+     */
+    protected $pass_enc = null;
 
     /**
      * Construct a new LoginPage object
@@ -22,6 +30,8 @@
       $this->pageRequests = Register::getInstance()->get('pageRequests');
       $this->db = Register::getInstance()->get('db');
       $this->uri = Register::getInstance()->get('uri');
+      $this->source = "client-templates";
+      $this->pass_enc = new Encryption(MCRYPT_BlOWFISH, MCRYPT_MODE_CBC);
     }
     
     /**
@@ -42,18 +52,9 @@
     protected function header(){
       $this->setHeader("login/header.html");
       $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'HEADER');
+      $this->setDisplayVariables('SITE_URL', $this->config->homeURL, 'HEADER');
     }
 
-    /**
-     * Set LoginPage footer
-     *    
-     * @access protected
-     */
-    protected function footer(){
-      $this->setFooter("login/footer.html");
-      $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'FOOTER');
-    }
-    
     /**
      * Set LoginPage body
      *    
@@ -62,26 +63,32 @@
     public function body(){
       $this->setBody('login/main.html');
       $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
-      $form = foo(new FormGenerator(null, $this->config->dir('frontend-templates').'/login/login_form.json'))->getFormHTML();
+      $form = foo(new FormGenerator(null, $this->config->dir('client-templates').'/login/login_form.json'))->getFormHTML();
       $this->setDisplayVariables('LOGIN_FORM', $form, 'BODY');
     }
 
     /**
-     * Processes the login form
+     * Processes the client login form
      * 
      * @param assoc array $params
      * @access public
      */
     public function processLogin($params){
-      $userCount = foo(new UsersCollection())->getLoginCount(addslashes($params['values']['username']), addslashes($params['values']['password']), $params['values']['type']);
+      $userCount = foo(new UsersCollection())->getLoginCount($params['values']['email'], $params['values']['type']);
       if($userCount != 1){
-          echo 'error';
+        echo 'restricted';
       } else {
+        $userInfo = foo(new UsersCollection())->getByQuery('email = '.$this->db->quote($params['values']['email']));
+        $user = array_shift($userInfo);
+        $decryptedPassword = $this->pass_enc->decrypt(base64_decode($user['password']), $this->config->loginKey);
+        if($decryptedPassword == $params['values']['password']){
           $_SESSION[$this->config->sessionID]['LOGGED_IN'] = true;
-          $_SESSION[$this->config->sessionID]['USER_TYPE'] = "NORM";
-          $userInfo = foo(new UsersCollection())->getByQuery('username = "'.addslashes($params['values']['username']).'" AND password = "'.md5(addslashes($params['values']['password'])).'"');
-          $_SESSION[$this->config->sessionID]['USER_INFO'] = array_shift($userInfo);
-          echo 'pass';
+          $_SESSION[$this->config->sessionID]['USER_TYPE'] = "CLIENT";
+          $_SESSION[$this->config->sessionID]['USER_INFO'] = $user;
+          echo 'pass';  
+        } else {
+          echo 'restricted';
+        }
       }
     }
   }

@@ -4,6 +4,7 @@
   use Framework\_engine\_dal\Collection as Collection;
   use Framework\_engine\_dal\Selection as Selection;
   use Application\_tools\SQLForm\_forms as Form;
+  use Framework\_engine\_core\Encryption as Encryption;
   
   /**
    * Class: Backend
@@ -12,6 +13,13 @@
    */
   class Backend extends Page{
 
+    /**
+     * Encryption class object
+     *
+     * @access protected
+     */
+    protected $pass_enc = null;
+    
     /**
      * Template source directory
      *    
@@ -27,9 +35,9 @@
      */
     public function __construct(){
       parent::__construct();
-      if(!$_SESSION[$this->config->sessionID]['LOGGED_IN']){
-        header('Location: /admin/login');
-      } else if($_SESSION[$this->config->sessionID]['USER_TYPE'] != "ADMIN"){
+      $this->pass_enc = new Encryption(MCRYPT_BlOWFISH, MCRYPT_MODE_CBC);
+      if(!$_SESSION[$this->config->sessionID]['LOGGED_IN']
+      || $_SESSION[$this->config->sessionID]['USER_TYPE'] != "ADMIN"){
         header('Location: /admin/login');
       }
     }
