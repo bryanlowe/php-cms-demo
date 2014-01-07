@@ -1,0 +1,28 @@
+{
+	"id": "clients",
+	"form": {
+		"input1": { 
+			"order": 1, 
+			"required": 0, 
+			"type": "select", 
+			"label": "Select a Client",
+			"id": "client_id",
+			"value": "",
+			"options": {
+				"opt1": {
+					"name": "Please select a client",
+					"value": ""
+				}		
+			}, 
+			"class": "form-control"
+		},
+		"input2": { 
+			"order": 2,  
+			"type": "button",  
+			"id": "submitBtn", 
+			"value": "UPDATE USER",
+			"onclick": "updateUserForm($('#client_id').val());",
+			"class": "btn btn-success"
+		}
+	}
+}

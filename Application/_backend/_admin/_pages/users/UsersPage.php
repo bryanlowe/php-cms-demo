@@ -3,17 +3,18 @@
   use Application\_backend\Backend as Backend;
   use Framework\_engine\_dal\Collection as Collection;
   use Framework\_engine\_dal\Selection as Selection;
+  use Application\_tools\JSONForm\_engine\_core\FormGenerator as FormGenerator;
   use Application\_tools\SQLForm\_engine\_core\Form as Form;
   
   /**
-   * Class: UserManagementPage
+   * Class: UsersPage
    *    
-   * Handles the User Management Page
+   * Handles the Users Page
    */
   class UsersPage extends Backend{
 
     /**
-     * Construct a new UserManagementPage object
+     * Construct a new UsersPage object
      *    
      * @access public
      */
@@ -23,17 +24,17 @@
     }
     
     /**
-     * Initialize UserManagementPage Elements
+     * Initialize UsersPage Elements
      *    
      * @access public
      */
     public function init(){
       parent::init();
-      $this->setTitle('CEM Dashboard - User Settings');
+      $this->setTitle('CEM Dashboard - User Management');
     }
 
     /**
-     * Set UserManagementPage header
+     * Set UsersPage header
      *    
      * @access protected
      */
@@ -42,7 +43,7 @@
     }
     
     /**
-     * Set UserManagementPage body
+     * Set UsersPage body
      *    
      * @access protected
      */
@@ -51,10 +52,12 @@
       $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
       $userForm = foo(new Form('users'))->getFormHTML();
       $this->setDisplayVariables('USER_FORM', $userForm, 'BODY');
+      $clientForm = foo(new FormGenerator(null, $this->config->dir('admin-templates').'/users/client_form.json'))->getFormHTML();
+      $this->setDisplayVariables('CLIENT_FORM', $clientForm, 'BODY');
     }
 
     /**
-     * Set UserManagementPage footer
+     * Set UsersPage footer
      *    
      * @access protected
      */

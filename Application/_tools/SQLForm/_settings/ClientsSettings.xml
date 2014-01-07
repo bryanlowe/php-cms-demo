@@ -1,13 +1,20 @@
 <?xml version="1.0"?>
 <form_config>
   <form title="Clients">
-    <input order="1" type="hidden" label="client_id" id="client_id" class="primaryKey"/>
-    <input order="1" type="text" label="company" id="company"/>
-    <input order="1" type="text" label="client_name" id="client_name"/>
-    <input order="1" type="text" label="email" id="email"/>
-    <input order="1" type="text" label="phone_number" id="phone_number"/>
-    <input order="1" type="text" label="client_rate" id="client_rate"/>
-    <input order="1" type="button" id="saveBtn" value="SAVE ENTRY" onclick="saveEntry('Clients');"/>
-    <input order="1" type="button" id="deleteBtn" value="DELETE ENTRY" onclick="deleteEntry('Clients');"/>
+    <input order="1" type="select" label="Select a client to edit" id="client_id" onchange="updateBLLFormFields('clients_form','clients','/admin/clients');" class="form-control primaryKey">
+        <options>
+            <option>
+                <name>Please select a client</name>
+                <value></value>
+            </option>
+        </options>
+    </input>
+    <input order="2" type="text" label="Company" id="company" class="form-control" />
+    <input order="3" type="text" label="Client Full Name" id="client_name" class="form-control" />
+    <input order="4" type="text" label="Email" id="email" class="form-control" />
+    <input order="5" type="text" label="Phone Number" id="phone_number" class="form-control" />
+    <input order="6" type="text" label="Client Rate" id="client_rate" class="form-control" />
+    <input order="7" type="button" id="saveBtn" value="SAVE ENTRY" onclick="saveEntry('Clients');" class="btn btn-success" />
+    <input order="7" type="button" id="deleteBtn" value="DELETE ENTRY" onclick="deleteEntry('Clients');" class="btn btn-danger" />
   </form>
 </form_config>

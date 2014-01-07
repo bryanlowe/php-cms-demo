@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <form_config>
   <form title="Users">
-    <input order="1" type="select" label="User" id="user_id" onchange="updateBLLFormFields('users_form','users','/admin/users');" class="form-control primaryKey">
+    <input order="1" type="select" label="Select a user to edit" id="user_id" onchange="updateBLLFormFields('users_form','users','/admin/users');" class="form-control primaryKey">
         <options>
             <option>
                 <name>Please select a user</name>

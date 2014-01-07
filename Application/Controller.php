@@ -29,6 +29,8 @@
 
                                 'admin' => array(
                                  '/admin' => array('dir' => 'home', 'class' => 'HomePage'),
+                                 '/admin/clients' => array('dir' => 'clients', 'class' => 'ClientsPage'),
+                                 '/admin/invoices' => array('dir' => 'invoices', 'class' => 'InvoicesPage'),
                                  '/admin/login' => array('dir' => 'login', 'class' => 'LoginPage'),
                                  '/admin/logout' => array('dir' => 'logout', 'class' => 'LogoutPage'),
                                  '/admin/settings' => array('dir' => 'settings', 'class' => 'SettingsPage'),

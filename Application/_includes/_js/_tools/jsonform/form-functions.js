@@ -84,3 +84,25 @@ function updateBLLForms(action){
   });
   statusApp.hidePleaseWait();
 }
+
+/**
+ * Function updates the user form with client information
+ */
+function updateUserForm(client_id){
+  var result = $.ajax({
+      type: "POST",
+      dataType: "json",
+      url: site_url+"admin/users",
+      async: false,
+      data: {table: 'clients', primaryKey: client_id, bllAction: "SELECTION", _ajaxFunc: "gatherBLLResource"}
+  });
+
+  var formValues = $.parseJSON(result.responseText);
+  formValues = formValues[0];
+  $('#user_id').val('');
+  $('#user_name').val(formValues['client_name']);
+  $('#password').val('');
+  $('#email').val(formValues['email']);
+  $('#user_group_id').val(3);
+  $('#status').val(1);
+}
