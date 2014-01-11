@@ -1,8 +1,34 @@
-<script>
+<script type="text/javascript">
 <!--
 	$(document).ready(function(){
 		refreshBLLSelectOptions("form#invoices_form select#invoice_id", "invoices", site_url+"admin/invoices", "invoice_number", "invoice_id", "invoice_number ASC");
 		refreshBLLSelectOptions("form#invoices_form select#client_id", "clients", site_url+"admin/invoices", "company", "client_id", "company ASC");
+		$('#file_upload').uploadify({
+			'formData'     : {
+				'TARGET_DEST': '/Media/_documents/_invoices',
+				'timestamp' : timestamp,
+				'token'     : token
+			},
+			'buttonText' : 'SELECT INVOICE FILE',
+			'buttonClass' : 'btn btn-success',
+			'fileTypeDesc' : 'Invoice Files',
+        	'fileTypeExts' : '*.doc; *.pdf;', 
+			'swf'      : '/Utilities/uploadify/uploadify.swf',
+			'uploader' : '/Utilities/uploadify/uploadify.php',
+			'onUploadSuccess' : function(file, data, response) {
+				$('#invoice_file_link').html(file.name);
+				$('#invoice_file_link').attr('href','/Media/_documents/_invoices/'+file.name);
+				$('#invoice_file_link').attr('target','_blank');
+				$('form#invoice_files_form #invoice_filename').val(file.name);
+				saveEntry('invoice_files');
+        	}
+		});
+		$('#file_upload-button').attr('style', '');
+		$('#file_upload-button').addClass('disabled');
+        $('.deleteFile').attr('disabled', 'disabled');
+        $('.deleteFile').addClass('disabled');
+        $('form#invoice_status_form input[name="saveBtn"]').attr('disabled', 'disabled');
+        $('form#invoice_status_form input[name="saveBtn"]').addClass('disabled');
 	});
 //-->
 </script>

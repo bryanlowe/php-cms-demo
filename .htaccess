@@ -2,6 +2,7 @@ Options +FollowSymLinks
 RewriteEngine on
 
 RewriteRule ^Application/_includes(/|$) - [L,NC]
+RewriteRule ^Media(/|$) - [L,NC]
 RewriteRule ^Temporary(/|$) - [L,NC]
 RewriteRule ^Utilities(/|$) - [L,NC]
 

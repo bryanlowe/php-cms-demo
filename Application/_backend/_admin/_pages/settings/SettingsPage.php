@@ -1,8 +1,8 @@
 <?php
   namespace Application\_backend\_admin\_pages\settings;
   use Application\_backend\Backend as Backend;
-  use Application\_tools\JSONForm\_engine\_core\FormGenerator as FormGenerator;
-  use Application\_tools\SQLForm\_engine\_core as Form;
+  use Framework\_widgets\JSONForm\_engine\_core\FormGenerator as FormGenerator;
+  use Framework\_widgets\SQLForm\_engine\_core as Form;
   use Framework\_engine\_dal\BLLGenerator as BLLGenerator;
   
   /**
@@ -49,7 +49,7 @@
     protected function body(){
       $this->setBody('settings/main.html');
       $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
-      $form = foo(new FormGenerator(null, $this->config->dir('admin-templates').'/settings/settings_form.txt'))->getFormHTML();
+      $form = foo(new FormGenerator(null, $this->config->dir('admin-templates').'/settings/settings_form.json'))->getFormHTML();
       $this->setDisplayVariables('SETTINGS_FORM', $form, 'BODY');
     }   
 
@@ -65,11 +65,11 @@
           foo(new Form\FormSettings())->generate();
           foo(new Form\FormGenerator())->generate();
         } else if($params['action'] == "DELETE"){
-          $formFiles = glob($_SERVER['DOCUMENT_ROOT']."/Application/_tools/SQLForm/_forms/*Form.php");
+          $formFiles = glob($_SERVER['DOCUMENT_ROOT']."/Application/_engine/_sqlform/_forms/*Form.php");
           foreach($formFiles as $file){
             unlink($file);
           }
-          $settingsFiles = glob($_SERVER['DOCUMENT_ROOT']."/Application/_tools/SQLForm/_settings/*Settings.xml");
+          $settingsFiles = glob($_SERVER['DOCUMENT_ROOT']."/Application/_engine/_sqlform/_settings/*Settings.xml");
           foreach($settingsFiles as $file){
             unlink($file);
           }

@@ -3,8 +3,8 @@
   use Application\_backend\Backend as Backend;
   use Framework\_engine\_dal\Collection as Collection;
   use Framework\_engine\_dal\Selection as Selection;
-  use Application\_tools\JSONForm\_engine\_core\FormGenerator as FormGenerator;
-  use Application\_tools\SQLForm\_engine\_core\Form as Form;
+  use Framework\_widgets\JSONForm\_engine\_core\FormGenerator as FormGenerator;
+  use Framework\_widgets\SQLForm\_engine\_core\Form as Form;
   
   /**
    * Class: UsersPage
@@ -81,7 +81,7 @@
         if($params['bllAction'] == "SELECTION"){
           $tblInfo = foo(new Selection($params['table']))->getByID($params['primaryKey'])->getValues();
           if($params['table'] == 'users'){
-            $tblInfo['password'] = $this->pass_enc->decrypt(base64_decode($tblInfo['password']), $this->config->loginKey);
+            $tblInfo['password'] = $this->pass_enc->decrypt(base64_decode($tblInfo['password']), $this->config->passwords['login']);
           }
           echo json_encode(array($tblInfo));  
         } else {

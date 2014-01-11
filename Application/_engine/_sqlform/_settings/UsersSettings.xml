@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<form_config>
+  <form title="Users">
+    <input order="1" type="select" label="Select a user to edit" id="user_id" onchange="updateBLLFormFields('users_form','users','/admin/users');" class="form-control primaryKey">
+        <options>
+            <option>
+                <name>Please select a user</name>
+                <value></value>
+            </option>
+        </options>
+    </input>
+    <input order="2" type="text" label="Name" id="user_name" class="form-control" />
+    <input order="3" type="password" label="Password" id="password" class="form-control" />
+    <input order="4" type="text" label="Email" id="email" class="form-control" />
+    <input order="5" type="select" label="User Group" id="user_group_id" class="form-control"/>
+    <input order="6" type="select" label="Status" id="status" class="form-control">
+      <options>
+        <option>
+          <name>Active</name>
+          <value>1</value>
+        </option>
+        <option>
+          <name>Inactive</name>
+          <value>0</value>
+        </option>
+      </options>
+    </input>
+    <input order="7" type="button" id="saveBtn" value="SAVE ENTRY" onclick="saveEntry('Users');" class="btn btn-success" />
+    <input order="7" type="button" id="deleteBtn" value="DELETE ENTRY" onclick="deleteEntry('Users');" class="btn btn-danger" />
+  </form>
+</form_config>

@@ -65,6 +65,8 @@
              $this->bllTables = $properties;
            } else if ($section == 'bll-editable-table-columns'){
              $this->bllTableColumns = $properties;
+           } else if ($section == 'passwords'){
+             $this->passwords = $properties;
            } else if (is_array($properties)) {
              foreach ($properties as $k => $v) $this->{$k} = $v; 
            } else {

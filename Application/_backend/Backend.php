@@ -3,8 +3,8 @@
   use Framework\_engine\_core\Page as Page;
   use Framework\_engine\_dal\Collection as Collection;
   use Framework\_engine\_dal\Selection as Selection;
-  use Application\_tools\SQLForm\_forms as Form;
   use Framework\_engine\_core\Encryption as Encryption;
+  use Framework\_widgets\SQLForm\_forms as Form;
   
   /**
    * Class: Backend
@@ -58,8 +58,8 @@
       $this->addJS('_common/jquery-impromptu.js');
       $this->addJS('_common/bootstrap.js');
       $this->addJS('_common/common-functions.js');
-      $this->addJS('_tools/jsonform/form-functions.js');
-      $this->addJS('_tools/sqlform/form-functions.js');
+      $this->addJS('_widgets/_jsonform/form-functions.js');
+      $this->addJS('_widgets/_sqlform/form-functions.js');
       $this->docHeader();
       $this->header();
       $this->body();
@@ -149,7 +149,7 @@
      * @access public
      */
     public function processBLLForm($params){
-      $formNS = 'Application\_tools\SQLForm\_forms';
+      $formNS = 'Application\_engine\_sqlform\_forms';
       if($this->isAdminUser()){
         $class = $formNS.'\\'.$params['form'].'Form';
         if($params['action'] == "SAVE"){

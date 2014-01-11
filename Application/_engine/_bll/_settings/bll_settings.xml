@@ -28,6 +28,13 @@
       <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">feedback_date</feature>
     </item>
     <item enabled="1">
+      <name>Invoice Files</name>
+      <table>invoice_files</table>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="1">invoice_file_id</feature>
+      <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="0">invoice_id</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">invoice_filename</feature>
+    </item>
+    <item enabled="1">
       <name>Invoice Status</name>
       <table>invoice_status</table>
       <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="1">invoice_status_id</feature>

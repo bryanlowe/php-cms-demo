@@ -2,7 +2,7 @@
   namespace Application\_Backend\_admin\_pages\login;
   use Application\_backend\Backend as Backend;
   use Framework\_engine\_core\Register as Register;
-  use Application\_tools\JSONForm\_engine\_core\FormGenerator as FormGenerator;
+  use Framework\_widgets\JSONForm\_engine\_core\FormGenerator as FormGenerator;
   use Application\_engine\_bll\_collection\UsersCollection as UsersCollection;
   use Framework\_engine\_core\Encryption as Encryption;
   
@@ -80,7 +80,7 @@
       } else {
         $userInfo = foo(new UsersCollection())->getByQuery('email = '.$this->db->quote($params['values']['email']));
         $user = array_shift($userInfo);
-        $decryptedPassword = $this->pass_enc->decrypt(base64_decode($user['password']), $this->config->loginKey);
+        $decryptedPassword = $this->pass_enc->decrypt(base64_decode($user['password']), $this->config->passwords['login']);
         if($decryptedPassword == $params['values']['password']){
           $_SESSION[$this->config->sessionID]['LOGGED_IN'] = true;
           $_SESSION[$this->config->sessionID]['USER_TYPE'] = "ADMIN";

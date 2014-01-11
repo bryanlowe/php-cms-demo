@@ -3,7 +3,7 @@
   use Application\_backend\Backend as Backend;
   use Framework\_engine\_dal\Collection as Collection;
   use Framework\_engine\_dal\Selection as Selection;
-  use Application\_tools\SQLForm\_engine\_core\Form as Form;
+  use Framework\_widgets\SQLForm\_engine\_core\Form as Form;
   
   /**
    * Class: ClientsPage

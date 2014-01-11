@@ -1,7 +1,7 @@
 <?php
   namespace Application\_frontend;
   use Framework\_engine\_core\Page as Page;
-  use Application\_tools\JSONForm\_engine\_core\FormGenerator as FormGenerator;
+  use Framework\_widgets\JSONForm\_engine\_core\FormGenerator as FormGenerator;
   use Framework\_engine\_dal\Collection as Collection;
   use Framework\_engine\_dal\Selection as Selection;
   use Framework\_engine\_core\Encryption as Encryption;
@@ -74,8 +74,8 @@
       $this->addJS('_common/jquery-impromptu.js');
       $this->addJS('_common/bootstrap.js');
       $this->addJS('_common/common-functions.js');
-      $this->addJS('_tools/jsonform/form-functions.js');
-      $this->addJS('_tools/sqlform/form-functions.js');
+      $this->addJS('_widgets/_jsonform/form-functions.js');
+      $this->addJS('_widgets/_sqlform/form-functions.js');
       $this->docHeader();
       $this->header();
       $this->body();
