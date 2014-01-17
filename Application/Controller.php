@@ -29,10 +29,14 @@
 
                                 'admin' => array(
                                  '/admin' => array('dir' => 'home', 'class' => 'HomePage'),
+                                 '/admin/appointments' => array('dir' => 'appointments', 'class' => 'AppointmentsPage'),
                                  '/admin/clients' => array('dir' => 'clients', 'class' => 'ClientsPage'),
+                                 '/admin/feedback' => array('dir' => 'feedback', 'class' => 'FeedbackPage'),
                                  '/admin/invoices' => array('dir' => 'invoices', 'class' => 'InvoicesPage'),
                                  '/admin/login' => array('dir' => 'login', 'class' => 'LoginPage'),
                                  '/admin/logout' => array('dir' => 'logout', 'class' => 'LogoutPage'),
+                                 '/admin/orders' => array('dir' => 'orders', 'class' => 'OrdersPage'),
+                                 '/admin/projects' => array('dir' => 'projects', 'class' => 'ProjectsPage'),
                                  '/admin/settings' => array('dir' => 'settings', 'class' => 'SettingsPage'),
                                  '/admin/users' => array('dir' => 'users', 'class' => 'UsersPage'))
                                 );

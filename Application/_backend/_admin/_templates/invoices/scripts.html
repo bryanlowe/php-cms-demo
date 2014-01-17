@@ -13,8 +13,8 @@
 			'buttonClass' : 'btn btn-success',
 			'fileTypeDesc' : 'Invoice Files',
         	'fileTypeExts' : '*.doc; *.pdf;', 
-			'swf'      : '/Utilities/uploadify/uploadify.swf',
-			'uploader' : '/Utilities/uploadify/uploadify.php',
+			'swf'      : site_url+'Utilities/uploadify/uploadify.swf',
+			'uploader' : 'http://dashboard.contentequalsmoney.com/Utilities/uploadify/uploadify.php',
 			'onUploadSuccess' : function(file, data, response) {
 				$('#invoice_file_link').html(file.name);
 				$('#invoice_file_link').attr('href','/Media/_documents/_invoices/'+file.name);

@@ -72,6 +72,7 @@
       <name>Projects</name>
       <table>projects</table>
       <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="1">project_id</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">project_title</feature>
       <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="0">client_id</feature>
       <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">description</feature>
     </item>
