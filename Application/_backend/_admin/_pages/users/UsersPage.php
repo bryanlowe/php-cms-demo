@@ -30,6 +30,7 @@
      */
     public function init(){
       parent::init();
+      $this->addJS('_admin/users/scripts.min.js');
       $this->setTitle('CEM Dashboard - User Management');
     }
 
@@ -55,18 +56,6 @@
       $clientForm = foo(new FormGenerator(null, $this->config->dir('admin-templates').'/users/client_form.json'))->getFormHTML();
       $this->setDisplayVariables('CLIENT_FORM', $clientForm, 'BODY');
     }
-
-    /**
-     * Set UsersPage footer
-     *    
-     * @access protected
-     */
-    protected function footer(){
-      parent::footer();
-      $scripts = file_get_contents($this->config->dir('admin-templates') . '/users/scripts.html');
-      $this->setDisplayVariables('SITE_URL', $this->config->homeURL, 'FOOTER');
-      $this->setDisplayVariables('JS_ACTIONS', $scripts, 'FOOTER');
-    } 
 
     /**
      * Gather BLL Resources from the database

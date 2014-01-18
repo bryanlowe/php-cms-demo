@@ -28,6 +28,7 @@
      */
     public function init(){
       parent::init();
+      $this->addJS('_admin/projects/scripts.min.js');
       $this->setTitle('CEM Dashboard - Project Management');
     }
 
@@ -53,18 +54,6 @@
       $projectStatusForm = foo(new Form('project_status'))->getFormHTML();
       $this->setDisplayVariables('PROJECT_STATUS_FORM', $projectStatusForm, 'BODY');
     }
-
-    /**
-     * Set ProjectsPage footer
-     *    
-     * @access protected
-     */
-    protected function footer(){
-      parent::footer();
-      $scripts = file_get_contents($this->config->dir('admin-templates') . '/projects/scripts.html');
-      $this->setDisplayVariables('SITE_URL', $this->config->homeURL, 'FOOTER');
-      $this->setDisplayVariables('JS_ACTIONS', $scripts, 'FOOTER');
-    } 
 
     /**
      * Gets entries from the project status table by the project id

@@ -1,6 +1,8 @@
 <?php
   namespace Application\_engine\_sqlform\_forms;
   use Framework\_widgets\SQLForm\_engine\_core\Form as Form;
+  use Framework\_engine\_core\Encryption as Encryption;
+  use Application\_engine\_bll\_collection\UsersCollection as UsersCollection;
 
   /**
    * Class: UsersForm
@@ -32,6 +34,7 @@
     public function save($values){
       if(($result = $this->validateUnique($values)) == 'unique'){
         $values['password'] = base64_encode($this->pass_enc->encrypt($values['password'], $this->config->loginKey));
+        $values['user_id'] = $this->objectID;
         return parent::save($values);
       }
       return $result;
@@ -45,7 +48,7 @@
      * @access protected
      */
     protected function validateUnique($values){
-      $user = foo(new Collection\UsersCollection())->getByQuery('email = '.$this->db->quote($values['email']));  
+      $user = foo(new UsersCollection())->getByQuery('email = '.$this->db->quote($values['email']));  
       $userCount = count($user);
       if($userCount > 0){
         $user = array_shift($user);

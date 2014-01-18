@@ -21,7 +21,7 @@
 			"type": "button",  
 			"id": "submitBtn", 
 			"value": "UPDATE USER",
-			"onclick": "updateUserForm($('#client_id').val());",
+			"onclick": "updateUserForm();",
 			"class": "btn btn-success"
 		}
 	}

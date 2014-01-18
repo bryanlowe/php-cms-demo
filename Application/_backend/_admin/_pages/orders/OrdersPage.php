@@ -29,6 +29,7 @@
      */
     public function init(){
       parent::init();
+      $this->addJS('_admin/orders/scripts.min.js');
       $this->setTitle('CEM Dashboard - Order Management');
     }
 
@@ -95,18 +96,6 @@
         $post->assign(array('read_status' => 1));
         $post->save();
       }
-    }
-
-    /**
-     * Set OrdersPage footer
-     *    
-     * @access protected
-     */
-    protected function footer(){
-      parent::footer();
-      $scripts = file_get_contents($this->config->dir('admin-templates') . '/orders/scripts.html');
-      $this->setDisplayVariables('SITE_URL', $this->config->homeURL, 'FOOTER');
-      $this->setDisplayVariables('JS_ACTIONS', $scripts, 'FOOTER');
     }    
   }
 ?>

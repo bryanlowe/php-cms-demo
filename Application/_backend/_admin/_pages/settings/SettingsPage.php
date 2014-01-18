@@ -29,6 +29,7 @@
      */
     public function init(){
       parent::init();
+      $this->addJS('_admin/settings/scripts.min.js');
       $this->setTitle('CEM Dashboard - Settings');
     }
 
@@ -60,7 +61,7 @@
      * @access public
      */
     public function updateBLLForms($params){
-      //if($this->isAdminUser()){
+      if($this->isAdminUser()){
         if($params['action'] == "CREATE"){
           foo(new Form\FormSettings())->generate();
           foo(new Form\FormGenerator())->generate();
@@ -74,7 +75,7 @@
             unlink($file);
           }
         }
-      //}
+      }
     }
 
     /**
@@ -84,7 +85,7 @@
      * @access public
      */
     public function updateBLLSettings($params){
-      //if($this->isAdminUser()){
+      if($this->isAdminUser()){
         if($params['action'] == "CREATE"){
           foo(new BLLGenerator())->generate();
         } else if($params['action'] == "DELETE"){
@@ -98,7 +99,7 @@
           }
           unlink($_SERVER['DOCUMENT_ROOT']."/Application/_engine/_bll/_settings/bll_settings.xml");
         }
-      //}
+      }
     } 
   }
 ?>

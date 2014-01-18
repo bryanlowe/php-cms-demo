@@ -13,11 +13,11 @@
       <name>Clients</name>
       <table>clients</table>
       <feature required="1" numeric="1" inputOptions="" visible="1" primaryKey="1">client_id</feature>
-      <feature required="0" numeric="0" inputOptions="" visible="1" primaryKey="0">company</feature>
-      <feature required="0" numeric="0" inputOptions="" visible="1" primaryKey="0">client_name</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">company</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">client_name</feature>
       <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">email</feature>
       <feature required="0" numeric="0" inputOptions="" visible="1" primaryKey="0">phone_number</feature>
-      <feature required="0" numeric="0" inputOptions="" visible="1" primaryKey="0">client_rate</feature>
+      <feature required="1" numeric="0" inputOptions="" visible="1" primaryKey="0">client_rate</feature>
     </item>
     <item enabled="1">
       <name>Feedback</name>

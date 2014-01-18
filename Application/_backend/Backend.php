@@ -55,11 +55,11 @@
       $this->addCSS('_common/styles.css');
       $this->addJS('_common/jquery-1.10.2.min.js');
       $this->addJS('_common/jquery.idle.min.js');
-      $this->addJS('_common/jquery-impromptu.js');
+      $this->addJS('_common/jquery-impromptu.min.js');
       $this->addJS('_common/bootstrap.js');
       $this->addJS('_common/common-functions.js');
       $this->addJS('_widgets/_jsonform/form-functions.js');
-      $this->addJS('_widgets/_sqlform/form-functions.js');
+      $this->addJS('_widgets/_sqlform/form-functions.min.js');
       $this->docHeader();
       $this->header();
       $this->body();

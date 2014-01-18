@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <form_config>
   <form title="Clients">
-    <input order="1" type="select" label="Select a client to edit" id="client_id" onchange="updateBLLFormFields('clients_form','clients','/admin/clients');" class="form-control primaryKey">
+    <input order="1" type="select" label="Select a client to edit" id="client_id" class="form-control primaryKey">
         <options>
             <option>
                 <name>Please select a client</name>
@@ -14,7 +14,7 @@
     <input order="4" type="text" label="Email" id="email" class="form-control" />
     <input order="5" type="text" label="Phone Number" id="phone_number" class="form-control" />
     <input order="6" type="text" label="Client Rate" id="client_rate" class="form-control" />
-    <input order="7" type="button" id="saveBtn" value="SAVE ENTRY" onclick="saveEntry('Clients');" class="btn btn-success" />
-    <input order="7" type="button" id="deleteBtn" value="DELETE ENTRY" onclick="deleteEntry('Clients');" class="btn btn-danger" />
+    <input order="7" type="button" id="saveBtn" value="SAVE ENTRY" onclick="saveClient();" class="btn btn-success" />
+    <input order="7" type="button" id="deleteBtn" value="DELETE ENTRY" onclick="deleteClient();" class="btn btn-danger" />
   </form>
 </form_config>

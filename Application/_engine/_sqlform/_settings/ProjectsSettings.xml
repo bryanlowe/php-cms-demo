@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <form_config>
   <form title="Projects">
-    <input order="1" type="select" label="Select a project to edit" id="project_id" onchange="updateBLLFormFields('projects_form','projects','/admin/projects'); updateProjectStatusForm(this.value);" class="form-control primaryKey">
+    <input order="1" type="select" label="Select a project to edit" id="project_id" class="form-control primaryKey">
         <options>
             <option>
                 <name>Please select a project</name>
@@ -19,7 +19,7 @@
     </input>
     <input order="3" type="text" label="Title" id="project_title" class="form-control"/>
     <input order="4" type="textarea" label="Description" id="description" class="form-control"/>
-    <input order="5" type="button" id="saveBtn" value="SAVE ENTRY" onclick="saveEntry('Projects');" class="btn btn-success"/>
-    <input order="5" type="button" id="deleteBtn" value="DELETE ENTRY" onclick="deleteEntry('Projects');" class="btn btn-danger"/>
+    <input order="5" type="button" id="saveBtn" value="SAVE ENTRY" onclick="saveProject();" class="btn btn-success"/>
+    <input order="5" type="button" id="deleteBtn" value="DELETE ENTRY" onclick="deleteProject();" class="btn btn-danger"/>
   </form>
 </form_config>

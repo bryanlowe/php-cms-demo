@@ -30,6 +30,7 @@
       parent::init();
       $this->addCSS('_common/uploadify.css');
       $this->addJS('_common/jquery.uploadify.min.js');
+      $this->addJS('_admin/invoices/scripts.min.js');
       $this->setTitle('CEM Dashboard - Invoice Management');
     }
 
@@ -60,17 +61,6 @@
       $this->setDisplayVariables('TIMESTAMP', $timestamp, 'BODY');
       $this->setDisplayVariables('UPLOAD_TOKEN', md5($this->config->passwords['uploads'] . $timestamp), 'BODY');
     } 
-
-    /**
-     * Set InvoicesPage footer
-     *    
-     * @access protected
-     */
-    protected function footer(){
-      parent::footer();
-      $scripts = file_get_contents($this->config->dir('admin-templates') . '/invoices/scripts.html');
-      $this->setDisplayVariables('JS_ACTIONS', $scripts, 'FOOTER');
-    }   
 
     /**
      * Gets entries from the invoice status table by the invoice id

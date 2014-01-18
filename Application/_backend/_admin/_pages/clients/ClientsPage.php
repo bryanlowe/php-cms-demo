@@ -29,6 +29,7 @@
      */
     public function init(){
       parent::init();
+      $this->addJS('_admin/clients/scripts.min.js');
       $this->setTitle('CEM Dashboard - Client Management');
     }
 
@@ -52,17 +53,5 @@
       $clientForm = foo(new Form('clients'))->getFormHTML();
       $this->setDisplayVariables('CLIENT_FORM', $clientForm, 'BODY');
     }
-
-    /**
-     * Set ClientsPage footer
-     *    
-     * @access protected
-     */
-    protected function footer(){
-      parent::footer();
-      $scripts = file_get_contents($this->config->dir('admin-templates') . '/clients/scripts.html');
-      $this->setDisplayVariables('SITE_URL', $this->config->homeURL, 'FOOTER');
-      $this->setDisplayVariables('JS_ACTIONS', $scripts, 'FOOTER');
-    }   
   }
 ?>

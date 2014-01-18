@@ -28,8 +28,7 @@
 		},
 		"input4": { 
 			"order": 3,  
-			"type": "button", 
-			"class": "action-button", 
+			"type": "button",  
 			"id": "submitBtn", 
 			"value": "LOG IN",
 			"onclick": "processLogin();",

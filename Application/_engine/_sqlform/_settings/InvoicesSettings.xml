@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <form_config>
   <form title="Invoices">
-    <input order="1" type="select" label="Select an invoice to edit" id="invoice_id" onchange="updateBLLFormFields('invoices_form','invoices','/admin/invoices'); updateInvoiceStatusForm(this.value);updateInvoiceFileForm(this.value);" class="form-control primaryKey">
+    <input order="1" type="select" label="Select an invoice to edit" id="invoice_id" class="form-control primaryKey">
         <options>
             <option>
                 <name>Please select an invoice</name>
@@ -20,7 +20,7 @@
     <input order="4" type="textarea" label="Invoice Description" id="description" class="form-control"/>
     <input order="5" type="text" label="Invoice Cost" id="total_cost" class="form-control"/>
     <input order="2" type="text" label="Invoice Number" id="invoice_number" class="form-control"/>
-    <input order="6" type="button" id="saveBtn" value="SAVE ENTRY" onclick="saveEntry('Invoices');" class="btn btn-success" />
-    <input order="6" type="button" id="deleteBtn" value="DELETE ENTRY" onclick="deleteEntry('Invoices');" class="btn btn-danger"/>
+    <input order="6" type="button" id="saveBtn" value="SAVE ENTRY" onclick="saveInvoice();" class="btn btn-success" />
+    <input order="6" type="button" id="deleteBtn" value="DELETE ENTRY" onclick="deleteInvoice();" class="btn btn-danger"/>
   </form>
 </form_config>
