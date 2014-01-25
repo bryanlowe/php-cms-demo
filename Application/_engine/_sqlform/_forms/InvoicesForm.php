@@ -50,11 +50,14 @@
       $maxFiles = count($invoiceFiles);
       for($i = 0; $i < $maxFiles; $i++){
         if(($result = foo(new Form('invoice_files'))->delete($invoiceFiles[$i]['invoice_file_id'])) == 'Deletion Error'){
-          return 'Error deleting invoice files from database. PrimaryID: '.$primaryKey.' Status ID: '.$invoiceFiles[$i]['invoice_file_id'];
+          return 'Error deleting invoice files from database. PrimaryID: '.$primaryKey.' File ID: '.$invoiceFiles[$i]['invoice_file_id'];
         }
         $this->removeInvoiceFile($invoiceFiles[$i]['invoice_filename']);
       }
-      return parent::delete($primaryKey);
+      if(($result = parent::delete($primaryKey)) == "Deletion Error"){
+        return 'Error Deleting Invoice. InvoiceID: '.$primaryKey;
+      }
+      return $result;
     }
 
     /**

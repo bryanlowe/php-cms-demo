@@ -64,15 +64,13 @@
      * @access public
      */
     public function init(){
-      $this->addCSS('_common/bootstrap.css');
-      $this->addCSS('_common/sb-admin.css');
-      $this->addCSS('font-awesome/css/font-awesome.min.css');
+      $this->addCSS('_cem/bootstrap.min.css');
       $this->addCSS('_common/jquery-impromptu.css');
-      $this->addCSS('_common/styles.css');
+      $this->addCSS('_cem/styles.css');
       $this->addJS('_common/jquery-1.10.2.min.js');
       $this->addJS('_common/jquery.idle.min.js');
       $this->addJS('_common/jquery-impromptu.js');
-      $this->addJS('_common/bootstrap.js');
+      $this->addJS('_cem/bootstrap.min.js');
       $this->addJS('_common/common-functions.js');
       $this->addJS('_widgets/_jsonform/form-functions.js');
       $this->addJS('_widgets/_sqlform/form-functions.js');
@@ -100,7 +98,7 @@
      */
     protected function header(){
       parent::header();
-      $this->setDisplayVariables('USER_EMAIL', $_SESSION[$this->config->sessionID]['USER_INFO']['email'], 'HEADER');
+      $this->setDisplayVariables('USER_NAME', $_SESSION[$this->config->sessionID]['USER_INFO']['user_name'], 'HEADER');
       $this->setDisplayVariables('SITE_URL', $this->config->homeURL, 'HEADER');
     }
     
@@ -114,6 +112,7 @@
       $source = ($source == null) ? $this->source : $source;
       $scripts = file_get_contents($this->config->dir($source) . '/_common/scripts.html');
       $this->setDisplayVariables('SITE_URL', $this->config->homeURL, 'FOOTER');
+      $this->setDisplayVariables('COPY_YEAR', date('Y'), 'FOOTER');
       $this->setDisplayVariables('JS_ACTIONS', $scripts, 'FOOTER');
     }
     

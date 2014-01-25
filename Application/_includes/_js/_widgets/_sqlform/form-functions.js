@@ -120,10 +120,11 @@
    * Refreshes the options of select items through the use of ajax
    *
    * @param selectID
-   * @param bllType
+   * @param table
    * @param ajaxURL
    * @param bllNameLabel
    * @param bllValueLabel
+   * @param order
    */
   function refreshBLLSelectOptions(selectID, table, ajaxURL, bllNameLabel, bllValueLabel, order){
     var result = $.ajax({
@@ -148,10 +149,11 @@
    * Refreshes the options of select items through the use of ajax
    *
    * @param selectID
-   * @param bllType
+   * @param table
    * @param ajaxURL
    * @param bllNameLabel
    * @param bllValueLabel
+   * @param order
    */
   function selectAllowedBLLResources(selectID, table, ajaxURL, bllNameLabel, bllValueLabel, order){
     var result = $.ajax({
@@ -173,7 +175,8 @@
    * Update form fields by database entry
    *
    * @param formID 
-   * @param bllType
+   * @param table
+   * @param ajaxURL
    */
   function updateBLLFormFields(formID, table, ajaxURL){
     var primaryKey = ($("form#"+formID+" .primaryKey").val() != "") ? $("form#"+formID+" .primaryKey").val() : 0;
@@ -191,4 +194,22 @@
       var value = (typeof(formValues[field.name]) != "undefined" ? formValues[field.name] : "");
       $('form#'+formID+' #'+field.name).val(value);    
     }); 
+  }
+
+  /**
+   * Get count from table
+   *
+   * @param table 
+   * @param where
+   * @param ajaxURL 
+   */
+  function getCountFromTable(table,where,ajaxURL){
+    var result = $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: ajaxURL,
+        async: false,
+        data: {table: table, where: where, _ajaxFunc: "gatherBLLCount"}
+    });
+    return $.parseJSON(result.responseText);
   }

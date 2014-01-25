@@ -99,7 +99,7 @@ function saveStatus(){
  */
 function deleteInvoice(){
 	var result = "";
-	$.prompt("Are you sure you want to delete this invoice?", {
+	$.prompt("<p>Are you sure you want to delete this invoice?</p><p>Deleting this invoice will delete the invoice status and files associated with this invoice.</p>", {
 		title: "Are you sure?",
 		buttons: { "Yes": true, "No": false },
 		submit: function(e,v,m,f){ 

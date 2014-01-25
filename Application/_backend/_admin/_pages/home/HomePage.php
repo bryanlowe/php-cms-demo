@@ -26,17 +26,10 @@
      */
     public function init(){
       parent::init();
+      $this->addJS('_admin/home/scripts.min.js');
       $this->setTitle('CEM Dashboard - Admin');
     }
 
-    /**
-     * Set HomePage header
-     *    
-     * @access protected
-     */
-    protected function header(){
-      parent::header();
-    }
     
     /**
      * Set HomePage body
@@ -46,6 +39,7 @@
     protected function body(){
       $this->setBody('home/main.html');
       $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
+      $this->setDisplayVariables('SITE_URL', $this->config->homeURL, 'BODY');
     }    
   }
 ?>

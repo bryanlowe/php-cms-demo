@@ -164,7 +164,6 @@
      * Gather BLL Resources from the database
      *
      * @param assoc array $param
-     * @param int priKey
      * @access public
      */
     public function gatherBLLResource($params){
@@ -175,6 +174,18 @@
         } else {
           echo json_encode(foo(new Collection($params['table']))->getAll(null, null, null, $params['order']));  
         }
+      }    
+    }
+
+    /**
+     * Gather BLL Count from the database
+     *
+     * @param assoc array $param
+     * @access public
+     */
+    public function gatherBLLCount($params){
+      if($this->isAdminUser()){
+        echo json_encode(foo(new Collection($params['table']))->getCount($params['where']));  
       }    
     }
 

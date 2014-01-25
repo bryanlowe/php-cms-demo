@@ -42,7 +42,7 @@ function saveUser(){
  */
 function deleteUser(){
 	var result = "";
-	$.prompt("Are you sure you want to delete this user?", {
+	$.prompt("<p>Are you sure you want to delete this user?</p>", {
 		title: "Are you sure?",
 		buttons: { "Yes": true, "No": false },
 		submit: function(e,v,m,f){ 

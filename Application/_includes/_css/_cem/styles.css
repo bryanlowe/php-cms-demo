@@ -1,0 +1,163 @@
+@import "https://fonts.googleapis.com/css?family=Droid+Sans";
+
+body, h1, h2, h2 a, h2 a:visited, h3, h4, h5, h6, p, input, select, textarea {
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+body {
+    background-attachment: scroll;
+    background-image: url("/Application/_includes/_images/_cem/cembackgroundspot21-150x150.gif");
+    background-position: left top;
+    background-repeat: repeat;
+}
+
+#welcome-wrapper {
+    height: 33px;
+    margin: 0;
+    overflow: visible;
+    padding: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 5000;
+}
+
+#welcome-container {
+    background: none repeat scroll 0 0 #60AB2B;
+    border-bottom: 3px solid #FFFFFF;
+    color: #FFFFFF;
+    height: 33px;
+    font-family: Trebuchet MS,sans-serif;
+    line-height: 30px;
+    margin: 0;
+    overflow: visible;
+    padding: 0;
+    position: relative;
+    text-align: center;
+    width: 100%;
+    z-index: 1000;
+}
+
+#welcome-container, #welcome-container a, #welcome-container a:visited, #welcome-container a:hover {
+	color:#fff;
+}
+
+#welcome-container.texture {
+    background-image: url("/Application/_includes/_images/_cem/textures.png");
+    background-repeat: repeat-x;
+}
+
+#welcome-container.texture.stitch {
+    background-position: 0 -240px;
+}
+
+#welcome-shadow {
+    background: url("/Application/_includes/_images/_cem/sprite-8bit.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+    bottom: -8px;
+    height: 8px;
+    left: 0;
+    line-height: 8px;
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+}
+
+a.welcome-link {
+	border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.854em;
+    margin: 0 0 0 7px;
+    padding: 2px 8px 1px;
+    position: relative;
+    text-decoration: none;
+    background: -moz-linear-gradient(center top , #4A4844 0%, #2D2C29 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.28);
+    color: #FFFFFF;
+}
+
+a.welcome-link:hover {
+    background: -moz-linear-gradient(center top , #67645F 0%, #4F4D47 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border-color: #414141;
+    text-decoration: none;
+}
+
+a.welcome-link:active {
+    top: 1px;
+}
+
+#wrap {
+    background: url("/Application/_includes/_images/_cem/CEM_HEADER_NEW_Repeating_section.gif") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+#header {
+    background: url("/Application/_includes/_images/_cem/CEM_HEADER_NEW_Repeating_section.gif") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
+    margin: 0 auto;
+    min-height: 177px;
+    overflow: hidden;
+    width: 960px;
+}
+
+#page-content {
+    background-color: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 5px;
+    padding: 15px;
+    width: 1012px;
+    margin: 25px auto 0;
+    min-height: 600px;
+}
+
+#footer-widgets {
+    background: url("/Application/_includes/_images/_cem/footerbackground.png") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
+    border-top: 3px double #DDDDDD;
+    clear: both;
+    font-size: 12px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 25px 0 10px;
+    width: 100%;
+    min-height: 300px;
+}
+
+#footer {
+    background-color: #3E585C;
+    clear: both;
+    overflow: hidden;
+    padding: 20px 0;
+}
+#footer .wrap {
+    font-family: 'Droid Sans',arial,serif;
+    font-size: 12px;
+    margin: 0 auto;
+    width: 960px;
+}
+#footer p {
+    color: #DDDDDD;
+    font-family: 'Droid Sans',arial,serif;
+    font-size: 12px;
+}
+#footer a, #footer a:visited {
+    color: #DDDDDD;
+    text-decoration: none;
+}
+#footer a:hover {
+    color: #15A0F8;
+    text-decoration: none;
+}
+#footer .gototop {
+    float: left;
+    width: 200px;
+}
+#footer .creds {
+    float: right;
+    text-align: right;
+    width: 755px;
+}
+
+.login-form{
+    margin-top:100px;
+}

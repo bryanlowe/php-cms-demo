@@ -39,7 +39,7 @@ function saveClient(){
  */
 function deleteClient(){
 	var result = "";
-	$.prompt("Are you sure you want to delete this client?", {
+	$.prompt("<p>Are you sure you want to delete this client?</p><p>If you delete this client all invoices and projects associated with the project will be deleted as well.</p>", {
 		title: "Are you sure?",
 		buttons: { "Yes": true, "No": false },
 		submit: function(e,v,m,f){ 

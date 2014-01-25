@@ -60,7 +60,7 @@ function saveStatus(){
  */
 function deleteProject(){
 	var result = "";
-	$.prompt("Are you sure you want to delete this project?", {
+	$.prompt("<p>Are you sure you want to delete this project?</p><p>If you delete this project, the project status will be deleted as well.</p>", {
 		title: "Are you sure?",
 		buttons: { "Yes": true, "No": false },
 		submit: function(e,v,m,f){ 

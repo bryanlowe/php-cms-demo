@@ -47,3 +47,12 @@
     background-color: #fff;
     overflow-y: auto;
 }
+
+.login-form, .task-panel{
+    margin-top:100px;
+}
+
+.task-title {
+    font-size: 25px;
+    margin: 0;
+}

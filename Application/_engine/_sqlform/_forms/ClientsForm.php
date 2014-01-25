@@ -2,6 +2,8 @@
   namespace Application\_engine\_sqlform\_forms;
   use Framework\_widgets\SQLForm\_engine\_core\Form as Form;
   use Application\_engine\_bll\_collection\ClientsCollection as ClientsCollection;
+  use Application\_engine\_bll\_collection\InvoicesCollection as InvoicesCollection;
+  use Application\_engine\_bll\_collection\ProjectsCollection as ProjectsCollection;
 
   /**
    * Class: ClientsForm
@@ -24,6 +26,37 @@
       if(($result = $this->validateUnique($values)) == 'unique'){
         $values['client_id'] = $this->objectID;
         return parent::save($values);
+      }
+      return $result;
+    }
+
+    /**   
+     * Deletes the form entry from the table
+     * First any invoices that exist for the client, then projects, then the client itself
+     *
+     * @return string
+     * @param string $primaryKey
+     * @access public
+     */
+    public function delete($primaryKey){
+      $invoices = foo(new InvoicesCollection())->getByQuery('client_id = '.$this->db->quote($primaryKey));
+      $projects = foo(new ProjectsCollection())->getByQuery('client_id = '.$this->db->quote($primaryKey));
+      
+      $maxInvoices = count($invoices);
+      for($i = 0; $i < $maxInvoices; $i++){
+        if(($result = foo(new InvoicesForm())->delete($invoices[$i]['invoice_id'])) != 'Deletion Success'){
+          return $result;
+        }
+      }
+
+      $maxProjects = count($projects);
+      for($i = 0; $i < $maxProjects; $i++){
+        if(($result = foo(new ProjectsForm())->delete($projects[$i]['project_id'])) != 'Deletion Success'){
+          return $result;
+        }
+      }
+      if(($result = parent::delete($primaryKey)) == "Deletion Error"){
+        return 'Error Deleting Client. ClientID: '.$primaryKey;
       }
       return $result;
     }

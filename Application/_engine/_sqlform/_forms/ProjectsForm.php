@@ -29,7 +29,10 @@
           return 'Error deleting project status from database. PrimaryID: '.$primaryKey.' Status ID: '.$projectStatus[$i]['project_status_id'];
         }
       }
-      return parent::delete($primaryKey);
+      if(($result = parent::delete($primaryKey)) == "Deletion Error"){
+        return 'Error Deleting Project. ProjectID: '.$primaryKey;
+      }
+      return $result;
     }
   }
 ?>
