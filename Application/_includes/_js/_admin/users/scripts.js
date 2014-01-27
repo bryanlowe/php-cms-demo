@@ -1,9 +1,9 @@
 $(document).ready(function(){
-	refreshBLLSelectOptions("#users_form select#user_id", "users", site_url+"admin/users", "email", "user_id", "email ASC");
-	refreshBLLSelectOptions("#users_form select#user_group_id", "user_group", site_url+"admin/users", "group_name", "user_group_id", "group_name ASC");
-	refreshBLLSelectOptions("#clients_form select#client_id", "clients", site_url+"admin/users", "company", "client_id", "company ASC");
+	refreshBLLSelectOptions("#users_form select#user_id", "users", site_url+"users", "email", "user_id", "email ASC");
+	refreshBLLSelectOptions("#users_form select#user_group_id", "user_group", site_url+"users", "group_name", "user_group_id", "group_name ASC");
+	refreshBLLSelectOptions("#clients_form select#client_id", "clients", site_url+"users", "company", "client_id", "company ASC");
 	$('#users_form select#user_id').change(function(){
-		updateBLLFormFields('users_form','users',site_url+'admin/users');
+		updateBLLFormFields('users_form','users',site_url+'users');
 	});
 });
 
@@ -11,7 +11,7 @@ $(document).ready(function(){
  * Reloads page elements to reflect changes in the database
  */
 function reloadPageElements(){
-	refreshBLLSelectOptions("#users_form select#user_id", "users", site_url+"admin/users", "email", "user_id", "email ASC");
+	refreshBLLSelectOptions("#users_form select#user_id", "users", site_url+"users", "email", "user_id", "email ASC");
 	$("#users_form")[0].reset();
 	$("#clients_form")[0].reset();
 }
@@ -65,7 +65,7 @@ function updateUserForm(){
   var result = $.ajax({
       type: "POST",
       dataType: "json",
-      url: site_url+"admin/users",
+      url: site_url+"users",
       async: false,
       data: {table: 'clients', primaryKey: client_id, bllAction: "SELECTION", _ajaxFunc: "gatherBLLResource"}
   });

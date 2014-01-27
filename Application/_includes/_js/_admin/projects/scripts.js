@@ -1,8 +1,8 @@
 $(document).ready(function(){
-	refreshBLLSelectOptions("#projects_form select#project_id", "projects", site_url+"admin/projects", "project_title", "project_id", "project_title ASC");
-	refreshBLLSelectOptions("#projects_form select#client_id", "clients", site_url+"admin/projects", "company", "client_id", "company ASC");
+	refreshBLLSelectOptions("#projects_form select#project_id", "projects", site_url+"projects", "project_title", "project_id", "project_title ASC");
+	refreshBLLSelectOptions("#projects_form select#client_id", "clients", site_url+"projects", "company", "client_id", "company ASC");
 	$('#projects_form select#project_id').change(function(){
-		updateBLLFormFields('projects_form','projects',site_url+'admin/projects'); 
+		updateBLLFormFields('projects_form','projects',site_url+'projects'); 
 		updateProjectStatusForm($(this).val());
 	});
     $('#project_status_form input[name="saveBtn"]').attr('disabled', 'disabled');
@@ -13,7 +13,7 @@ $(document).ready(function(){
  * Reloads page elements to reflect changes in the database
  */
 function reloadPageElements(){
-	refreshBLLSelectOptions("#projects_form select#project_id", "projects", site_url+"admin/projects", "project_title", "project_id", "project_title ASC");
+	refreshBLLSelectOptions("#projects_form select#project_id", "projects", site_url+"projects", "project_title", "project_id", "project_title ASC");
 	$("#projects_form")[0].reset();
 	$("#project_status_form")[0].reset();
 	$('#project_status_form #project_status_date').val('');

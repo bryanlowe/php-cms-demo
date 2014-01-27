@@ -14,7 +14,7 @@ function showOrderDetails(orderID, read){
     }
     $.ajax({
       type: "POST",
-      url: site_url+"admin/orders",
+      url: site_url+"orders",
       async: false,
       data: {orderID: orderID, _ajaxFunc: "markAsRead"}
     });

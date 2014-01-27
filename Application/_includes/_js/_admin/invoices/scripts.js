@@ -1,6 +1,6 @@
 $(document).ready(function(){
-	refreshBLLSelectOptions("#invoices_form select#invoice_id", "invoices", site_url+"admin/invoices", "invoice_number", "invoice_id", "invoice_number ASC");
-	refreshBLLSelectOptions("#invoices_form select#client_id", "clients", site_url+"admin/invoices", "company", "client_id", "company ASC");
+	refreshBLLSelectOptions("#invoices_form select#invoice_id", "invoices", site_url+"invoices", "invoice_number", "invoice_id", "invoice_number ASC");
+	refreshBLLSelectOptions("#invoices_form select#client_id", "clients", site_url+"invoices", "company", "client_id", "company ASC");
 	$("#invoices_form select#invoice_id").change(function(){
 		updateBLLFormFields('invoices_form','invoices',site_url+'admin/invoices'); 
 		updateInvoiceStatusForm($(this).val());
@@ -38,7 +38,7 @@ $(document).ready(function(){
  * Reloads page elements to reflect changes in the database
  */
 function reloadPageElements(){
-	refreshBLLSelectOptions("#invoices_form select#invoice_id", "invoices", site_url+"admin/invoices", "invoice_number", "invoice_id", "invoice_number ASC");
+	refreshBLLSelectOptions("#invoices_form select#invoice_id", "invoices", site_url+"invoices", "invoice_number", "invoice_id", "invoice_number ASC");
 	$("#invoices_form")[0].reset();
 	$("#invoice_status_form")[0].reset();
   $('#invoice_status_form #invoice_status_id').val('');
@@ -218,7 +218,7 @@ function deleteInvoice(){
   function destroyInvoiceFile(filename){
     var result = $.ajax({
       type: "POST",
-      url: site_url+"admin/invoices",
+      url: site_url+"invoices",
       async: false,
       data: {filename: filename, _ajaxFunc: "removeInvoiceFile"}
     });

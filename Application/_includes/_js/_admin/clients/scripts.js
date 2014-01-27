@@ -1,7 +1,7 @@
 $(document).ready(function(){
-	refreshBLLSelectOptions("#clients_form select#client_id", "clients", site_url+"admin/clients", "company", "client_id", "company ASC");
+	refreshBLLSelectOptions("#clients_form select#client_id", "clients", site_url+"clients", "company", "client_id", "company ASC");
 	$("#clients_form select#client_id").change(function(){
-		updateBLLFormFields('clients_form','clients',site_url+'admin/clients');
+		updateBLLFormFields('clients_form','clients',site_url+'clients');
 	});
 });
 
@@ -9,7 +9,7 @@ $(document).ready(function(){
  * Reloads page elements to reflect changes in the database
  */
 function reloadPageElements(){
-	refreshBLLSelectOptions("#clients_form select#client_id", "clients", site_url+"admin/clients", "company", "client_id", "company ASC");
+	refreshBLLSelectOptions("#clients_form select#client_id", "clients", site_url+"clients", "company", "client_id", "company ASC");
 	$("#clients_form")[0].reset();
 }
 

@@ -14,7 +14,7 @@ function showFeedbackDetails(feedbackID, read){
     }
     $.ajax({
       type: "POST",
-      url: site_url+"admin/feedback",
+      url: site_url+"feedback",
       async: false,
       data: {feedbackID: feedbackID, _ajaxFunc: "markAsRead"}
     });

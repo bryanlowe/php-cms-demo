@@ -30,7 +30,7 @@
 
     var result = $.ajax({
       type: "POST",
-      url: site_url+"admin",
+      url: site_url,
       async: false,
       data: {form: form, action: action, priKey: priKey, values: values, _ajaxFunc: "processBLLForm"}
     });
@@ -70,7 +70,7 @@
 
     var result = $.ajax({
       type: "POST",
-      url: site_url+"admin",
+      url: site_url,
       async: false,
       data: {form: form, action: action, priKey: priKey, _ajaxFunc: "processBLLForm"}
     });
@@ -87,7 +87,7 @@
   function updatePrimaryKey(formID, table, firstValue, secondValue){
     var result = $.ajax({
       type: "POST",
-      url: site_url+"admin",
+      url: site_url,
       async: false,
       data: {table: table, firstValue: firstValue, secondValue: secondValue, _ajaxFunc: "getBLLPrimaryKey"}
     });

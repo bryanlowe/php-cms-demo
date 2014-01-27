@@ -41,6 +41,7 @@
      */
     public function init(){
       parent::init();
+      $this->addJS('_clients/login/scripts.min.js');
       $this->setTitle('CEM Dashboard - Log In');
     }
 

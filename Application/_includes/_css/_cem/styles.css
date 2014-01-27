@@ -161,3 +161,25 @@ a.welcome-link:active {
 .login-form{
     margin-top:100px;
 }
+
+.navbar {
+    top: 47px;
+    margin-bottom: 0;
+}
+
+.navbar-header {
+    float: right;
+}
+
+#pleaseWaitDialog {
+    width: 400px;
+    height: 250px;
+    position: fixed;
+    top: 25%;
+    left: 50%;
+    margin-top: -25px;
+    margin-left: -200px;
+    padding: 20px;
+    background-color: #fff;
+    overflow-y: auto;
+}

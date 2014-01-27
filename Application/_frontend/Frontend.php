@@ -157,6 +157,25 @@
     } 
 
     /**
+     * Performs save and delete actions for forms. 
+     * Calls the specified Form class and saves or deletes entries
+     *
+     * @param assoc array $param
+     * @access public
+     */
+    public function processBLLForm($params){
+      $formNS = 'Application\_engine\_sqlform\_forms';
+      if($this->isLoggedIn()){
+        $class = $formNS.'\\'.$params['form'].'Form';
+        if($params['action'] == "SAVE"){
+          echo foo(new $class($params['priKey']))->save($params['values']);
+        } else if($params['action'] == "DELETE"){
+          echo foo(new $class($params['priKey']))->delete($params['priKey']);
+        }
+      } 
+    }
+
+    /**
      * Gather BLL Resources from the database
      *
      * @param assoc array $param
@@ -195,6 +214,19 @@
      */
     protected function isWriterUser(){
       if($_SESSION[$this->config->sessionID]['LOGGED_IN'] && $_SESSION[$this->config->sessionID]['USER_TYPE'] == "WRITER"){
+        return true;
+      }
+      return false;  
+    }
+
+    /**
+     * Checks whether the user is logged in
+     *
+     * @return boolean
+     * @access protected
+     */
+    protected function isLoggedIn(){
+      if($this->isClientUser() || $this->isWriterUser()){
         return true;
       }
       return false;  

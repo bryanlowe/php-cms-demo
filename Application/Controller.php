@@ -19,6 +19,7 @@
     public static $pages = array(
                                 'clients' => array(
                                  '/' => array('dir' => 'home', 'class' => 'HomePage'),
+                                 '/account' => array('dir' => 'account', 'class' => 'AccountPage'),
                                  '/login' => array('dir' => 'login', 'class' => 'LoginPage'),
                                  '/logout' => array('dir' => 'logout', 'class' => 'LogoutPage')),
 

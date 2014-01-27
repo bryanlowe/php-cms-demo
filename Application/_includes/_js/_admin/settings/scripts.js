@@ -5,7 +5,7 @@ function updateBLLSettings(action){
   statusApp.showPleaseWait();
   $.ajax({
     type: "POST",
-    url: site_url+"admin/settings",
+    url: site_url+"settings",
     async: false,
     data: {action: action, _ajaxFunc: "updateBLLSettings"}
   });
@@ -19,7 +19,7 @@ function updateBLLForms(action){
   statusApp.showPleaseWait();
   $.ajax({
     type: "POST",
-    url: site_url+"admin/settings",
+    url: site_url+"settings",
     async: false,
     data: {action: action, _ajaxFunc: "updateBLLForms"}
   });
