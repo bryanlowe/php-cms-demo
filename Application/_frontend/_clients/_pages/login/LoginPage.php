@@ -3,6 +3,7 @@
   use Application\_frontend\Frontend as Frontend;
   use Framework\_engine\_core\Register as Register;
   use Framework\_widgets\JSONForm\_engine\_core\FormGenerator as FormGenerator;
+  use Application\_engine\_bll\_collection\ClientsCollection as ClientsCollection;
   use Application\_engine\_bll\_collection\UsersCollection as UsersCollection;
   use Framework\_engine\_core\Encryption as Encryption;
   
@@ -86,6 +87,9 @@
           $_SESSION[$this->config->sessionID]['LOGGED_IN'] = true;
           $_SESSION[$this->config->sessionID]['USER_TYPE'] = "CLIENT";
           $_SESSION[$this->config->sessionID]['USER_INFO'] = $user;
+          $clientInfo = foo(new ClientsCollection())->getByQuery('email = '.$this->db->quote($params['values']['email']));
+          $client = array_shift($clientInfo);
+          $_SESSION[$this->config->sessionID]['CLIENT_INFO'] = $client;
           echo 'pass';  
         } else {
           echo 'restricted';

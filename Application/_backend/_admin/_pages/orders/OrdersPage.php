@@ -32,15 +32,6 @@
       $this->addJS('_admin/orders/scripts.min.js');
       $this->setTitle('CEM Dashboard - Order Management');
     }
-
-    /**
-     * Set OrdersPage header
-     *    
-     * @access protected
-     */
-    protected function header(){
-      parent::header();
-    }
     
     /**
      * Set OrdersPage body

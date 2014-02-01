@@ -28,15 +28,6 @@
       parent::init();
       $this->setTitle('CEM Dashboard - Home');
     }
-
-    /**
-     * Set HomePage header
-     *    
-     * @access protected
-     */
-    protected function header(){
-      parent::header();
-    }
     
     /**
      * Set HomePage body

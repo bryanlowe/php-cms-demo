@@ -65,6 +65,7 @@
     private function unsetAllVars(){
       $_SESSION[$this->config->sessionID]['LOGGED_IN'] = false;
       unset($_SESSION[$this->config->sessionID]['USER_INFO']);
+      unset($_SESSION[$this->config->sessionID]['CLIENT_INFO']);
       unset($_SESSION[$this->config->sessionID]['USER_TYPE']);
     }
   }

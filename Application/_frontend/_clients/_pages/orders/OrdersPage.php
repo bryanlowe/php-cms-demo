@@ -1,19 +1,17 @@
 <?php
-  namespace Application\_frontend\_clients\_pages\account;
+  namespace Application\_frontend\_clients\_pages\orders;
   use Application\_frontend\Frontend as Frontend;
-  use Application\_engine\_bll\_collection\ClientsCollection as ClientsCollection;
-  use Framework\_engine\_dal\Selection as Selection;
   use Framework\_widgets\SQLForm\_engine\_core\Form as Form;
   
   /**
-   * Class: AccountPage
+   * Class: OrdersPage
    *    
-   * Handles the Account Page
+   * Handles the Order Page
    */
-  class AccountPage extends Frontend{
+  class OrdersPage extends Frontend{
 
     /**
-     * Construct a new AccountPage object
+     * Construct a new OrdersPage object
      *    
      * @access public
      */
@@ -23,26 +21,26 @@
     }
     
     /**
-     * Initialize AccountPage Elements
+     * Initialize OrdersPage Elements
      *    
      * @access public
      */
     public function init(){
       parent::init();
-      $this->addJS('_clients/account/scripts.min.js');
-      $this->setTitle('CEM Dashboard - Edit Account');
+      $this->addJS('_clients/orders/scripts.min.js');
+      $this->setTitle('CEM Dashboard - Place An Order');
     }
-
+    
     /**
-     * Set AccountPage body
+     * Set OrdersPage body
      *    
      * @access protected
      */
     protected function body(){
-      $this->setBody('account/main.html');
+      $this->setBody('orders/main.html');
       $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
-      $clientForm = foo(new Form('clients'))->getFormHTML();
-      $this->setDisplayVariables('CLIENT_FORM', $clientForm, 'BODY');
+      $orderForm = foo(new Form('orders'))->getFormHTML();
+      $this->setDisplayVariables('ORDER_FORM', $orderForm, 'BODY');
       $this->setDisplayVariables('CLIENT_ID', $_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_id'], 'BODY');
     }
   }

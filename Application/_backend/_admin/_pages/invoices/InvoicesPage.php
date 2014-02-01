@@ -30,17 +30,8 @@
       parent::init();
       $this->addCSS('_common/uploadify.css');
       $this->addJS('_common/jquery.uploadify.min.js');
-      $this->addJS('_admin/invoices/scripts.min.js');
+      $this->addJS('_admin/invoices/scripts.js');
       $this->setTitle('CEM Dashboard - Invoice Management');
-    }
-
-    /**
-     * Set InvoicesPage header
-     *    
-     * @access protected
-     */
-    protected function header(){
-      parent::header();
     }
     
     /**

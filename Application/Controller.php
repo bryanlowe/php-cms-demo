@@ -20,8 +20,12 @@
                                 'clients' => array(
                                  '/' => array('dir' => 'home', 'class' => 'HomePage'),
                                  '/account' => array('dir' => 'account', 'class' => 'AccountPage'),
+                                 '/feedback' => array('dir' => 'feedback', 'class' => 'FeedbackPage'),
+                                 '/invoices' => array('dir' => 'invoices', 'class' => 'InvoicesPage'),
                                  '/login' => array('dir' => 'login', 'class' => 'LoginPage'),
-                                 '/logout' => array('dir' => 'logout', 'class' => 'LogoutPage')),
+                                 '/logout' => array('dir' => 'logout', 'class' => 'LogoutPage'),
+                                 '/orders' => array('dir' => 'orders', 'class' => 'OrdersPage'),
+                                 '/projects' => array('dir' => 'projects', 'class' => 'ProjectsPage')),
 
                                 'writers' => array(
                                  '/writers' => array('dir' => 'home', 'class' => 'HomePage'),

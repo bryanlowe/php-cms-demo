@@ -2,10 +2,26 @@
 <form_config>
   <form title="Feedback">
     <input order="1" type="hidden" label="feedback_id" id="feedback_id" class="primaryKey"/>
-    <input order="1" type="text" label="client_id" id="client_id"/>
-    <input order="1" type="text" label="description" id="description"/>
-    <input order="1" type="text" label="feedback_date" id="feedback_date"/>
-    <input order="1" type="button" id="saveBtn" value="SAVE ENTRY" onclick="saveEntry('Feedback');"/>
-    <input order="1" type="button" id="deleteBtn" value="DELETE ENTRY" onclick="deleteEntry('Feedback');"/>
+    <input order="1" type="hidden" label="client_id" id="client_id"/>
+    <input order="1" type="hidden" label="feedback_date" id="feedback_date"/>
+    <input order="1" type="hidden" label="feedback_date" id="read_status" value="0"/>
+    <input order="2" type="checkbox" id="anonymous">
+    	<options>
+            <option>
+                <name> I prefer to be anonymous</name>
+                <value>0</value>
+            </option>
+        </options>
+    </input>
+    <input order="3" type="select" label="Is this about a specific project?" id="project" class="form-control">
+    	<options>
+            <option>
+                <name>Please select a project</name>
+                <value></value>
+            </option>
+        </options>
+    </input>
+    <input order="4" type="textarea" id="description" class="form-control"/>
+    <input order="5" type="button" id="saveBtn" value="SUBMIT" onclick="saveFeedback();" class="btn btn-success"/>
   </form>
 </form_config>

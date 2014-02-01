@@ -34,15 +34,6 @@
     }
 
     /**
-     * Set SettingsPage header
-     *    
-     * @access protected
-     */
-    protected function header(){
-      parent::header();
-    }
-    
-    /**
      * Set SettingsPage body
      *    
      * @access protected

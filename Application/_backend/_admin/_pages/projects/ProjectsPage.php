@@ -31,15 +31,6 @@
       $this->addJS('_admin/projects/scripts.min.js');
       $this->setTitle('CEM Dashboard - Project Management');
     }
-
-    /**
-     * Set ProjectsPage header
-     *    
-     * @access protected
-     */
-    protected function header(){
-      parent::header();
-    }
     
     /**
      * Set ProjectsPage body

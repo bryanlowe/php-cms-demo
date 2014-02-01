@@ -35,15 +35,6 @@
     }
 
     /**
-     * Set UsersPage header
-     *    
-     * @access protected
-     */
-    protected function header(){
-      parent::header();
-    }
-    
-    /**
      * Set UsersPage body
      *    
      * @access protected

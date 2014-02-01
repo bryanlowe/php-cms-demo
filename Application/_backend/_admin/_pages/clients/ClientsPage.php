@@ -32,15 +32,6 @@
       $this->addJS('_admin/clients/scripts.min.js');
       $this->setTitle('CEM Dashboard - Client Management');
     }
-
-    /**
-     * Set ClientsPage header
-     *    
-     * @access protected
-     */
-    protected function header(){
-      parent::header();
-    }
     
     /**
      * Set ClientsPage body

@@ -11,5 +11,17 @@
     public function __construct($objectID = null){
       parent::__construct('feedback', $objectID);
     }
+
+    /**   
+     * Saves the form inputs to the table
+     *
+     * @return string
+     * @param mixed array $values
+     * @access public
+     */
+    public function save($values){
+      $values['feedback_date'] = date('Y-m-d h:i:s.u');
+      return parent::save($values);
+    }
   }
 ?>

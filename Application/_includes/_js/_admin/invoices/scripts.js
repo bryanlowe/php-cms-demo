@@ -2,10 +2,11 @@ $(document).ready(function(){
 	refreshBLLSelectOptions("#invoices_form select#invoice_id", "invoices", site_url+"invoices", "invoice_number", "invoice_id", "invoice_number ASC");
 	refreshBLLSelectOptions("#invoices_form select#client_id", "clients", site_url+"invoices", "company", "client_id", "company ASC");
 	$("#invoices_form select#invoice_id").change(function(){
-		updateBLLFormFields('invoices_form','invoices',site_url+'admin/invoices'); 
+		updateBLLFormFields('invoices_form','invoices',site_url+'invoices'); 
 		updateInvoiceStatusForm($(this).val());
 		updateInvoiceFileForm($(this).val());
 	});
+  var new_site_url = site_url.replace('/admin/','/');
 	$('#file_upload').uploadify({
 		'formData'     : {
 			'TARGET_DEST': '/Media/_documents/_invoices',
@@ -15,23 +16,25 @@ $(document).ready(function(){
 		'buttonText' : 'SELECT INVOICE FILE',
 		'buttonClass' : 'btn btn-success',
 		'fileTypeDesc' : 'Invoice Files',
-    	'fileTypeExts' : '*.doc; *.pdf;', 
-		'swf'      : site_url+'Utilities/uploadify/uploadify.swf',
-		'uploader' : site_url.replace('https','http')+'/Utilities/uploadify/uploadify.php',
+    'fileTypeExts' : '*.doc; *.pdf;', 
+		'swf'      : new_site_url+'Utilities/uploadify/uploadify.swf',
+		'uploader' : new_site_url.replace('https','http')+'/Utilities/uploadify/uploadify.php',
 		'onUploadSuccess' : function(file, data, response) {
 			$('#invoice_file_link').html(file.name);
 			$('#invoice_file_link').attr('href','/Media/_documents/_invoices/'+file.name);
 			$('#invoice_file_link').attr('target','_blank');
 			$('#invoice_files_form #invoice_filename').val(file.name);
 			saveEntry('invoice_files');
-    	}
+    },
+    'onSWFReady' : function() {
+        $('#file_upload').uploadify('disable', true);
+    } 
 	});
 	$('#file_upload-button').attr('style', '');
-	$('#file_upload-button').addClass('disabled');
-    $('.deleteFile').attr('disabled', 'disabled');
-    $('.deleteFile').addClass('disabled');
-    $('#invoice_status_form input[name="saveBtn"]').attr('disabled', 'disabled');
-    $('#invoice_status_form input[name="saveBtn"]').addClass('disabled');
+  $('.deleteFile').attr('disabled', 'disabled');
+  $('.deleteFile').addClass('disabled');
+  $('#invoice_status_form input[name="saveBtn"]').attr('disabled', 'disabled');
+  $('#invoice_status_form input[name="saveBtn"]').addClass('disabled');
 });
 
 /**
@@ -124,7 +127,7 @@ function deleteInvoice(){
     var statusResult = $.ajax({
         type: "POST",
         dataType: "json",
-        url: '/admin/invoices',
+        url: site_url+'invoices',
         async: false,
         data: {invoiceID: invoiceID, _ajaxFunc: "getInvoiceStatus"}
     });
@@ -163,7 +166,7 @@ function deleteInvoice(){
     var formResult = $.ajax({
         type: "POST",
         dataType: "json",
-        url: '/admin/invoices',
+        url: site_url+'invoices',
         async: false,
         data: {invoiceID: invoiceID, _ajaxFunc: "getInvoiceFile"}
     });
@@ -177,7 +180,7 @@ function deleteInvoice(){
       $('#invoice_file_link').html(fileFormValues['invoice_filename']);
       $('#invoice_file_link').attr('href','/Media/_documents/_invoices/'+fileFormValues['invoice_filename']);
       $('#invoice_file_link').attr('target','_blank');
-      $('#file_upload').uploadify('disable', false);
+      $('#file_upload').uploadify('disable', true);
       $('.deleteFile').removeAttr('disabled');
       $('.deleteFile').removeClass('disabled');
     } else {

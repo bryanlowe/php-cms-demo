@@ -32,15 +32,6 @@
       $this->addJS('_admin/feedback/scripts.min.js');
       $this->setTitle('CEM Dashboard - Feedback Management');
     }
-
-    /**
-     * Set FeedbackPage header
-     *    
-     * @access protected
-     */
-    protected function header(){
-      parent::header();
-    }
     
     /**
      * Set FeedbackPage body
