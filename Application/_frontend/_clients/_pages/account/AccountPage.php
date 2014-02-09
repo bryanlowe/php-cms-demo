@@ -31,7 +31,7 @@
       parent::init();
       $this->addCSS('_common/jquery-ui.css');
       $this->addJS('_common/jquery-ui.js');
-      $this->addJS('_clients/account/scripts.js');
+      $this->addJS('_clients/account/scripts.min.js');
       $this->setTitle('CEM Dashboard - Edit Account');
     }
 
