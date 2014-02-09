@@ -46,28 +46,6 @@
       $this->setDisplayVariables('USER_FORM', $userForm, 'BODY');
       $clientForm = foo(new FormGenerator(null, $this->config->dir('admin-templates').'/users/client_form.json'))->getFormHTML();
       $this->setDisplayVariables('CLIENT_FORM', $clientForm, 'BODY');
-    }
-
-    /**
-     * Gather BLL Resources from the database
-     *
-     * @param assoc array $param
-     * @param int priKey
-     * @access public
-     */
-    public function gatherBLLResource($params){
-      if($this->isAdminUser()){
-        $where = "";
-        if($params['bllAction'] == "SELECTION"){
-          $tblInfo = foo(new Selection($params['table']))->getByID($params['primaryKey'])->getValues();
-          if($params['table'] == 'users'){
-            $tblInfo['password'] = $this->pass_enc->decrypt(base64_decode($tblInfo['password']), $this->config->passwords['login']);
-          }
-          echo json_encode(array($tblInfo));  
-        } else {
-          echo json_encode(foo(new Collection($params['table']))->getAll(null, null, null, $params['order']));  
-        }
-      }    
     }   
   }
 ?>

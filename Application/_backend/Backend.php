@@ -164,13 +164,19 @@
      * Gather BLL Resources from the database
      *
      * @param assoc array $param
+     * @param int priKey
      * @access public
      */
     public function gatherBLLResource($params){
       if($this->isAdminUser()){
         $where = "";
         if($params['bllAction'] == "SELECTION"){
-          echo json_encode(array(foo(new Selection($params['table']))->getByID($params['primaryKey'])->getValues()));  
+          $tblInfo = foo(new Selection($params['table']))->getByID($params['primaryKey'])->getValues();
+          echo $tblInfo['password'];
+          if($params['table'] == 'users'){
+            $tblInfo['password'] = $this->pass_enc->decrypt(base64_decode($tblInfo['password']), $this->config->passwords['login']);
+          }
+          echo json_encode(array($tblInfo));  
         } else {
           echo json_encode(foo(new Collection($params['table']))->getAll(null, null, null, $params['order']));  
         }

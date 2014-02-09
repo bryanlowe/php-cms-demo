@@ -1,12 +1,49 @@
 <div class="container">
 	<div class="row">
-		<div class="col-lg-4 col-lg-offset-3">
+		<div class="col-lg-4 col-lg-offset-1">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<h3 class="panel-title">Edit Account Information</h3>
 				</div>
 				<div class="panel-body">
 					<!--///CLIENT_FORM///-->
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Rate Calculator</h3>
+				</div>
+				<div id="rateCalc" class="panel-body">
+					<form id="formCalc">
+						<p class="pricepara form-control-static">Current Rate: $<!--///CLIENT_RATE///--> per word</p>
+						<p class="pricepara">
+	                        Price:  
+	                        <label for="total" id="totalprice" style=""></label>
+	                        <input name="totalprice" type="text" id="total" disabled="disabled" style="" />
+	                    </p>    
+	                    <div id="quoteme">
+	                        <div id="slider"></div>
+	                        <label for="amount"></label>
+	                        <input name="one" style="width: 235px;" type="text" id="amount" value= disabled="disabled" />
+	                        <label for="price"></label>
+	                        <input name="onea" type="text" id="price" value= disabled="disabled" />
+
+	                        <div id="sliderb"></div>
+	                        <label for="amountb"></label>
+	                        <input name="two" style="width: 235px;"  type="text" id="amountb" value= disabled="disabled" />
+	                        <label for="priceb"></label>
+	                        <input name="twoa" type="text" id="priceb" value= disabled="disabled" />
+	                    </div>
+	                </form>
+	                <div class="clear"></div>
+                    <p id="project_total_container" class="pricepara">
+                        Project Total:  
+                        <input name="project_total" type="text" id="project_total" readonly style="" />
+                    </p>
+                    <div class="clear"></div>
+                    <div class="saveBtn_container"><input type="button" class="btn btn-success" id="updateQuote" value="UPDATE QUOTE"></div>
 				</div>
 			</div>
 		</div>

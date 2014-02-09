@@ -183,3 +183,61 @@ a.welcome-link:active {
     background-color: #fff;
     overflow-y: auto;
 }
+
+.clear {
+  clear: both;
+  padding: 10px;
+}
+
+#order_tips {
+    width: 950px;
+    font-size: 13px;
+}
+
+/* Quote Calculator */
+#total, #project_total {
+    font-size: 14pt;
+}
+#total, #project_total, #price, #priceb {
+    text-align: right;
+    width: 60px;
+}
+#quoteme input {
+    border: 0px solid #fff;
+    margin-bottom: 20px;
+}
+#quoteme label {
+    float: left;
+    display: block;
+    padding-top: 10px;
+    display: block;
+    color: #fff;
+    font-family: Georgia;
+    width: 340px;
+}
+.pricepara {
+    font-size: 14pt;
+}
+.pricepara #totalprice {
+    padding-top: 0px;
+    margin-top: 0px;
+    border: 0px solid #000;
+    font-size: 14pt;
+    font-weight: bold;
+}
+#total, #project_total, .priceInput {
+    width: 200px;
+    border: 0px solid #000;
+    background: transparent;
+}
+#quoteme {
+    width: 330px;
+    display: block;
+    float :left;
+    clear: both;
+    padding: 30px 10px 10px;
+}
+#slider, #sliderb {
+    width: 305px;
+}
+/* End Quote Calculator */

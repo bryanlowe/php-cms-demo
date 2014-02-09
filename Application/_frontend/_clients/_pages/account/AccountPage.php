@@ -29,7 +29,9 @@
      */
     public function init(){
       parent::init();
-      $this->addJS('_clients/account/scripts.min.js');
+      $this->addCSS('_common/jquery-ui.css');
+      $this->addJS('_common/jquery-ui.js');
+      $this->addJS('_clients/account/scripts.js');
       $this->setTitle('CEM Dashboard - Edit Account');
     }
 
@@ -44,6 +46,7 @@
       $clientForm = foo(new Form('clients'))->getFormHTML();
       $this->setDisplayVariables('CLIENT_FORM', $clientForm, 'BODY');
       $this->setDisplayVariables('CLIENT_ID', $_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_id'], 'BODY');
+      $this->setDisplayVariables('CLIENT_RATE', number_format($_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_rate'], 2, '.', ','), 'BODY');
     }
   }
 ?>

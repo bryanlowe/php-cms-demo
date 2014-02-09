@@ -17,8 +17,6 @@ $(document).ready(function(){
     $.each(optJSON, function(i, opt) {
         select[select.length] = new Option(opt['project_title'], opt['project_title']);
     });
-    $("#project_container").append('<br />');
-    $("#description_container").append('<br />');
 });
 
 /**

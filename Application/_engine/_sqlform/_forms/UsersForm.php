@@ -33,7 +33,7 @@
      */
     public function save($values){
       if(($result = $this->validateUnique($values)) == 'unique'){
-        $values['password'] = base64_encode($this->pass_enc->encrypt($values['password'], $this->config->loginKey));
+        $values['password'] = base64_encode($this->pass_enc->encrypt($values['password'], $this->config->passwords['login']));
         $values['user_id'] = $this->objectID;
         return parent::save($values);
       }
