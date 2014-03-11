@@ -1,3 +1,6 @@
+{% extends "_common/base.html" %}
+
+{% block content %}
 <div class="row">
 	<div class="col-lg-6">
 		<div class="panel panel-primary">
@@ -5,7 +8,15 @@
 				<h3 class="panel-title">Recently Added Orders</h3>
 			</div>
 			<div class="panel-body">
-				<div id="order-recent" class="list-group"><!--///RECENT_ORDERS///--></div>
+				<div id="order-recent" class="list-group">
+					{% if RECENT_ORDERS %}
+						{% for order in RECENT_ORDERS %}
+						    {% include "orders/list-group-item.html" %}
+						{% endfor %}
+					{% else %}
+					<h2 class="no-entries" align="center">No orders to show</h2>
+					{% endif %}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -15,7 +26,15 @@
 				<h3 class="panel-title">Past Orders</h3>
 			</div>
 			<div class="panel-body">
-				<div id="order-past" class="list-group"><!--///PAST_ORDERS///--></div>
+				<div id="order-past" class="list-group">
+					{% if PAST_ORDERS %}
+						{% for order in PAST_ORDERS %}
+						    {% include "orders/list-group-item.html" %}
+						{% endfor %}
+					{% else %}
+					<h2 class="no-entries" align="center">No orders to show</h2>
+					{% endif %}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -30,3 +49,4 @@
 		</div>
 	</div>
 </div>
+{% endblock %}

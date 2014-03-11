@@ -1,0 +1,7 @@
+{% for client in NONUSER_CLIENTS %}
+<span>
+	<a class="list-group-item" href="javascript:clientToUserForm('{{client._id}}');">
+	   {{client.client_name}} -- {{client.company}}
+	</a>
+</span>
+{% endfor %}

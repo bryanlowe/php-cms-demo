@@ -1,3 +1,6 @@
+{% extends "_common/base.html" %}
+
+{% block content %}
 <div id="container">
 	<div class="row">
 		<div class="col-lg-6">
@@ -16,7 +19,13 @@
 		                      	</tr>
 	                      	</thead>
 	                      	<tbody>
-              					<!--///PROJECT_ENTRIES///-->
+              					{% if PROJECT_ENTRIES %}
+	                      			{% for project in PROJECT_ENTRIES %}
+	                      				{% include 'projects/project-entry.html' %}
+	                      			{% endfor %}
+	                      		{% else %}
+	                      		<tr><td colspan="4"><p align="center">There are no active projects to show.</p></td></tr>
+	                      		{% endif %}
               				</tbody>
                  	 	</table>
 					</div>
@@ -45,3 +54,4 @@
 		</div>
 	</div>
 </div>
+{% endblock %}

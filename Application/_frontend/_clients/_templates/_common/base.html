@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{IMAGEPATH}}/_common/favicon.ico" rel="SHORTCUT ICON">
+    <title>{{TITLE}}</title>
+    {% for css_import in CSS %}
+    <link type="text/css" href="{{css_import}}" rel="stylesheet" />
+    {% endfor %}
+</head>
+<html>  
+  <body>
+    {% block header %}
+    <div id="welcome-wrapper">
+      <div id="welcome-container" class="texture stitch">
+          <span>Welcome {{USER_INFO.user_name}}!</span>
+          <div id="welcome-shadow"></div>
+      </div>
+    </div>
+    <div id="wrap">
+      <div id="header">
+        <nav role="navigation" class="navbar">
+          <div class="navbar-header">
+            <a href="{{SITE_URL}}/feedback" class="btn btn-default navbar-btn">SUBMIT FEEDBACK</a>
+            <a href="{{SITE_URL}}/orders" class="btn btn-default navbar-btn">PLACE AN ORDER</a>
+            <a href="{{SITE_URL}}/projects" class="btn btn-default navbar-btn">VIEW PROJECT DETAILS</a>
+            <a href="{{SITE_URL}}/invoices" class="btn btn-default navbar-btn">VIEW INVOICE HISTORY</a>
+            <a href="{{SITE_URL}}/account" class="btn btn-default navbar-btn">EDIT ACCOUNT</a>
+            <a href="{{SITE_URL}}/logout" class="btn btn-info navbar-btn">LOG OUT</a>
+          </div>
+        </nav>
+      </div>
+      <div id="page-content">
+    {% endblock %}
+
+    {% block content %}
+    {% endblock %}
+
+    {% block footer %}
+      </div><!-- /#page-content -->
+
+      <div id="footer-widgets" class="footer-widgets"></div>
+
+      <div class="footer" id="footer">
+        <div class="wrap">    
+            <p>&copy; Copyright {{COPY_YEAR}} <a href="http://contentequalsmoney.com/">Content Equals Money</a> · All Rights Reserved</p>
+        </div>
+      </div>
+
+    </div><!-- /#wrap -->
+     <script type="text/javascript">
+    <!--
+        /**
+         * Site URL
+         */
+        var site_url = "{{SITE_URL}}/";
+    //-->
+    </script>
+    {% endblock %}
+
+    {% for js_import in JS %}
+    <script type="text/javascript" src="{{js_import}}"></script>
+    {% endfor %}
+  </body>
+</html>

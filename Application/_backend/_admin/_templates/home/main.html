@@ -1,3 +1,6 @@
+{% extends "_common/base.html" %}
+
+{% block content %}
 <div class="container">
   <div class="alert alert-success alert-dismissable">
     Welcome to the Content Equals Money Dashboard - Admin Edition! In this portal you are able to manage various aspects of the client dashboard. Please choose a task from the buttons below in order to edit or view information on the client dashboard.
@@ -16,7 +19,7 @@
                 	</div>
             	</div>
           	</div>
-          	<a href="<!--///SITE_URL///-->/admin/feedback">
+          	<a href="{{SITE_URL}}/admin/feedback">
             	<div class="panel-footer announcement-bottom">
                 	<div class="row">
                   	<div class="col-xs-6">
@@ -45,7 +48,7 @@
             </div>
           </div>
         </div>
-        <a href="<!--///SITE_URL///-->/admin/orders">
+        <a href="{{SITE_URL}}/admin/orders">
           <div class="panel-footer announcement-bottom">
             <div class="row">
               <div class="col-xs-6">
@@ -75,7 +78,7 @@
                   </div>
               </div>
             </div>
-            <a href="<!--///SITE_URL///-->/admin/clients">
+            <a href="{{SITE_URL}}/admin/clients">
               <div class="panel-footer announcement-bottom">
                   <div class="row">
                     <div class="col-xs-6">
@@ -104,7 +107,7 @@
             </div>
           </div>
         </div>
-        <a href="<!--///SITE_URL///-->/admin/invoices">
+        <a href="{{SITE_URL}}/admin/invoices">
           <div class="panel-footer announcement-bottom">
             <div class="row">
               <div class="col-xs-6">
@@ -133,7 +136,7 @@
                   </div>
               </div>
             </div>
-            <a href="<!--///SITE_URL///-->/admin/projects">
+            <a href="{{SITE_URL}}/admin/projects">
               <div class="panel-footer announcement-bottom">
                   <div class="row">
                     <div class="col-xs-6">
@@ -162,7 +165,7 @@
             </div>
           </div>
         </div>
-        <a href="<!--///SITE_URL///-->/admin/users">
+        <a href="{{SITE_URL}}/admin/users">
           <div class="panel-footer announcement-bottom">
             <div class="row">
               <div class="col-xs-6">
@@ -179,3 +182,4 @@
     <!-- End User Block -->
 	</div>
 </div>
+{% endblock %}

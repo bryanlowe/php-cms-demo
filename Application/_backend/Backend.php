@@ -1,8 +1,8 @@
 <?php
   namespace Application\_backend;
   use Framework\_engine\_core\Page as Page;
-  use Framework\_engine\_dal\Collection as Collection;
-  use Framework\_engine\_dal\Selection as Selection;
+  use Framework\_engine\_dal\_mysql\Collection as Collection;
+  use Framework\_engine\_dal\_mysql\Selection as Selection;
   use Framework\_engine\_core\Encryption as Encryption;
   use Framework\_widgets\SQLForm\_forms as Form;
   
@@ -40,6 +40,12 @@
       || $_SESSION[$this->config->sessionID]['USER_TYPE'] != "ADMIN"){
         header('Location: /admin/login');
       }
+      $this->loader = new \Twig_Loader_Filesystem($this->config->dir($this->source));
+      $this->twig = new \Twig_Environment($this->loader, array(
+          'cache' => $this->config->dir('temp-cache').'/_twig/_backend',
+          'auto_reload' => true,
+          'autoescape' => false
+      ));
     }
     
     /**
@@ -59,86 +65,23 @@
       $this->addJS('_common/bootstrap.js');
       $this->addJS('_common/common-functions.js');
       $this->addJS('_widgets/_jsonform/form-functions.js');
-      $this->addJS('_widgets/_sqlform/form-functions.min.js');
-      $this->docHeader();
-      $this->header();
-      $this->body();
-      $this->footer();
+      $this->addJS('_common/_mongodb/form-functions.js');
+      //$this->addJS('_widgets/_sqlform/form-functions.min.js');
       $this->setTitle('CEM Dashboard - Admin');
+      $this->assemblePage();
     }
     
     /**
-     * Set Backend Page templates
-     *    
-     * @access protected
+     * Gathers all the page elements
+     *              
+     * @access protected   
      */
-    protected function setTemplate($template, $source = null){
-      $source = ($source == null) ? $this->source : $source;
-      return parent::setTemplate($template, $source);
-    }
-
-    /**
-     * Set Backend Page header
-     *    
-     * @access protected
-     */
-    protected function header(){
-      parent::header();
-      $this->setDisplayVariables('USER_EMAIL', $_SESSION[$this->config->sessionID]['USER_INFO']['email'], 'HEADER');
-      $this->setDisplayVariables('SITE_URL', $this->config->homeURL, 'HEADER');
-    }
-    
-    /**
-     * Set Backend Page footer
-     *    
-     * @access protected
-     */
-    protected function footer(){
-      parent::footer();
-      $source = ($source == null) ? $this->source : $source;
-      $scripts = file_get_contents($this->config->dir($source) . '/_common/scripts.html');
-      $this->setDisplayVariables('SITE_URL', $this->config->homeURL, 'FOOTER');
-      $this->setDisplayVariables('JS_ACTIONS', $scripts, 'FOOTER');
-    }
-    
-    /**
-     * Set Backend Page DocHeader Template
-     *    
-     * @access protected
-     */
-    protected function setDocHeader($template = null){
-      $source = ($source == null) ? $this->source : $source;
-      $this->pageElements['DOCHEADER']['SOURCE'] = ($template) ? file_get_contents($this->config->dir($source) . '/' .$template) : file_get_contents($this->config->dir($source) . '/_common/docheader.html');
-    }
-    
-    /**
-     * Set Backend Page Header Template
-     *    
-     * @access protected
-     */ 
-    protected function setHeader($template = null){
-      $source = ($source == null) ? $this->source : $source;
-      $this->pageElements['HEADER']['SOURCE'] = ($template) ? file_get_contents($this->config->dir($source) . '/' .$template) : file_get_contents($this->config->dir($source) . '/_common/header.html');
-    }
-    
-    /**
-     * Set Backend Page Footer Template
-     *    
-     * @access protected
-     */ 
-    protected function setFooter($template = null){
-      $source = ($source == null) ? $this->source : $source;
-      $this->pageElements['FOOTER']['SOURCE'] = ($template) ? file_get_contents($this->config->dir($source) . '/' .$template) : file_get_contents($this->config->dir($source) . '/_common/footer.html');
-    }
-     
-    /**
-     * Set Backend Page Body Template
-     *    
-     * @access protected
-     */ 
-    protected function setBody($template = null){
-      $source = ($source == null) ? $this->source : $source;
-      $this->pageElements['BODY']['SOURCE'] = ($template) ? file_get_contents($this->config->dir($source) . '/' .$template) : file_get_contents($this->config->dir($source) . '/_common/general.html');
+    protected function assemblePage(){   
+      parent::assemblePage();   
+      if(isset($_SESSION[$this->config->sessionID]['USER_INFO'])){
+        $this->setDisplayVariables('USER_INFO', $_SESSION[$this->config->sessionID]['USER_INFO']);  
+      }
+      $this->setDisplayVariables('SITE_URL', $this->config->homeURL);
     } 
 
     /**
@@ -194,6 +137,70 @@
         echo json_encode(foo(new Collection($params['table']))->getCount($params['where']));  
       }    
     }
+
+    /**
+     * Gets the doc by _id
+     *    
+     * @param mixed array $params    
+     * @access public
+     */
+    public function getDocByID($params){
+      if($this->isAdminUser()){
+        if(isset($params['_id'])){
+          $this->mongodb->switchCollection($params['collection']);
+          if($params['mongoid']){
+            $params['_id'] = new \MongoId($params['_id']);
+          }
+          $result = $this->mongodb->getDocument(array('_id' => $params['_id']));
+          echo json_encode($result);
+        }
+      }
+    }
+
+    /**
+     * Saves a doc to the database
+     *
+     * @param mixed array $params    
+     * @access public
+     */
+    public function saveDocEntry($params){
+      if($this->isAdminUser()){
+        if(isset($params['values']) && isset($params['collection'])){
+          $this->mongodb->switchCollection($params['collection']);
+          if($params['mongoid']){
+            $params['values']['_id'] = ($params['values']['_id'] != '') ? new \MongoId($params['values']['_id']) : new \MongoId();
+          }
+          $this->mongodb->updateDocument($params['values']);
+        }
+      }
+    }
+
+    /**
+     * Deletes a doc from the database
+     *
+     * @param mixed array $params    
+     * @access public
+     */
+    public function deleteDocEntry($params){
+      if($this->isAdminUser()){
+        if(isset($params['values']) && isset($params['collection'])){
+          $this->mongodb->switchCollection($params['collection']);
+          if($params['mongoid']){
+            $params['values']['_id'] = new \MongoId($params['values']['_id']);
+          }
+          $this->mongodb->deleteDocument(array('_id' => $params['values']['_id']));
+        }
+      }
+    }
+
+    /**
+     * This function is supposed to be overridden by the inherited class
+     *
+     * @param $params 
+     * @access public
+     * @abstract
+     */
+    public function renderPageElement($params){}
 
     /**
      * Checks whether the user is logged in and if the login type is ADMIN

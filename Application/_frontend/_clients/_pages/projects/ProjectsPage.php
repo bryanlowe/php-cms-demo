@@ -17,8 +17,8 @@
      * @access public
      */
     public function __construct(){
-      parent::__construct();
       $this->source = "client-templates";
+      parent::__construct();
     }
     
     /**
@@ -31,17 +31,17 @@
       $this->addJS('_common/jquery.tablesorter.min.js');
       $this->addJS('_clients/projects/scripts.min.js');
       $this->setTitle('CEM Dashboard - View Project Details');
+      $this->setTemplate('projects/main.html');
     }
     
     /**
-     * Set ProjectsPage body
-     *    
-     * @access protected
+     * Gathers all the page elements
+     *              
+     * @access protected   
      */
-    protected function body(){
-      $this->setBody('projects/main.html');
-      $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
-      $this->setDisplayVariables('PROJECT_ENTRIES', $this->getProjectRecords(), 'BODY');
+    protected function assemblePage(){   
+      parent::assemblePage();   
+      $this->setDisplayVariables('PROJECT_ENTRIES', $this->getProjectRecords());
     }
 
     /**
@@ -50,7 +50,7 @@
      * @access private
      */
     private function getProjectRecords(){
-      $projectEntry = file_get_contents($this->config->dir('client-templates') . '/projects/project-entry.html');
+      $projectEntries = array();
       $resultStr = "";
       $records = foo(new ProjectsCollection())->getByQuery('client_id = '.$this->db->quote($_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_id']));
       if(($maxRecords = count($records)) > 0){
@@ -65,12 +65,10 @@
             $statusState = ($status['status'] != "" && isset($status['status'])) ? $status['status'] : $statusState;
             $statusDate = date("Y-m-d H:i:s", strtotime($status['project_status_date']));
           }
-          $resultStr .= str_replace(array("<!--///PROJECT_ID///-->","<!--///PROJECT_TITLE///-->","<!--///PROJECT_UPDATE_DATE///-->","<!--///PROJECT_DESC///-->","<!--///PROJECT_STATUS///-->","<!--///PROJECT_STATUS_DESC///-->"), array($records[$i]['project_id'],$records[$i]['project_title'],$statusDate,$records[$i]['description'],$statusState,$statusDesc), $projectEntry);
+          $projectEntries[] = array('project_id' => $records[$i]['project_id'], 'project_title' => $records[$i]['project_title'], 'update_date' => $statusDate, 'description' => $records[$i]['description'], 'status' => $statusState, 'status_desc' => $statusDesc);
         } 
-      } else {
-        $resultStr .= '<tr><td colspan="4"><p align="center">There are no active projects to show.</p></td></tr>';
       }
-      return $resultStr;
+      return $projectEntries;
     }
   }
 ?>

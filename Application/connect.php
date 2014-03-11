@@ -1,12 +1,16 @@
 <?php
   use Framework\_engine\_core\Register as Register;
-  use Framework\_engine\_db\DB as DB;
+  use Framework\_engine\_db\_mysql\DB as MYSQL;
+  use Framework\_engine\_db\_mongo\DB as MONGO;
 
   set_time_limit(0);
   session_start();
   date_default_timezone_set('UTC');
 
   error_reporting(E_ALL & ~E_NOTICE);
+
+  require_once($_SERVER['DOCUMENT_ROOT'] .'/Utilities/vendor/twig/twig/lib/Twig/Autoloader.php');
+  Twig_Autoloader::register();
 
   require_once($_SERVER['DOCUMENT_ROOT'] . '/Application/_config/Config.php');
   ini_set('include_path', $config->root.'/');
@@ -51,5 +55,6 @@
    * Registers site config and database instances
    */
   Register::getInstance()->set('config', $config);
-  Register::getInstance()->set('db', new DB($config->dsn,$config->dbuser,$config->dbpass));
+  Register::getInstance()->set('db', new MYSQL($config->dsn,$config->dbuser,$config->dbpass));
+  Register::getInstance()->set('mongodb', new MONGO($config->mongohost,$config->mongouser,$config->mongopass,$config->mongodbname));
 ?>

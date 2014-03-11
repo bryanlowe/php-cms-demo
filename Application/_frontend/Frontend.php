@@ -2,11 +2,11 @@
   namespace Application\_frontend;
   use Framework\_engine\_core\Page as Page;
   use Framework\_widgets\JSONForm\_engine\_core\FormGenerator as FormGenerator;
-  use Framework\_engine\_dal\Collection as Collection;
-  use Framework\_engine\_dal\Selection as Selection;
+  use Framework\_engine\_dal\_mysql\Collection as Collection;
+  use Framework\_engine\_dal\_mysql\Selection as Selection;
   use Framework\_engine\_core\Encryption as Encryption;
-  use Framework\_engine\_db\DB as DB;
-  use Framework\_engine\_db\SQLGenerator as SQLGenerator;
+  use Framework\_engine\_db\_mysql\DB as DB;
+  use Framework\_engine\_db\_mysql\SQLGenerator as SQLGenerator;
   
   /**
    * Class: Frontend
@@ -56,6 +56,12 @@
       || $_SESSION[$this->config->sessionID]['USER_TYPE'] != $this->userType){
         header('Location: '.$this->siteDir.'login');
       }
+      $this->loader = new \Twig_Loader_Filesystem($this->config->dir($this->source));
+      $this->twig = new \Twig_Environment($this->loader, array(
+          'cache' => $this->config->dir('temp-cache').'/_twig/_frontend',
+          'auto_reload' => true,
+          'autoescape' => false
+      ));
     }
     
     /**
@@ -75,86 +81,22 @@
       $this->addJS('_common/common-functions.js');
       $this->addJS('_widgets/_jsonform/form-functions.js');
       $this->addJS('_widgets/_sqlform/form-functions.js');
-      $this->docHeader();
-      $this->header();
-      $this->body();
-      $this->footer();
       $this->setTitle('CEM Dashboard');
-    }
-    
-    /**
-     * Set Frontend Page templates
-     *    
-     * @access protected
-     */
-    protected function setTemplate($template, $source = null){
-      $source = ($source == null) ? $this->source : $source;
-      return parent::setTemplate($template, $source);
+      $this->assemblePage();
     }
 
     /**
-     * Set Frontend Page header
-     *    
-     * @access protected
+     * Gathers all the page elements
+     *              
+     * @access protected   
      */
-    protected function header(){
-      parent::header();
-      $this->setDisplayVariables('USER_NAME', $_SESSION[$this->config->sessionID]['USER_INFO']['user_name'], 'HEADER');
-      $this->setDisplayVariables('SITE_URL', $this->config->homeURL, 'HEADER');
-    }
-    
-   /**
-     * Set Frontend Page footer
-     *    
-     * @access protected
-     */
-    protected function footer(){
-      parent::footer();
-      $source = ($source == null) ? $this->source : $source;
-      $scripts = file_get_contents($this->config->dir($source) . '/_common/scripts.html');
-      $this->setDisplayVariables('SITE_URL', $this->config->homeURL, 'FOOTER');
-      $this->setDisplayVariables('COPY_YEAR', date('Y'), 'FOOTER');
-      $this->setDisplayVariables('JS_ACTIONS', $scripts, 'FOOTER');
-    }
-    
-    /**
-     * Set Frontend Page DocHeader Template
-     *    
-     * @access protected
-     */
-    protected function setDocHeader($template = null){
-      $source = ($source == null) ? $this->source : $source;
-      $this->pageElements['DOCHEADER']['SOURCE'] = ($template) ? file_get_contents($this->config->dir($source) . '/' .$template) : file_get_contents($this->config->dir($source) . '/_common/docheader.html');
-    }
-    
-    /**
-     * Set Frontend Page Header Template
-     *    
-     * @access protected
-     */ 
-    protected function setHeader($template = null){
-      $source = ($source == null) ? $this->source : $source;
-      $this->pageElements['HEADER']['SOURCE'] = ($template) ? file_get_contents($this->config->dir($source) . '/' .$template) : file_get_contents($this->config->dir($source) . '/_common/header.html');
-    }
-    
-    /**
-     * Set Frontend Page Footer Template
-     *    
-     * @access protected
-     */ 
-    protected function setFooter($template = null){
-      $source = ($source == null) ? $this->source : $source;
-      $this->pageElements['FOOTER']['SOURCE'] = ($template) ? file_get_contents($this->config->dir($source) . '/' .$template) : file_get_contents($this->config->dir($source) . '/_common/footer.html');
-    }
-     
-    /**
-     * Set Frontend Page Body Template
-     *    
-     * @access protected
-     */ 
-    protected function setBody($template = null){
-      $source = ($source == null) ? $this->source : $source;
-      $this->pageElements['BODY']['SOURCE'] = ($template) ? file_get_contents($this->config->dir($source) . '/' .$template) : file_get_contents($this->config->dir($source) . '/_common/general.html');
+    protected function assemblePage(){   
+      parent::assemblePage();   
+      if(isset($_SESSION[$this->config->sessionID]['USER_INFO'])){
+        $this->setDisplayVariables('USER_INFO', $_SESSION[$this->config->sessionID]['USER_INFO']);  
+      }
+      $this->setDisplayVariables('SITE_URL', $this->config->homeURL);
+      $this->setDisplayVariables('COPY_YEAR', date('Y'));
     } 
 
     /**

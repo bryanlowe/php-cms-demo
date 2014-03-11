@@ -17,8 +17,8 @@
      * @access public
      */
     public function __construct(){
-      parent::__construct();
       $this->source = "admin-templates";
+      parent::__construct();
     }
     
     /**
@@ -30,20 +30,20 @@
       parent::init();
       $this->addJS('_admin/projects/scripts.min.js');
       $this->setTitle('CEM Dashboard - Project Management');
+      $this->setTemplate('projects/main.html');
     }
-    
+
     /**
-     * Set ProjectsPage body
-     *    
-     * @access protected
+     * Gathers all the page elements
+     *              
+     * @access protected   
      */
-    protected function body(){
-      $this->setBody('projects/main.html');
-      $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
+    protected function assemblePage(){   
+      parent::assemblePage();   
       $projectForm = foo(new Form('projects'))->getFormHTML();
-      $this->setDisplayVariables('PROJECT_FORM', $projectForm, 'BODY');
+      $this->setDisplayVariables('PROJECT_FORM', $projectForm);
       $projectStatusForm = foo(new Form('project_status'))->getFormHTML();
-      $this->setDisplayVariables('PROJECT_STATUS_FORM', $projectStatusForm, 'BODY');
+      $this->setDisplayVariables('PROJECT_STATUS_FORM', $projectStatusForm);
     }
 
     /**

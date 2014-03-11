@@ -1,0 +1,89 @@
+{
+	"id": "users",
+	"form": [
+		{ 
+			"order": 1, 
+			"required": 0, 
+			"type": "hidden", 
+			"id": "_id",
+			"value": ""
+		},
+		{ 
+			"order": 1, 
+			"required": 1, 
+			"type": "text", 
+			"label": "Full Name",
+			"id": "fullname",
+			"value": "", 
+			"class": "form-control"
+		},
+		{ 
+			"order": 2, 
+			"required": 1, 
+			"type": "password", 
+			"label": "Password",
+			"id": "password",
+			"value": "", 
+			"class": "form-control"
+		},
+		{ 
+			"order": 3, 
+			"required": 1, 
+			"type": "text", 
+			"label": "Email",
+			"id": "email",
+			"value": "", 
+			"class": "form-control"
+		},
+		{ 
+			"order": 4, 
+			"required": 1, 
+			"type": "select", 
+			"label": "Select User Type",
+			"id": "type",
+			"value": "",
+			"options": [
+				{
+					"name": "Select User Type",
+					"value": ""
+				},
+				{
+					"name": "Admin",
+					"value": "ADMIN"
+				},
+				{
+					"name": "Client",
+					"value": "CLIENT"
+				},
+				{
+					"name": "Writer",
+					"value": "WRITER"
+				}		
+			], 
+			"class": "form-control"
+		},
+		{ 
+			"order": 5, 
+			"required": 1, 
+			"type": "select", 
+			"label": "Active Status",
+			"id": "status",
+			"value": "",
+			"options": [
+				{
+					"name": "Select Status",
+					"value": ""
+				},
+				{
+					"name": "Active",
+					"value": 1
+				},
+				{
+					"name": "In Active",
+					"value": 0
+				}		
+			], 
+			"class": "form-control"
+		}
+	]
+}

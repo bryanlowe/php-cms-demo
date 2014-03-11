@@ -1,7 +1,7 @@
 <?php 
   namespace Framework\_widgets\SQLForm\_engine\_core;
   use Framework\_engine\_core\Register as Register;
-  use Framework\_engine\_dal\Selection as Selection;
+  use Framework\_engine\_dal\_mysql\Selection as Selection;
   
   /**
    * Class: Form

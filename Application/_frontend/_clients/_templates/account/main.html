@@ -1,3 +1,6 @@
+{% extends "_common/base.html" %}
+
+{% block content %}
 <div class="container">
 	<div class="row">
 		<div class="col-lg-4 col-lg-offset-1">
@@ -6,7 +9,7 @@
 					<h3 class="panel-title">Edit Account Information</h3>
 				</div>
 				<div class="panel-body">
-					<!--///CLIENT_FORM///-->
+					{{CLIENT_FORM|raw}}
 				</div>
 			</div>
 		</div>
@@ -17,7 +20,7 @@
 				</div>
 				<div id="rateCalc" class="panel-body">
 					<form id="formCalc">
-						<p class="pricepara form-control-static">Current Rate: $<!--///CLIENT_RATE///--> per word</p>
+						<p class="pricepara form-control-static">Current Rate: ${{CLIENT_RATE}} per word</p>
 						<p class="pricepara">
 	                        Price:  
 	                        <label for="total" id="totalprice" style=""></label>
@@ -49,4 +52,5 @@
 		</div>
 	</div>
 </div>
-<input type="hidden" id="client_id_holder" value="<!--///CLIENT_ID///-->" />
+<input type="hidden" id="client_id_holder" value="{{CLIENT_ID}}" />
+{% endblock %}

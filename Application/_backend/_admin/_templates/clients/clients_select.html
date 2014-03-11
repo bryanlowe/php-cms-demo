@@ -1,0 +1,7 @@
+<label for="clients_select">Select a client to edit</label><br>
+<select class="form-control" name="clients_select" id="clients_select">
+	<option value="">Please select a client</option>
+	{% for client in SELECT_CLIENTS %}
+	    <option value="{{ client._id }}">{{ client.client_name }} -- {{ client.company }}</option>
+	{% endfor %}
+</select>

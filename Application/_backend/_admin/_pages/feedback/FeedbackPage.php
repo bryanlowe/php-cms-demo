@@ -1,7 +1,7 @@
 <?php
   namespace Application\_backend\_admin\_pages\feedback;
   use Application\_backend\Backend as Backend;
-  use Framework\_engine\_dal\Selection as Selection;
+  use Framework\_engine\_dal\_mysql\Selection as Selection;
   use Application\_engine\_bll\_collection\ClientsCollection as ClientsCollection;
   use Application\_engine\_bll\_collection\FeedbackCollection as FeedbackCollection;
   
@@ -11,6 +11,12 @@
    * Handles the Feedback Page
    */
   class FeedbackPage extends Backend{
+    /**
+     * Feedback entry array
+     *
+     *@access private
+     */
+    private $feedbackEntries = array();
 
     /**
      * Construct a new FeedbackPage object
@@ -18,8 +24,8 @@
      * @access public
      */
     public function __construct(){
-      parent::__construct();
       $this->source = "admin-templates";
+      parent::__construct();
     }
     
     /**
@@ -31,22 +37,22 @@
       parent::init();
       $this->addJS('_admin/feedback/scripts.min.js');
       $this->setTitle('CEM Dashboard - Feedback Management');
-    }
-    
-    /**
-     * Set FeedbackPage body
-     *    
-     * @access protected
-     */
-    protected function body(){
-      $this->setBody('feedback/main.html');
-      $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
-      $recentPosts = $this->getFeedbackRecords(0);
-      $this->setDisplayVariables('RECENT_POSTS', $recentPosts, 'BODY');
-      $pastPosts = $this->getFeedbackRecords(1);
-      $this->setDisplayVariables('PAST_POSTS', $pastPosts, 'BODY');
+      $this->setTemplate('feedback/main.html');
     }
 
+    /**
+     * Gathers all the page elements
+     *              
+     * @access protected   
+     */
+    protected function assemblePage(){   
+      parent::assemblePage();   
+      $this->getFeedbackRecords(0);
+      $this->setDisplayVariables('RECENT_POSTS', $this->feedbackEntries);
+      $this->getFeedbackRecords(1);
+      $this->setDisplayVariables('PAST_POSTS', $this->feedbackEntries);
+    }
+    
     /**
      * Get recent posts
      *    
@@ -54,8 +60,7 @@
      * @access private
      */
     private function getFeedbackRecords($read){
-      $listGroupItem = file_get_contents($this->config->dir('admin-templates') . '/feedback/list-group-item.html');
-      $resultStr = "";
+      $this->feedbackEntries = array();
       $records = foo(new FeedbackCollection())->getByQuery('read_status = '.$this->db->quote($read), "feedback_date DESC");
       if(($maxRecords = count($records)) > 0){
         for($i = 0; $i < $maxRecords; $i++){
@@ -67,12 +72,9 @@
             $clientName = $client['client_name'];
             $company = '-- '.$client['company'];
           }
-          $resultStr .= str_replace(array("<!--///FEEDBACK_ID///-->","<!--///READ_STATUS///-->","<!--///POST_DATE///-->","<!--///FEEDBACK_DETAILS///-->","<!--///CUSTOMER_NAME///-->","<!--///COMPANY///-->"), array($records[$i]['feedback_id'],$records[$i]['read_status'],$records[$i]['feedback_date'],$records[$i]['description'],$clientName,$company), $listGroupItem);
+          $this->feedbackEntries[] = array('feedback_id' => $records[$i]['feedback_id'], 'read_status' => $records[$i]['read_status'], 'feedback_date' => $records[$i]['feedback_date'], 'feedback_details' => $records[$i]['description'], 'customer_name' => $clientName, 'company' => $company);
         } 
-      } else {
-        $resultStr .= '<h2 class="no-entries" align="center">No feedback to show</h2>';
       }
-      return $resultStr;
     }
 
     /**

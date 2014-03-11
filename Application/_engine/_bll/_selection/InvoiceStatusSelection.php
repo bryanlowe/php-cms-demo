@@ -1,6 +1,6 @@
 <?php
   namespace Application\_engine\_bll\_selection;
-  use Framework\_engine\_dal\Selection as Selection;
+  use Framework\_engine\_dal\_mysql\Selection as Selection;
 
   /**
    * Class: InvoiceStatusSelection

@@ -1,3 +1,6 @@
+{% extends "_common/base.html" %}
+
+{% block content %}
 <div class="row">
 	<div class="col-lg-6">
 		<div class="panel panel-primary">
@@ -5,7 +8,15 @@
 				<h3 class="panel-title">Recently Added Feedback</h3>
 			</div>
 			<div class="panel-body">
-				<div id="feedback-recent" class="list-group"><!--///RECENT_POSTS///--></div>
+				<div id="feedback-recent" class="list-group">
+					{% if RECENT_POSTS %}
+						{% for post in RECENT_POSTS %}
+						    {% include "feedback/list-group-item.html" %}
+						{% endfor %}
+					{% else %}
+					<h2 class="no-entries" align="center">No feedback to show</h2>
+					{% endif %}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -15,7 +26,15 @@
 				<h3 class="panel-title">Past Feedback</h3>
 			</div>
 			<div class="panel-body">
-				<div id="feedback-past" class="list-group"><!--///PAST_POSTS///--></div>
+				<div id="feedback-past" class="list-group">
+					{% if PAST_POSTS %}
+						{% for post in PAST_POSTS %}
+						    {% include "feedback/list-group-item.html" %}
+						{% endfor %}
+					{% else %}
+					<h2 class="no-entries" align="center">No feedback to show</h2>
+					{% endif %}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -30,3 +49,4 @@
 		</div>
 	</div>
 </div>
+{% endblock %}

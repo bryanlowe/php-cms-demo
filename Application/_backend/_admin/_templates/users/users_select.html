@@ -1,0 +1,7 @@
+<label for="users_select">Select a user to edit</label><br>
+<select class="form-control" name="users_select" id="users_select">
+	<option value="">Please select a user</option>
+	{% for user in SELECT_USERS %}
+	    <option value="{{ user._id }}">{{ user.fullname }}</option>
+	{% endfor %}
+</select>

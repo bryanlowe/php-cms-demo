@@ -11,15 +11,14 @@
    * Handles the Invoices Page
    */
   class InvoicesPage extends Frontend{
-
     /**
      * Construct a new InvoicesPage object
      *    
      * @access public
      */
     public function __construct(){
-      parent::__construct();
       $this->source = "client-templates";
+      parent::__construct();
     }
     
     /**
@@ -32,17 +31,17 @@
       $this->addJS('_common/jquery.tablesorter.min.js');
       $this->addJS('_clients/invoices/scripts.min.js');
       $this->setTitle('CEM Dashboard - View Invoice History');
+      $this->setTemplate('invoices/main.html');
     }
-    
+
     /**
-     * Set InvoicesPage body
-     *    
-     * @access protected
+     * Gathers all the page elements
+     *              
+     * @access protected   
      */
-    protected function body(){
-      $this->setBody('invoices/main.html');
-      $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
-      $this->setDisplayVariables('INVOICE_ENTRIES', $this->getInvoiceRecords(), 'BODY');
+    protected function assemblePage(){   
+      parent::assemblePage();   
+      $this->setDisplayVariables('INVOICE_ENTRIES', $this->getInvoiceRecords());
     }
 
     /**
@@ -51,8 +50,7 @@
      * @access private
      */
     private function getInvoiceRecords(){
-      $invoiceEntry = file_get_contents($this->config->dir('client-templates') . '/invoices/invoice-entry.html');
-      $resultStr = "";
+      $invoiceEntries = array();
       $records = foo(new InvoicesCollection())->getByQuery('client_id = '.$this->db->quote($_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_id']));
       if(($maxRecords = count($records)) > 0){
         for($i = 0; $i < $maxRecords; $i++){
@@ -75,12 +73,10 @@
             $target = "_blank";
             $fileLink = "/Media/_documents/_invoices/".$filename;
           }
-          $resultStr .= str_replace(array("<!--///INVOICE_ID///-->","<!--///INVOICE_NUMBER///-->","<!--///INVOICE_UPDATE_DATE///-->","<!--///INVOICE_DESC///-->","<!--///INVOICE_STATUS///-->","<!--///LINK_HREF///-->","<!--///LINK_TARGET///-->","<!--///INVOICE_FILE///-->","<!--///INVOICE_COST///-->"), array($records[$i]['invoice_id'],$records[$i]['invoice_number'],$statusDate,$records[$i]['description'],$statusDesc,$fileLink,$target,$filename,$total_cost), $invoiceEntry);
+          $invoiceEntries[] = array('invoice_id' => $records[$i]['invoice_id'], 'invoice_number' => $records[$i]['invoice_number'], 'update_date' => $statusDate, 'description' => $records[$i]['description'], 'status' => $statusDesc, 'link_href' => $fileLink, 'link_target' => $target, 'invoice_file' => $filename, 'cost' => $total_cost);
         } 
-      } else {
-        $resultStr .= '<tr><td colspan="4"><p align="center">There are no active invoices to show.</p></td></tr>';
       }
-      return $resultStr;
+      return $invoiceEntries;
     }
   }
 ?>

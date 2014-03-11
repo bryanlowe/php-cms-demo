@@ -30,8 +30,13 @@
   display: none;
 }
 
-.clear {
+.clear, .button_panel {
   clear: both;
+  padding: 10px;
+}
+
+.btn_container{
+  float: left;
   padding: 10px;
 }
 

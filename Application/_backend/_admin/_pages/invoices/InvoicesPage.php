@@ -1,7 +1,7 @@
 <?php
   namespace Application\_backend\_admin\_pages\invoices;
   use Application\_backend\Backend as Backend;
-  use Framework\_engine\_dal\Collection as Collection;
+  use Framework\_engine\_dal\_mysql\Collection as Collection;
   use Framework\_widgets\SQLForm\_engine\_core\Form as Form;
   
   /**
@@ -17,8 +17,8 @@
      * @access public
      */
     public function __construct(){
-      parent::__construct();
       $this->source = "admin-templates";
+      parent::__construct();
     }
     
     /**
@@ -32,26 +32,26 @@
       $this->addJS('_common/jquery.uploadify.min.js');
       $this->addJS('_admin/invoices/scripts.js');
       $this->setTitle('CEM Dashboard - Invoice Management');
+      $this->setTemplate('invoices/main.html');
     }
-    
+
     /**
-     * Set InvoicesPage body
-     *    
-     * @access protected
+     * Gathers all the page elements
+     *              
+     * @access protected   
      */
-    protected function body(){
-      $this->setBody('invoices/main.html');
-      $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
+    protected function assemblePage(){   
+      parent::assemblePage();   
       $invoiceForm = foo(new Form('invoices'))->getFormHTML();
-      $this->setDisplayVariables('INVOICE_FORM', $invoiceForm, 'BODY');
+      $this->setDisplayVariables('INVOICE_FORM', $invoiceForm);
       $invoiceStatusForm = foo(new Form('invoice_status'))->getFormHTML();
-      $this->setDisplayVariables('INVOICE_STATUS_FORM', $invoiceStatusForm, 'BODY');
+      $this->setDisplayVariables('INVOICE_STATUS_FORM', $invoiceStatusForm);
       $invoiceFileForm = foo(new Form('invoice_files'))->getFormHTML();
-      $this->setDisplayVariables('INVOICE_FILE_FORM', $invoiceFileForm, 'BODY');
+      $this->setDisplayVariables('INVOICE_FILE_FORM', $invoiceFileForm);
       $timestamp = time();
-      $this->setDisplayVariables('TIMESTAMP', $timestamp, 'BODY');
-      $this->setDisplayVariables('UPLOAD_TOKEN', md5($this->config->passwords['uploads'] . $timestamp), 'BODY');
-    } 
+      $this->setDisplayVariables('TIMESTAMP', $timestamp);
+      $this->setDisplayVariables('UPLOAD_TOKEN', md5($this->config->passwords['uploads'] . $timestamp));
+    }
 
     /**
      * Gets entries from the invoice status table by the invoice id

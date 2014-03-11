@@ -1,0 +1,57 @@
+{
+	"id": "clients",
+	"form": [
+		{ 
+			"order": 1, 
+			"required": 0, 
+			"type": "hidden", 
+			"id": "_id",
+			"value": ""
+		},
+		{ 
+			"order": 1, 
+			"required": 1, 
+			"type": "text", 
+			"label": "Company",
+			"id": "company",
+			"value": "", 
+			"class": "form-control"
+		},
+		{ 
+			"order": 2, 
+			"required": 1, 
+			"type": "text", 
+			"label": "Full Name",
+			"id": "client_name",
+			"value": "", 
+			"class": "form-control"
+		},
+		{ 
+			"order": 3, 
+			"required": 1, 
+			"type": "text", 
+			"label": "Email",
+			"id": "email",
+			"value": "", 
+			"class": "form-control"
+		},
+		{ 
+			"order": 4, 
+			"required": 1, 
+			"type": "text", 
+			"label": "Phone Number",
+			"id": "phone_number",
+			"value": "", 
+			"class": "form-control"
+		},
+		{ 
+			"order": 5, 
+			"required": 1, 
+			"type": "text", 
+			"label": "Client Rate",
+			"id": "client_rate",
+			"value": "", 
+			"class": "form-control"
+		}
+	]
+}

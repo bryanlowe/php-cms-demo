@@ -1,3 +1,6 @@
+{% extends "_common/base.html" %}
+
+{% block content %}
 <div class="container">
 	<div class="row">
 		<div class="col-lg-4 col-lg-offset-2">
@@ -6,19 +9,41 @@
 					<h3 class="panel-title">Update or Add User</h3>
 				</div>
 				<div class="panel-body">
-					<!--///USER_FORM///-->
+					<div id="users_select_container">
+						{% include "users/users_select.html" %}
+					</div>
+					<div class="clear"></div>
+					{{USER_FORM|raw}}
+					<div class="button_panel">
+						<div class="btn_container">
+							<input type="button" class="btn btn-success" value="SAVE" name="submitBtn" id="submitBtn">
+						</div>
+						<div class="btn_container">
+							<input type="button" class="btn btn-danger" value="DELETE" name="deleteBtn" id="deleteBtn">
+						</div>
+						<div class="btn_container">
+							<input type="button" class="btn btn-info" value="RESET" name="resetBtn" id="resetBtn">
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 		<div class="col-lg-4">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<h3 class="panel-title">Select a Client to create a User</h3>
+					<h3 class="panel-title">Click on a client you want to create as a user</h3>
 				</div>
 				<div class="panel-body">
-					<!--///CLIENT_FORM///-->
+					<div id="client-list" class="list-group">
+						{% if NONUSER_CLIENTS %}
+							{% include "users/list-group-item.html" %}
+						{% else %}
+						<h2 class="no-entries" align="center">No new clients</h2>
+						{% endif %}
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+{% endblock %}

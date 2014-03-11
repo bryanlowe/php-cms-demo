@@ -12,6 +12,9 @@
       <xsl:when test="$field_label != ''">
   			<label for="{$field_name}"><xsl:value-of select="$field_label"/></label><br />
   		</xsl:when>
+  		<xsl:otherwise>
+  			<br />
+  		</xsl:otherwise>
     </xsl:choose>
   </xsl:template>
   
@@ -261,7 +264,7 @@
   	<xsl:param name="field_id" />
   	<xsl:param name="options" />
   	<xsl:param name="field_value" />
-  	<div id="{$field_id}_container">
+  	<div id="{$field_id}_container" class="checkbox">
   	    <xsl:call-template name="input_label">
   				<xsl:with-param name="field_label" select="$field_label" />
   			</xsl:call-template>
@@ -403,7 +406,7 @@
           <xsl:with-param name="field_label" select="$field_label" />
           <xsl:with-param name="field_name" select="$field_name" />
         </xsl:call-template>
-        <input name="{$field_name}" type="button" value="{$field_value}">
+        <input name="{$field_name}" id="{$field_name}" type="button" value="{$field_value}">
           <xsl:if test="$class != ''">
             <xsl:attribute name="class"><xsl:value-of select="$class" /></xsl:attribute> 
           </xsl:if>

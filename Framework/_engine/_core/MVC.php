@@ -67,6 +67,9 @@ abstract class MVC {
         $page->show();
       } else {
         $page->{$this->pageRequests['_ajaxFunc']}($this->pageRequests);
+      }
+      if(Register::getInstance()->mongodb !== null){
+        Register::getInstance()->mongodb->closeDB();
       }     
    }
 }

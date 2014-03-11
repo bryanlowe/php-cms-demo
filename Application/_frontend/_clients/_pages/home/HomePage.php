@@ -8,15 +8,14 @@
    * Handles the Login Page
    */
   class HomePage extends Frontend{
-
     /**
      * Construct a new HomePage object
      *    
      * @access public
      */
     public function __construct(){
-      parent::__construct();
       $this->source = "client-templates";
+      parent::__construct();
     }
     
     /**
@@ -27,16 +26,7 @@
     public function init(){
       parent::init();
       $this->setTitle('CEM Dashboard - Home');
-    }
-    
-    /**
-     * Set HomePage body
-     *    
-     * @access protected
-     */
-    public function body(){
-      $this->setBody('home/main.html');
-      $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
+      $this->setTemplate('home/main.html');
     }
   }
 ?>

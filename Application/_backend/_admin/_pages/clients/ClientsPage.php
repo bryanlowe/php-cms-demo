@@ -1,9 +1,7 @@
 <?php
   namespace Application\_backend\_admin\_pages\clients;
   use Application\_backend\Backend as Backend;
-  use Framework\_engine\_dal\Collection as Collection;
-  use Framework\_engine\_dal\Selection as Selection;
-  use Framework\_widgets\SQLForm\_engine\_core\Form as Form;
+  use Framework\_widgets\JSONForm\_engine\_core\FormGenerator as FormGenerator;
   
   /**
    * Class: ClientsPage
@@ -18,8 +16,8 @@
      * @access public
      */
     public function __construct(){
-      parent::__construct();
       $this->source = "admin-templates";
+      parent::__construct();
     }
     
     /**
@@ -29,20 +27,49 @@
      */
     public function init(){
       parent::init();
-      $this->addJS('_admin/clients/scripts.min.js');
+      $this->addJS('_admin/clients/scripts.js');
       $this->setTitle('CEM Dashboard - Client Management');
+      $this->setTemplate('clients/main.html');
     }
-    
+
     /**
-     * Set ClientsPage body
-     *    
-     * @access protected
+     * Gathers all the page elements
+     *              
+     * @access protected   
      */
-    protected function body(){
-      $this->setBody('clients/main.html');
-      $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
-      $clientForm = foo(new Form('clients'))->getFormHTML();
-      $this->setDisplayVariables('CLIENT_FORM', $clientForm, 'BODY');
+    protected function assemblePage(){   
+      parent::assemblePage();   
+      $this->mongodb->switchCollection('clients');
+      $select_clients = $this->mongodb->getDocuments(array(),array("company" => 1, "client_name" => 1));
+      $this->setDisplayVariables('SELECT_CLIENTS', $select_clients);
+      $clientForm = foo(new FormGenerator(null, $this->config->dir($this->source).'/clients/clients_form.json'))->getFormHTML();
+      $this->setDisplayVariables('CLIENT_FORM', $clientForm);
+    }
+
+    /**
+     * Reloads the client select element
+     *
+     * @param string array $params    
+     * @access public
+     */
+    public function renderPageElement($params){
+      if($params['dom_id'] == 'clients_select_container'){
+        $this->mongodb->switchCollection('clients');
+        $select_clients = $this->mongodb->getDocuments(array(),array("company" => 1, "client_name" => 1));
+        echo $this->twig->render('clients/clients_select.html', array('SELECT_CLIENTS' => $select_clients));
+      } 
+    }
+
+    /**
+     * Saves a doc to the database
+     *
+     * @access public
+     */
+    public function saveDocEntry($params){
+      if($params['values']['_id'] == ''){
+        $params['values']['is_user'] = 0;
+      }
+      parent::saveDocEntry($params);  
     }
   }
 ?>

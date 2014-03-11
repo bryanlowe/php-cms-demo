@@ -16,8 +16,8 @@
      * @access public
      */
     public function __construct(){
-      parent::__construct();
       $this->source = "client-templates";
+      parent::__construct();
     }
     
     /**
@@ -29,19 +29,19 @@
       parent::init();
       $this->addJS('_clients/orders/scripts.min.js');
       $this->setTitle('CEM Dashboard - Place An Order');
+      $this->setTemplate('orders/main.html');
     }
-    
+
     /**
-     * Set OrdersPage body
-     *    
-     * @access protected
+     * Gathers all the page elements
+     *              
+     * @access protected   
      */
-    protected function body(){
-      $this->setBody('orders/main.html');
-      $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
+    protected function assemblePage(){   
+      parent::assemblePage();   
       $orderForm = foo(new Form('orders'))->getFormHTML();
-      $this->setDisplayVariables('ORDER_FORM', $orderForm, 'BODY');
-      $this->setDisplayVariables('CLIENT_ID', $_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_id'], 'BODY');
+      $this->setDisplayVariables('ORDER_FORM', $orderForm);
+      $this->setDisplayVariables('CLIENT_ID', $_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_id']);
     }
   }
 ?>

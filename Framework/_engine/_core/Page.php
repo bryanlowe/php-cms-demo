@@ -8,20 +8,28 @@
    */ 
   abstract class Page{
      /**
-      * The array of the current pages javascript imports
+      * Twig Loader Object
       * 
-      * @var    jsList
+      * @var    templateLoader
       * @access protected            
       */
-     protected $jsList = array();
+     protected $loader = null;
 
      /**
-      * The array of the current pages css stylesheet imports
+      * Twig Environment Object
       * 
-      * @var    cssList
+      * @var    twig
       * @access protected            
       */
-     protected $cssList = array();
+     protected $twig = null;
+
+     /**
+      * The name of the template file
+      * 
+      * @var    template
+      * @access protected            
+      */
+     protected $template = '_common/base.html';
 
      /**
       * The array of the current pages modulized elements (HEADER, FOOTER, BODY, ... etc)
@@ -40,6 +48,7 @@
         $this->config = Register::getInstance()->get('config');
         $this->pageRequests = Register::getInstance()->get('pageRequests');
         $this->db = Register::getInstance()->get('db');
+        $this->mongodb = Register::getInstance()->get('mongodb');
         $this->uri = Register::getInstance()->get('uri');
      }
      
@@ -52,103 +61,14 @@
      abstract public function init();
 
      /**
-      * Sets up the document header module
+      * Gathers all the page elements
       *              
       * @access protected   
       */
-     protected function docHeader(){
-        $this->setDocHeader();
-        $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'DOCHEADER');
-     }
-
-     /**
-      * Sets up the site header module
-      *              
-      * @access protected   
-      */
-     protected function header(){
-        $this->setHeader();
-        $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'HEADER');
-     }
-
-     /**
-      * Sets up the site body module
-      *              
-      * @access protected   
-      */
-     protected function body(){
-        $this->setBody();
-        $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
-     }
-
-     /**
-      * Sets up the site footer module
-      *              
-      * @access protected   
-      */
-     protected function footer(){
-        $this->setFooter();
-        $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'FOOTER');
-        $this->setDisplayVariables('YEAR', date('Y'), 'FOOTER');
+     protected function assemblePage(){       
+        $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'));
      }
      
-     /**
-      * Gathers all the javascript and css imports and places them in the document header, 
-      * Outputs the document header and the body. Outputs the site header and footer if they exist.
-      *              
-      * @access protected   
-      */
-     protected function assemblePage(){
-        $jsString = null;
-        $cssString = null;
-        
-        foreach($this->jsList as $js){
-          $jsString .= '<script type="text/javascript" src="'.$js.'"></script>';
-        }
-        
-        foreach($this->cssList as $css){
-          $cssString .= '<link type="text/css" href="'.$css.'" rel="stylesheet" />';
-        }
-        
-        $this->setDisplayVariables('JS', $jsString, 'FOOTER');
-        $this->setDisplayVariables('CSS', $cssString, 'DOCHEADER');
-        $this->outputVariablesToDisplay($this->pageElements, 'DOCHEADER');
-        $this->outputVariablesToDisplay($this->pageElements, 'BODY');
-        if(count($this->pageElements['HEADER'])){$this->outputVariablesToDisplay($this->pageElements, 'HEADER');}
-        if(count($this->pageElements['FOOTER'])){$this->outputVariablesToDisplay($this->pageElements, 'FOOTER');}
-     }
-     
-     /**
-      * Retrieves the document header module template
-      *              
-      * @param $template
-      * @access protected   
-      */
-     protected function setDocHeader($template = null){}
-     
-     /**
-      * Retrieves the site header module template
-      *              
-      * @param string $template
-      * @access protected   
-      */
-     protected function setHeader($template = null){}
-     
-     /**
-      * Retrieves the site footer module template
-      *              
-      * @param string $template
-      * @access protected   
-      */
-     protected function setFooter($template = null){}
-     
-     /**
-      * Retrieves the site body module template
-      *              
-      * @param string $template
-      * @access protected   
-      */
-     protected function setBody($template = null){}
      
      /**
       * Retrieves any generic site template other than docheader, header, footer and body
@@ -157,9 +77,8 @@
       * @param string $source            
       * @access protected   
       */
-     protected function setTemplate($template, $source){
-       $template = file_get_contents($this->config->dir($source) . '/' . $template);
-       return str_replace('<!--///IMAGEPATH///-->', $this->config->dir('images'), $template);
+     protected function setTemplate($template){
+       $this->template = $template;
      }
      
      /**
@@ -169,51 +88,18 @@
       * @access protected   
       */
      protected function setTitle($title){
-        $this->setDisplayVariables('TITLE', $title, 'DOCHEADER');
+        $this->setDisplayVariables('TITLE', $title);
      }
      
      /**
       * Places definitions for a placeholder within an existing page element for later retrievel
       *  
       * @param string $field
-      * @param string $value
-      * @param string $source            
+      * @param string $value           
       * @access protected   
       */
-     protected function setDisplayVariables($field, $value, $source){
-        if(array_key_exists($source, $this->pageElements)){
-          $this->pageElements[$source][$field] = $value;
-        }
-     }
-     
-     /**
-      * Creates an array library of display placeholders and their definitions
-      * 
-      * @return array $displayVars
-      * @param array $variables
-      * @access protected   
-      */
-     protected function createDisplayVariables($variables){
-        $displayVars = array();
-        foreach((array)$variables as $key => $value){
-          $displayVars['<!--///'.$key.'///-->'] = $value;
-        }
-        return $displayVars;
-     }
-     
-     /**
-      * Looks up placeholder definitions and places them in the page element source string
-      * 
-      * @param array $fields
-      * @param string $section
-      * @access protected   
-      */
-     protected function outputVariablesToDisplay($fields, $section){
-        foreach($fields[$section] as $key => $value){
-          if($value != 'SOURCE'){
-            $this->pageElements[$section]['SOURCE'] = str_replace('<!--///'.$key.'///-->', $value, $this->pageElements[$section]['SOURCE']);
-          }
-        }
+     protected function setDisplayVariables($field, $value){
+        $this->pageElements[$field] = $value;
      }
      
      /**
@@ -223,7 +109,7 @@
       * @access protected   
       */
      protected function addJS($jsSource){
-       $this->jsList[] = (substr_count($jsSource, 'http://') > 0) ? $jsSource : $this->config->dir('js') . '/' . $jsSource;
+       $this->pageElements['JS'][] = (substr_count($jsSource, 'http://') > 0) ? $jsSource : $this->config->dir('js') . '/' . $jsSource;
      }
 
      /**
@@ -233,7 +119,7 @@
       * @access protected   
       */
      protected function addCSS($cssSource){
-       $this->cssList[] = (substr_count($cssSource, 'http://') > 0) ? $cssSource : $this->config->dir('css') . '/' . $cssSource;
+       $this->pageElements['CSS'][] = (substr_count($cssSource, 'http://') > 0) ? $cssSource : $this->config->dir('css') . '/' . $cssSource;
      }
      
      /**
@@ -242,8 +128,9 @@
       * @access public   
       */
      public function show(){
-        $this->assemblePage();
-        echo $this->pageElements['DOCHEADER']['SOURCE'].$this->pageElements['HEADER']['SOURCE'].$this->pageElements['BODY']['SOURCE'].$this->pageElements['FOOTER']['SOURCE'];
+        // parse the template
+        $page = $this->twig->loadTemplate($this->template);
+        $page->display($this->pageElements);
      } 
   }
 ?>

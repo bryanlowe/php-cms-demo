@@ -1,7 +1,7 @@
 <?php
   namespace Application\_backend\_admin\_pages\orders;
   use Application\_backend\Backend as Backend;
-  use Framework\_engine\_dal\Selection as Selection;
+  use Framework\_engine\_dal\_mysql\Selection as Selection;
   use Application\_engine\_bll\_collection\ClientsCollection as ClientsCollection;
   use Application\_engine\_bll\_collection\OrdersCollection as OrdersCollection;
 
@@ -11,6 +11,12 @@
    * Handles the Orders Page
    */
   class OrdersPage extends Backend{
+    /**
+     * Order entry array
+     *
+     *@access private
+     */
+    private $orderEntries = array();
 
     /**
      * Construct a new OrdersPage object
@@ -18,8 +24,8 @@
      * @access public
      */
     public function __construct(){
-      parent::__construct();
       $this->source = "admin-templates";
+      parent::__construct();
     }
     
     /**
@@ -31,20 +37,20 @@
       parent::init();
       $this->addJS('_admin/orders/scripts.min.js');
       $this->setTitle('CEM Dashboard - Order Management');
+      $this->setTemplate('orders/main.html');
     }
-    
+
     /**
-     * Set OrdersPage body
-     *    
-     * @access protected
+     * Gathers all the page elements
+     *              
+     * @access protected   
      */
-    protected function body(){
-      $this->setBody('orders/main.html');
-      $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
-      $recentOrders = $this->getOrderRecords(0);
-      $this->setDisplayVariables('RECENT_ORDERS', $recentOrders, 'BODY');
-      $pastOrders = $this->getOrderRecords(1);
-      $this->setDisplayVariables('PAST_ORDERS', $pastOrders, 'BODY');
+    protected function assemblePage(){   
+      parent::assemblePage();   
+      $this->getOrderRecords(0);
+      $this->setDisplayVariables('RECENT_ORDERS', $this->orderEntries);
+      $this->getOrderRecords(1);
+      $this->setDisplayVariables('PAST_ORDERS', $this->orderEntries);
     }
 
     /**
@@ -54,8 +60,7 @@
      * @access private
      */
     private function getOrderRecords($read){
-      $listGroupItem = file_get_contents($this->config->dir('admin-templates') . '/orders/list-group-item.html');
-      $resultStr = "";
+      $this->orderEntries = array();
       $records = foo(new OrdersCollection())->getByQuery('read_status = '.$this->db->quote($read), "order_date DESC");
       if(($maxRecords = count($records)) > 0){
         for($i = 0; $i < $maxRecords; $i++){
@@ -67,12 +72,9 @@
             $clientName = $client['client_name'];
             $company = '-- '.$client['company'];
           }
-          $resultStr .= str_replace(array("<!--///ORDER_ID///-->","<!--///READ_STATUS///-->","<!--///POST_DATE///-->","<!--///ORDER_DETAILS///-->","<!--///CUSTOMER_NAME///-->","<!--///COMPANY///-->"), array($records[$i]['order_id'],$records[$i]['read_status'],$records[$i]['order_date'],$records[$i]['description'],$clientName,$company), $listGroupItem);
+          $this->orderEntries[] = array('order_id' => $records[$i]['order_id'], 'read_status' => $records[$i]['read_status'], 'order_date' => $records[$i]['order_date'], 'order_details' => $records[$i]['description'], 'customer_name' => $clientName, 'company' => $company);
         } 
-      } else {
-        $resultStr .= '<h2 class="no-entries" align="center">No orders to show</h2>';
-      }
-      return $resultStr;
+      } 
     }
 
     /**

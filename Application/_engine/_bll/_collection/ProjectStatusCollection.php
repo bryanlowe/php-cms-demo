@@ -1,6 +1,6 @@
 <?php
   namespace Application\_engine\_bll\_collection;
-  use Framework\_engine\_dal\Collection as Collection;
+  use Framework\_engine\_dal\_mysql\Collection as Collection;
   
   /**
    * Class: ProjectStatusCollection

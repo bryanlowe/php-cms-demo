@@ -1,10 +1,10 @@
-<span id="fb-entry-<!--///FEEDBACK_ID///-->">
-	<a id="fb-link-<!--///FEEDBACK_ID///-->" class="list-group-item" href="javascript:showFeedbackDetails(<!--///FEEDBACK_ID///-->, <!--///READ_STATUS///-->);">
-	   <span class="badge"><!--///POST_DATE///--></span>
-	   Feedback: <!--///CUSTOMER_NAME///--> <!--///COMPANY///-->
+<span id="fb-entry-{{post.feedback_id}}">
+	<a id="fb-link-{{post.feedback_id}}" class="list-group-item" href="javascript:showFeedbackDetails({{post.feedback_id}}, {{post.read_status}});">
+	   <span class="badge">{{post.feedback_date}}</span>
+	   Feedback: {{post.customer_name}} {{post.company}}
 	</a>
-	<div id="fb-details-<!--///FEEDBACK_ID///-->" style="display: none;">
-		<!--///FEEDBACK_DETAILS///-->
-		<p align="right"><i>-- <!--///CUSTOMER_NAME///--> <!--///COMPANY///--></i></p>
+	<div id="fb-details-{{post.feedback_id}}" style="display: none;">
+		{{post.feedback_details}}
+		<p align="right"><i>-- {{post.customer_name}} {{post.company}}</i></p>
 	</div>
 </span>

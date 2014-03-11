@@ -39,7 +39,7 @@ function saveFeedback(){
 			$("#description").val(description);
 		}
 	}
-	var results = saveEntry('feedback');
+	var results = saveEntry('Feedback');
 	if(results.length > 0){
 		if(results[0] == 'error'){
 			popUpMsg("Form is not complete!");

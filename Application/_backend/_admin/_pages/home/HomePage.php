@@ -15,8 +15,8 @@
      * @access public
      */
     public function __construct(){
-      parent::__construct();
       $this->source = "admin-templates";
+      parent::__construct();
     }
     
     /**
@@ -28,18 +28,7 @@
       parent::init();
       $this->addJS('_admin/home/scripts.min.js');
       $this->setTitle('CEM Dashboard - Admin');
+      $this->setTemplate('home/main.html');
     }
-
-    
-    /**
-     * Set HomePage body
-     *    
-     * @access protected
-     */
-    protected function body(){
-      $this->setBody('home/main.html');
-      $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
-      $this->setDisplayVariables('SITE_URL', $this->config->homeURL, 'BODY');
-    }    
   }
 ?>

@@ -1,55 +1,27 @@
 $(document).ready(function(){
-	refreshBLLSelectOptions("#clients_form select#client_id", "clients", site_url+"clients", "company", "client_id", "company ASC");
-	$("#clients_form select#client_id").change(function(){
-		updateBLLFormFields('clients_form','clients',site_url+'clients');
+	$('#clients_select').change(function(){
+		updateForm($(this).val(),'clients',['mongoid','company','client_name','email','phone_number','client_rate']);
 	});
-});
-
-/**
- * Reloads page elements to reflect changes in the database
- */
-function reloadPageElements(){
-	refreshBLLSelectOptions("#clients_form select#client_id", "clients", site_url+"clients", "company", "client_id", "company ASC");
-	$("#clients_form")[0].reset();
-}
-
-/**
- * Saves the client form
- */
-function saveClient(){
-	var results = saveEntry('Clients');
-	if(results.length > 0){
-		if(results[0] == 'error'){
-			popUpMsg("Form is not complete!");
-   			displayErrors(results[1], 'clients');
-    		return false;
-	  	} else if(results[0] == 'duplicate'){
-	    	popUpMsg("This client already exists!");
-	    	return false;
-	  	} else if(results[0] == 'pass') {
-	    	popUpMsg("Client was saved successfully!");
-	    	reloadPageElements();
-	    	return true;
-	  	}
-	}
-}
-
-/**
- * Delete the client form
- */
-function deleteClient(){
-	var result = "";
-	$.prompt("<p>Are you sure you want to delete this client?</p><p>If you delete this client all invoices and projects associated with the project will be deleted as well.</p>", {
-		title: "Are you sure?",
-		buttons: { "Yes": true, "No": false },
-		submit: function(e,v,m,f){ 
-			if(v){
-				result = deleteEntry('Clients');
-				if(result == "Deletion Success"){
-					reloadPageElements();	
-				}
-			}
-			$.prompt.close();
+	$('#submitBtn').click(function(){
+		if(saveDoc('clients',true)){
+			reloadFormElement('clients_select_container','clients');
+			$('#clients_select').change(function(){
+				updateForm($(this).val(),'clients',['mongoid','company','client_name','email','phone_number','client_rate']);
+			});
 		}
 	});
-}
+	$('#deleteBtn').click(function(){
+		deleteDoc('clients',true);
+		reloadFormElement('clients_select_container','clients');
+		$('#clients_select').change(function(){
+			updateForm($(this).val(),'clients',['mongoid','company','client_name','email','phone_number','client_rate']);
+		});
+	});
+	$('#resetBtn').click(function(){
+		reloadPageElements('clients');
+		reloadFormElement('clients_select_container','clients');
+		$('#clients_select').change(function(){
+			updateForm($(this).val(),'clients',['mongoid','company','client_name','email','phone_number','client_rate']);
+		});
+	});
+});

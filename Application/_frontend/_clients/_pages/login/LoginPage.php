@@ -33,6 +33,12 @@
       $this->uri = Register::getInstance()->get('uri');
       $this->source = "client-templates";
       $this->pass_enc = new Encryption(MCRYPT_BlOWFISH, MCRYPT_MODE_CBC);
+      $this->loader = new \Twig_Loader_Filesystem($this->config->dir($this->source));
+      $this->twig = new \Twig_Environment($this->loader, array(
+          'cache' => $this->config->dir('temp-cache').'/_twig/_frontend',
+          'auto_reload' => true,
+          'autoescape' => false
+      ));
     }
     
     /**
@@ -44,29 +50,18 @@
       parent::init();
       $this->addJS('_clients/login/scripts.min.js');
       $this->setTitle('CEM Dashboard - Log In');
+      $this->setTemplate('login/main.html');
     }
 
     /**
-     * Set LoginPage header
-     *    
-     * @access protected
+     * Gathers all the page elements
+     *              
+     * @access protected   
      */
-    protected function header(){
-      $this->setHeader("login/header.html");
-      $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'HEADER');
-      $this->setDisplayVariables('SITE_URL', $this->config->homeURL, 'HEADER');
-    }
-
-    /**
-     * Set LoginPage body
-     *    
-     * @access protected
-     */
-    public function body(){
-      $this->setBody('login/main.html');
-      $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
-      $form = foo(new FormGenerator(null, $this->config->dir('client-templates').'/login/login_form.json'))->getFormHTML();
-      $this->setDisplayVariables('LOGIN_FORM', $form, 'BODY');
+    protected function assemblePage(){   
+      parent::assemblePage();   
+      $form = foo(new FormGenerator(null, $this->config->dir($this->source).'/login/login_form.json'))->getFormHTML();
+      $this->setDisplayVariables('LOGIN_FORM', $form);
     }
 
     /**

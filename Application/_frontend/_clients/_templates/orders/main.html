@@ -1,3 +1,6 @@
+{% extends "_common/base.html" %}
+
+{% block content %}
 <div class="container">
 	<div id="order_tips" class="alert alert-success alert-dismissable">
 	    <p><strong>Tip #1:</strong> Since we charge per word, you will want to specify a word count range or let us know that you don't care. Many clients say, "long enough to be comprehensive but short enough to avoid fluff".</p>
@@ -15,10 +18,11 @@
 					<h3 class="panel-title">Enter a description of what you need. Be as descriptive as possible.</h3>
 				</div>
 				<div class="panel-body">
-					<!--///ORDER_FORM///-->
+					{{ORDER_FORM|raw}}
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-<input type="hidden" id="client_id_holder" value="<!--///CLIENT_ID///-->" />
+<input type="hidden" id="client_id_holder" value="{{CLIENT_ID}}" />
+{% endblock %}

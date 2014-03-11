@@ -3,7 +3,6 @@
   use Application\_backend\Backend as Backend;
   use Framework\_widgets\JSONForm\_engine\_core\FormGenerator as FormGenerator;
   use Framework\_widgets\SQLForm\_engine\_core as Form;
-  use Framework\_engine\_dal\BLLGenerator as BLLGenerator;
   
   /**
    * Class: SettingsPage
@@ -18,8 +17,8 @@
      * @access public
      */
     public function __construct(){
-      parent::__construct();
       $this->source = "admin-templates";
+      parent::__construct();
     }
     
     /**
@@ -31,19 +30,19 @@
       parent::init();
       $this->addJS('_admin/settings/scripts.min.js');
       $this->setTitle('CEM Dashboard - Settings');
+      $this->setTemplate('settings/main.html');
     }
 
     /**
-     * Set SettingsPage body
-     *    
-     * @access protected
+     * Gathers all the page elements
+     *              
+     * @access protected   
      */
-    protected function body(){
-      $this->setBody('settings/main.html');
-      $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
-      $form = foo(new FormGenerator(null, $this->config->dir('admin-templates').'/settings/settings_form.json'))->getFormHTML();
-      $this->setDisplayVariables('SETTINGS_FORM', $form, 'BODY');
-    }   
+    protected function assemblePage(){   
+      parent::assemblePage();   
+      $form = foo(new FormGenerator(null, $this->config->dir($this->source).'/settings/settings_form.json'))->getFormHTML();
+      $this->setDisplayVariables('SETTINGS_FORM', $form);
+    }
 
     /**
      * Creates and deletes BLL Settings files
@@ -78,7 +77,7 @@
     public function updateBLLSettings($params){
       if($this->isAdminUser()){
         if($params['action'] == "CREATE"){
-          foo(new BLLGenerator())->generate();
+          foo(new Form\BLLGenerator())->generate();
         } else if($params['action'] == "DELETE"){
           $selectionFiles = glob($_SERVER['DOCUMENT_ROOT']."/Application/_engine/_bll/_selection/*Selection.php");
           foreach($selectionFiles as $file){
