@@ -27,7 +27,7 @@
      */
     public function init(){
       parent::init();
-      $this->addJS('_admin/clients/scripts.js');
+      $this->addJS('_admin/clients/scripts.min.js');
       $this->setTitle('CEM Dashboard - Client Management');
       $this->setTemplate('clients/main.html');
     }

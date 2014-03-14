@@ -29,7 +29,7 @@
      */
     public function init(){
       parent::init();
-      $this->addJS('_admin/users/scripts.js');
+      $this->addJS('_admin/users/scripts.min.js');
       $this->setTitle('CEM Dashboard - User Management');
       $this->setTemplate('users/main.html');
     }

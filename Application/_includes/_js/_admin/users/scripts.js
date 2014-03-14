@@ -3,31 +3,29 @@ $(document).ready(function(){
 		updateForm($(this).val(),'users',['mongoid','fullname','password','email','type','status']);
 	});
 	$('#submitBtn').click(function(){
-		if(saveDoc('users',true)){
-			reloadFormElement('users_select_container','users');
-			reloadFormElement('client-list','users');
-			$('#users_select').change(function(){
-				updateForm($(this).val(),'users',['mongoid','fullname','password','email','type','status']);
-			});
-		}
+		saveDoc('users',true);
 	});
 	$('#deleteBtn').click(function(){
 		deleteDoc('users',true);
-		reloadFormElement('users_select_container','users');
-		reloadFormElement('client-list','users');
-		$('#users_select').change(function(){
-			updateForm($(this).val(),'users',['mongoid','fullname','password','email','type','status']);
-		});
 	});
 	$('#resetBtn').click(function(){
 		reloadPageElements('users');
-		reloadFormElement('users_select_container','users');
-		reloadFormElement('client-list','users');
-		$('#users_select').change(function(){
-			updateForm($(this).val(),'users',['mongoid','fullname','password','email','type','status']);
-		});
 	});
 });
+
+/**
+ * Reloads page elements to reflect changes in the database
+ */
+function reloadPageElements(collection){
+  	$('#'+collection+'_form')[0].reset();
+  	$('#'+collection+'_form #_id').val('');
+  	$('#'+collection+'_select').prop('selectedIndex',0);
+  	reloadFormElement('users_select_container','users');
+  	reloadFormElement('client-list','users');
+ 	$('#users_select').change(function(){
+		updateForm($(this).val(),'users',['mongoid','fullname','password','email','type','status']);
+	});
+}
 
 /**
  * Function updates the user form with client information
