@@ -103,6 +103,17 @@ function launchResourceForm(type){
 	$.prompt(formProperties);
 }
 
+/**
+ * Disables a dom element by dom id
+ *
+ * @param id - dom id
+ * @param enable - toggle flag
+ */
+function disableElement(id, enable){
+  $('#'+id).prop('readonly',enable);
+  $('#'+id).prop('disabled',enable);
+}
+
 function numberFormat(x) {
     var parts = x.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");

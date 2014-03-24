@@ -20,10 +20,11 @@ use MongoClient;
     const DB_DELETE_INDEX = 5;
     const DB_DELETE_ALL_INDEXES = 6;
     const DB_FIND_AND_MODIFY = 7;
-    const DB_SAVE = 8;
+    const DB_INSERT = 8;
     const DB_IMPORT = 9;
     const DB_DELETE = 10;
     const DB_COUNT = 11;
+    const DB_UPDATE = 12;
 
     /**
      * MongoClient Obj
@@ -201,15 +202,27 @@ use MongoClient;
     }
 
     /**
-     * Saves a document. If the document doesn't exist in the database, it is inserted
+     * Saves a document. If the document doesn't exist in the database, it is inserted, otherwise the document is replaced.
      * 
      * @return mixed array
      * @param mixed array $query
      * @param mixed array $options
      * @access public
      */
-    public function updateDocument($query, $options = array()){
-      return $this->execute($query, array(), array(), $options, self::DB_SAVE);
+    public function insertDocument($query, $options = array()){
+      return $this->execute($query, array(), array(), $options, self::DB_INSERT);   
+    }
+
+    /**
+     * Saves a document by updating existing values.
+     * 
+     * @return mixed array
+     * @param mixed array $query
+     * @param mixed array $options
+     * @access public
+     */
+    public function updateDocument($query, $update, $options = array()){
+      return $this->execute($query, $update, array(), $options, self::DB_UPDATE);   
     }
 
     /**
@@ -284,8 +297,11 @@ use MongoClient;
         case self::DB_FIND_AND_MODIFY:
           $data = $this->mongoCollection->findAndModify($query, $update, $projection, $options);
           break;
-        case self::DB_SAVE:
+        case self::DB_INSERT:
           $data = $this->mongoCollection->save($query, $options);
+          break;
+        case self::DB_UPDATE:
+          $data = $this->mongoCollection->update($query, $update, $options);
           break;
         case self::DB_IMPORT:
           $data = $this->mongoCollection->batchInsert($query, $options);

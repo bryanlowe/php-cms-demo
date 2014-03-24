@@ -1,0 +1,7 @@
+<label for="tag_select">Select a project tag</label><br>
+<select class="form-control" name="tag_select" id="tag_select">
+	<option value="">Please select a tag</option>
+	{% for tag in SELECT_TAGS %}
+	    <option value="{{ tag }}">{{ tag }}</option>
+	{% endfor %}
+</select>

@@ -2,6 +2,7 @@
   namespace Application\_backend\_admin\_pages\users;
   use Application\_backend\Backend as Backend;
   use Framework\_engine\_core\Encryption as Encryption;
+  use Framework\_engine\_dal\_mongo\MongoAccessLayer as MongoAccessLayer;
   use Framework\_widgets\JSONForm\_engine\_core\FormGenerator as FormGenerator;
   
   /**
@@ -75,17 +76,11 @@
      * @param mixed array $params       
      * @access public
      */
-    public function getDocByID($params){
+    public function getEntry($params){
       if($this->isAdminUser()){
-        if(isset($params['_id'])){
-          $this->mongodb->switchCollection($params['collection']);
-          if($params['mongoid']){
-            $params['_id'] = new \MongoId($params['_id']);
-          }
-          $result = $this->mongodb->getDocument(array('_id' => $params['_id']));
-          $result['password'] = $this->pass_enc->decrypt(base64_decode($result['password']), $this->config->passwords['login']);
-          echo json_encode($result);
-        }
+        $results = foo(new MongoAccessLayer($params['collection']))->getDocByID($params['_id'], $params['mongoid']);
+        $results['password'] = $this->pass_enc->decrypt(base64_decode($results['password']), $this->config->passwords['login']);
+        echo json_encode($results);
       }
     }
 
@@ -95,22 +90,16 @@
      * @param mixed array $params    
      * @access public
      */
-    public function saveDocEntry($params){
+    public function saveEntry($params){
       if($this->isAdminUser()){
-        if(isset($params['values']) && isset($params['collection'])){
-          $this->mongodb->switchCollection($params['collection']);
-          if($params['mongoid']){
-            $params['values']['_id'] = new \MongoId($params['values']['_id']);
-          }
-          $params['values']['password'] = base64_encode($this->pass_enc->encrypt($params['values']['password'], $this->config->passwords['login']));
-          $this->mongodb->updateDocument($params['values']);
-          $this->mongodb->switchCollection('clients');
-          if(($clientCount = $this->mongodb->getCount(array('_id' => $params['values']['_id']))) == 1){
-            $client = $this->mongodb->getDocument(array('_id' => $params['values']['_id']));
-            $client['is_user'] = 1;
-            $this->mongodb->updateDocument($client);
-          }
+        $params['doc']['values']['password'] = base64_encode($this->pass_enc->encrypt($params['doc']['values']['password'], $this->config->passwords['login']));
+        $results = foo(new MongoAccessLayer($params['doc']['collection']))->saveDocEntry($params['doc']['values'], $params['doc']['_id']);
+        if(($clientCount = $this->mongodb->getCount(array('_id' => $params['doc']['_id']))) == 1){
+          $client = $this->mongodb->getDocument(array('_id' => $params['doc']['_id']));
+          $client['is_user'] = 1;
+          foo(new MongoAccessLayer('clients'))->saveDocEntry($client, $params['doc']['_id']);
         }
+        echo json_encode($results);
       }
     }
 
@@ -120,21 +109,15 @@
      * @param mixed array $params    
      * @access public
      */
-    public function deleteDocEntry($params){
+    public function deleteEntry($params){
       if($this->isAdminUser()){
-        if(isset($params['values']) && isset($params['collection'])){
-          $this->mongodb->switchCollection($params['collection']);
-          if($params['mongoid']){
-            $params['values']['_id'] = new \MongoId($params['values']['_id']);
-          }
-          $this->mongodb->deleteDocument(array('_id' => $params['values']['_id']));
-          $this->mongodb->switchCollection('clients');
-          if(($clientCount = $this->mongodb->getCount(array('_id' => $params['values']['_id']))) == 1){
-            $client = $this->mongodb->getDocument(array('_id' => $params['values']['_id']));
-            $client['is_user'] = 0;
-            $this->mongodb->updateDocument($client);
-          }
+        $results = foo(new MongoAccessLayer($params['doc']['collection']))->deleteDocEntry($params['doc']['_id'], $params['doc']['mongoid']);
+        if(($clientCount = $this->mongodb->getCount(array('_id' => $params['doc']['_id']))) == 1){
+          $client = $this->mongodb->getDocument(array('_id' => $params['doc']['_id']));
+          $client['is_user'] = 0;
+          foo(new MongoAccessLayer('clients'))->saveDocEntry($client, $params['doc']['_id']);
         }
+        echo json_encode($results);
       }
     }
   }

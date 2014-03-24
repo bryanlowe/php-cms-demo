@@ -1,0 +1,8 @@
+{% if PROJECT_TIMELINE|length > 0 %}
+	{% for event in PROJECT_TIMELINE %}
+	    <span><a href="javascript:;" class="list-group-item" onclick="$('#timeline-desc').html($('#event_{{ loop.index }}').html());">Timeline Event: {{ event.date }}</a></span>
+	    <div id="event_{{ loop.index }}" style="display:none;">{{ event.description }}</div>
+	{% endfor %}
+{% else %}
+	<p align="center">No current timeline events</p>
+{% endif %}

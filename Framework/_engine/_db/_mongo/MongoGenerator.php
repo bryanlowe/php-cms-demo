@@ -59,7 +59,7 @@ namespace Framework\_engine\_db\_mongo;
      * @access public            
      */
     public function projectStage($params){
-      return array('"$project"' => $params);
+      return array('$project' => $params);
     }
 
     /**
@@ -71,7 +71,7 @@ namespace Framework\_engine\_db\_mongo;
      * @access public            
      */
     public function matchStage($params){
-      return array('"$match"' => $params);
+      return array('$match' => $params);
     }
 
     /**
@@ -83,7 +83,7 @@ namespace Framework\_engine\_db\_mongo;
      * @access public            
      */
     public function groupStage($params){
-      return array('"$group"' => $params);
+      return array('$group' => $params);
     }
 
     /**
@@ -95,7 +95,7 @@ namespace Framework\_engine\_db\_mongo;
      * @access public            
      */
     public function sortStage($params){
-      return array('"$sort"' => $params);
+      return array('$sort' => $params);
     }
 
     /**
@@ -107,7 +107,7 @@ namespace Framework\_engine\_db\_mongo;
      * @access public            
      */
     public function skipStage($skipNum){
-      return array('"$skip"' => $skipNum);
+      return array('$skip' => $skipNum);
     }
 
     /**
@@ -119,7 +119,7 @@ namespace Framework\_engine\_db\_mongo;
      * @access public            
      */
     public function limitStage($limitNum){
-      return array('"$limit"' => $limitNum);
+      return array('$limit' => $limitNum);
     }
 
     /**
@@ -132,7 +132,7 @@ namespace Framework\_engine\_db\_mongo;
      * @access public            
      */
     public function unwindStage($param){
-      return array('"$unwind"' => $param);
+      return array('$unwind' => $param);
     }
 
     /**
@@ -146,7 +146,7 @@ namespace Framework\_engine\_db\_mongo;
      */
     public function sumAggOp($key = "", $inc = 1){
       $sumVar = ($key != "") ? '$'.$key : $inc;
-      return array("$sum" => $sumVar);    
+      return array('$sum' => $sumVar);    
     }
 
     /**
@@ -158,7 +158,7 @@ namespace Framework\_engine\_db\_mongo;
      * @access public
      */
     public function avgAggOp($key){
-      return array("$avg" => "$".$key);    
+      return array('$avg' => "$".$key);    
     }
 
     /**
@@ -170,7 +170,7 @@ namespace Framework\_engine\_db\_mongo;
      * @access public
      */
     public function minAggOp($key){
-      return array("$min" => "$".$key);    
+      return array('$min' => "$".$key);    
     }
 
     /**
@@ -182,7 +182,7 @@ namespace Framework\_engine\_db\_mongo;
      * @access public
      */
     public function maxAggOp($key){
-      return array("$max" => "$".$key);    
+      return array('$max' => "$".$key);    
     }
 
     /**
@@ -194,7 +194,7 @@ namespace Framework\_engine\_db\_mongo;
      * @access public
      */
     public function firstAggOp($key){
-      return array("$first" => "$".$key);    
+      return array('$first' => "$".$key);    
     }
 
     /**
@@ -206,7 +206,7 @@ namespace Framework\_engine\_db\_mongo;
      * @access public
      */
     public function lastAggOp($key){
-      return array("$last" => "$".$key);    
+      return array('$last' => "$".$key);    
     }
 
     /**
@@ -218,7 +218,7 @@ namespace Framework\_engine\_db\_mongo;
      * @access public
      */
     public function pushAggOp($key){
-      return array("$push" => "$".$key);    
+      return array('$push' => "$".$key);    
     }
 
     /**
@@ -230,7 +230,52 @@ namespace Framework\_engine\_db\_mongo;
      * @access public
      */
     public function addToSetAggOp($key){
-      return array("$addToSet" => "$".$key);    
+      return array('$addToSet' => "$".$key);    
+    }
+
+    /**
+     * Creates the syntax for addToSet normal operations. The $key is passed in as the addToSet parameter, $values is set to the $key parameter
+     * This adds a unique value to a set. If the set already has that particular value in the set, the operation does nothing.
+     * 
+     * @return string array
+     * @param string $key
+     * @access public
+     */
+    public function addToSetOp($key, $values){
+      return array('$addToSet' => array($key => $values));    
+    }
+
+    /**
+     * Creates the syntax for set operations. The $values is passed in as the set parameter
+     * 
+     * @return mixed array
+     * @param mixed array $values
+     * @access public
+     */
+    public function setOp($values){
+      return array('$set' => $values);    
+    }
+
+    /**
+     * Creates the syntax for inc operations. The $values is passed in as the inc parameter
+     * 
+     * @return mixed array
+     * @param mixed array $values
+     * @access public
+     */
+    public function incOp($values){
+      return array('$inc' => $values);    
+    }
+
+    /**
+     * Creates the syntax for unset operations. The $values is passed in as the unset parameter
+     * 
+     * @return mixed array
+     * @param mixed array $values
+     * @access public
+     */
+    public function unsetOp($values){
+      return array('$unset' => $values);    
     }
 
     /**
@@ -243,7 +288,7 @@ namespace Framework\_engine\_db\_mongo;
      * @access public
      */
     public function typeOp($key, $type){
-      return array($key => array("$type" => $type));    
+      return array($key => array('$type' => $type));    
     }
 
     /**
@@ -256,7 +301,7 @@ namespace Framework\_engine\_db\_mongo;
      * @access public
      */
     public function existOp($key, $existType){
-      return array($key => array("$exists" => $existType));    
+      return array($key => array('$exists' => $existType));    
     }
 
     /**

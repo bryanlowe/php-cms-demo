@@ -10,9 +10,27 @@ function saveEntry(docObj){
     type: "POST",
     url: docObj.url,
     async: false,
-    data: {collection: docObj.collection, values: docObj.values, mongoid: docObj.mongoid, _ajaxFunc: "saveDocEntry"}
+    data: {doc: docObj, _ajaxFunc: "saveEntry"}
   });
     
+  statusApp.hidePleaseWait();
+  return result.responseText; 
+}
+
+/**
+ * Adds a unique value to an existing set of values in a document
+ *
+ * @param url
+ * @param set
+ */
+function addSetToDoc(docObj){
+  statusApp.showPleaseWait();
+  var result = $.ajax({
+    type: "POST",
+    url: docObj.url,
+    async: false,
+    data: {doc: docObj, _ajaxFunc: "addSetToEntry"}
+  });
   statusApp.hidePleaseWait();
   return result.responseText; 
 }
@@ -64,7 +82,7 @@ function createDocFromForm(formID){
       if(field.checked){
         values[field.name] = field.value;
       }
-    } else {
+    } else if(field.name != '_id') {
       values[field.name] = field.value;
     }      
     $('form#'+formID+' #'+field.name+'_container').removeClass('has-error');
@@ -85,7 +103,7 @@ function deleteEntry(docObj){
     type: "POST",
     url: docObj.url,
     async: false,
-    data: {collection: docObj.collection, values: docObj.values, mongoid: docObj.mongoid, _ajaxFunc: "deleteDocEntry"}
+    data: {doc: docObj, _ajaxFunc: "deleteEntry"}
   });
     
   statusApp.hidePleaseWait();
@@ -110,14 +128,18 @@ function reloadPageElements(collection){
 function saveDoc(collection, mongoid){
   if(validateForm(collection+'_form') != false){
     var docObj = createDocFromForm(collection+'_form');
+    docObj._id = $('#'+collection+'_form #_id').val();
     docObj.url = site_url+collection;
     docObj.collection = collection;
     docObj.mongoid = mongoid;
     var results = saveEntry(docObj);
-    if(results.length == 0){
+    if(results.err == null){
       popUpMsg("Save was successful!");
-      reloadPageElements(collection); 
+      reloadPageElements(collection, true); 
       return true;
+    } else {
+      popUpMsg(results.msg);
+      return false;
     }
   }
   return false;
@@ -140,12 +162,13 @@ function deleteDoc(collection, mongoid){
       submit: function(e,v,m,f){ 
         if(v){
           var docObj = createDocFromForm(collection+'_form');
+          docObj._id = $('#'+collection+'_form #_id').val();
           docObj.url = site_url+collection;
           docObj.collection = collection;
           docObj.mongoid = mongoid;
           var results = deleteEntry(docObj);
-          if(results.length == 0){
-            reloadPageElements(collection); 
+          if(results.err == null){
+            reloadPageElements(collection, true); 
             deleteResult = true;
           }
         }
@@ -168,13 +191,13 @@ function deleteDoc(collection, mongoid){
 function updateForm(_id, collection, fields){
   if(_id != ''){
     var mongoid = false;
-    if($.inArray('mongoid',fields)){mongoid = true;}
+    if($.inArray('mongoid',fields) > -1){mongoid = true;}
     var result = $.ajax({
         type: "POST",
         dataType: "json",
         url: site_url+collection,
         async: false,
-        data: {_id: _id, collection: collection, mongoid: mongoid, _ajaxFunc: "getDocByID"}
+        data: {_id: _id, collection: collection, mongoid: mongoid, _ajaxFunc: "getEntry"}
     });
     var formValues = $.parseJSON(result.responseText);
     $('#'+collection+'_form')[0].reset();
@@ -197,15 +220,16 @@ function updateForm(_id, collection, fields){
  * @param id - dom id
  * @param url - site url for ajax
  */
-function reloadFormElement(id, url){
-  if(id != ''){
+function reloadFormElement(dom_id, url, _id){
+  if(dom_id != ''){
+    if(typeof(_id) == 'undefined'){_id = 0;}
     var result = $.ajax({
         type: "POST",
         dataType: "json",
         url: site_url+url,
         async: false,
-        data: {dom_id: id, _ajaxFunc: "renderPageElement"}
+        data: {dom_id: dom_id, _id: _id, _ajaxFunc: "renderPageElement"}
     });
-    $('#'+id).html(result.responseText);
+    $('#'+dom_id).html(result.responseText);
   }
 }

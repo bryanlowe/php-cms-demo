@@ -1,10 +1,9 @@
 <?php
   namespace Application\_backend;
   use Framework\_engine\_core\Page as Page;
-  use Framework\_engine\_dal\_mysql\Collection as Collection;
-  use Framework\_engine\_dal\_mysql\Selection as Selection;
+  use Framework\_engine\_dal\_mongo\MongoAccessLayer as MongoAccessLayer;
   use Framework\_engine\_core\Encryption as Encryption;
-  use Framework\_widgets\SQLForm\_forms as Form;
+  use Framework\_engine\_db\_mongo\MongoGenerator as MongoGenerator;
   
   /**
    * Class: Backend
@@ -12,6 +11,13 @@
    * Creates a template for all Backend pages to use
    */
   class Backend extends Page{
+
+    /**
+     * MongoGenerator Object
+     *
+     * @access protected
+     */
+    protected $mongoGen = null;
 
     /**
      * Encryption class object
@@ -35,11 +41,12 @@
      */
     public function __construct(){
       parent::__construct();
-      $this->pass_enc = new Encryption(MCRYPT_BlOWFISH, MCRYPT_MODE_CBC);
       if(!$_SESSION[$this->config->sessionID]['LOGGED_IN']
       || $_SESSION[$this->config->sessionID]['USER_TYPE'] != "ADMIN"){
         header('Location: /admin/login');
       }
+      $this->mongoGen = new MongoGenerator();
+      $this->pass_enc = new Encryption(MCRYPT_BlOWFISH, MCRYPT_MODE_CBC);
       $this->loader = new \Twig_Loader_Filesystem($this->config->dir($this->source));
       $this->twig = new \Twig_Environment($this->loader, array(
           'cache' => $this->config->dir('temp-cache').'/_twig/_backend',
@@ -65,8 +72,7 @@
       $this->addJS('_common/bootstrap.js');
       $this->addJS('_common/common-functions.js');
       $this->addJS('_widgets/_jsonform/form-functions.min.js');
-      $this->addJS('_common/_mongodb/form-functions.min.js');
-      //$this->addJS('_widgets/_sqlform/form-functions.min.js');
+      $this->addJS('_common/_mongodb/form-functions.js');
       $this->setTitle('CEM Dashboard - Admin');
       $this->assemblePage();
     }
@@ -84,59 +90,6 @@
       $this->setDisplayVariables('SITE_URL', $this->config->homeURL);
     } 
 
-    /**
-     * Performs save and delete actions for forms. 
-     * Calls the specified Form class and saves or deletes entries
-     *
-     * @param assoc array $param
-     * @access public
-     */
-    public function processBLLForm($params){
-      $formNS = 'Application\_engine\_sqlform\_forms';
-      if($this->isAdminUser()){
-        $class = $formNS.'\\'.$params['form'].'Form';
-        if($params['action'] == "SAVE"){
-          echo foo(new $class($params['priKey']))->save($params['values']);
-        } else if($params['action'] == "DELETE"){
-          echo foo(new $class($params['priKey']))->delete($params['priKey']);
-        }
-      } 
-    }
-
-    /**
-     * Gather BLL Resources from the database
-     *
-     * @param assoc array $param
-     * @param int priKey
-     * @access public
-     */
-    public function gatherBLLResource($params){
-      if($this->isAdminUser()){
-        $where = "";
-        if($params['bllAction'] == "SELECTION"){
-          $tblInfo = foo(new Selection($params['table']))->getByID($params['primaryKey'])->getValues();
-          echo $tblInfo['password'];
-          if($params['table'] == 'users'){
-            $tblInfo['password'] = $this->pass_enc->decrypt(base64_decode($tblInfo['password']), $this->config->passwords['login']);
-          }
-          echo json_encode(array($tblInfo));  
-        } else {
-          echo json_encode(foo(new Collection($params['table']))->getAll(null, null, null, $params['order']));  
-        }
-      }    
-    }
-
-    /**
-     * Gather BLL Count from the database
-     *
-     * @param assoc array $param
-     * @access public
-     */
-    public function gatherBLLCount($params){
-      if($this->isAdminUser()){
-        echo json_encode(foo(new Collection($params['table']))->getCount($params['where']));  
-      }    
-    }
 
     /**
      * Gets the doc by _id
@@ -144,16 +97,10 @@
      * @param mixed array $params    
      * @access public
      */
-    public function getDocByID($params){
+    public function getEntry($params){
       if($this->isAdminUser()){
-        if(isset($params['_id'])){
-          $this->mongodb->switchCollection($params['collection']);
-          if($params['mongoid']){
-            $params['_id'] = new \MongoId($params['_id']);
-          }
-          $result = $this->mongodb->getDocument(array('_id' => $params['_id']));
-          echo json_encode($result);
-        }
+        $results = foo(new MongoAccessLayer($params['collection']))->getDocByID($params['_id'], $params['mongoid']);
+        echo json_encode($results);
       }
     }
 
@@ -163,15 +110,23 @@
      * @param mixed array $params    
      * @access public
      */
-    public function saveDocEntry($params){
+    public function saveEntry($params){
       if($this->isAdminUser()){
-        if(isset($params['values']) && isset($params['collection'])){
-          $this->mongodb->switchCollection($params['collection']);
-          if($params['mongoid']){
-            $params['values']['_id'] = ($params['values']['_id'] != '') ? new \MongoId($params['values']['_id']) : new \MongoId();
-          }
-          $this->mongodb->updateDocument($params['values']);
-        }
+        $results = foo(new MongoAccessLayer($params['doc']['collection']))->saveDocEntry($params['doc']['values'], $params['doc']['_id']);
+        echo json_encode($results);
+      }
+    }
+
+    /**
+     * Saves a set to an existing doc to the database
+     *
+     * @param mixed array $params    
+     * @access public
+     */
+    public function addSetToEntry($params){
+      if($this->isAdminUser()){
+        $results = foo(new MongoAccessLayer($params['doc']['collection']))->addSetToDocEntry($params['doc']['set'], $params['doc']['values'], $params['doc']['_id']);
+        echo json_encode($results);
       }
     }
 
@@ -181,15 +136,10 @@
      * @param mixed array $params    
      * @access public
      */
-    public function deleteDocEntry($params){
+    public function deleteEntry($params){
       if($this->isAdminUser()){
-        if(isset($params['values']) && isset($params['collection'])){
-          $this->mongodb->switchCollection($params['collection']);
-          if($params['mongoid']){
-            $params['values']['_id'] = new \MongoId($params['values']['_id']);
-          }
-          $this->mongodb->deleteDocument(array('_id' => $params['values']['_id']));
-        }
+        $results = foo(new MongoAccessLayer($params['doc']['collection']))->deleteDocEntry($params['doc']['_id'], $params['doc']['mongoid']);
+        echo json_encode($results);
       }
     }
 

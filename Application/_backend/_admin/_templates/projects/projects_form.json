@@ -1,0 +1,37 @@
+{
+	"id": "projects",
+	"form": [
+		{ 
+			"order": 1, 
+			"required": 0, 
+			"type": "hidden", 
+			"id": "_id",
+			"value": ""
+		},
+		{ 
+			"order": 1, 
+			"required": 1, 
+			"type": "hidden", 
+			"id": "client_id",
+			"value": ""
+		},
+		{ 
+			"order": 1, 
+			"required": 1, 
+			"type": "text", 
+			"label": "Project Tag (Clients must have tags set)",
+			"id": "project_tag",
+			"value": "", 
+			"class": "form-control"
+		},
+		{ 
+			"order": 2, 
+			"required": 1, 
+			"type": "textarea", 
+			"label": "Description",
+			"id": "project_description",
+			"value": "", 
+			"class": "form-control"
+		}
+	]
+}

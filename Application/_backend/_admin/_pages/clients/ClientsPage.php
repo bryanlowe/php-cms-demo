@@ -11,6 +11,14 @@
   class ClientsPage extends Backend{
 
     /**
+     * Client Select Pipeline - this is an aggregation pipeline of values that are needed for the client select drop down
+     * 
+     * mixed array
+     * @access private
+     */
+    private $client_select_pipeline = array();
+
+    /**
      * Construct a new ClientsPage object
      *    
      * @access public
@@ -18,6 +26,10 @@
     public function __construct(){
       $this->source = "admin-templates";
       parent::__construct();
+      $this->client_select_pipeline = array(
+        $this->mongoGen->projectStage(array("company" => 1, "client_name" => 1)),
+        $this->mongoGen->sortStage(array("client_name" => 1, 'company' => 1))
+      );
     }
     
     /**
@@ -27,7 +39,7 @@
      */
     public function init(){
       parent::init();
-      $this->addJS('_admin/clients/scripts.min.js');
+      $this->addJS('_admin/clients/scripts.js');
       $this->setTitle('CEM Dashboard - Client Management');
       $this->setTemplate('clients/main.html');
     }
@@ -40,8 +52,8 @@
     protected function assemblePage(){   
       parent::assemblePage();   
       $this->mongodb->switchCollection('clients');
-      $select_clients = $this->mongodb->getDocuments(array(),array("company" => 1, "client_name" => 1));
-      $this->setDisplayVariables('SELECT_CLIENTS', $select_clients);
+      $select_clients = $this->mongodb->aggregateDocs($this->client_select_pipeline);
+      $this->setDisplayVariables('SELECT_CLIENTS', $select_clients['result']);
       $clientForm = foo(new FormGenerator(null, $this->config->dir($this->source).'/clients/clients_form.json'))->getFormHTML();
       $this->setDisplayVariables('CLIENT_FORM', $clientForm);
     }
@@ -55,8 +67,12 @@
     public function renderPageElement($params){
       if($params['dom_id'] == 'clients_select_container'){
         $this->mongodb->switchCollection('clients');
-        $select_clients = $this->mongodb->getDocuments(array(),array("company" => 1, "client_name" => 1));
+        $select_clients = $this->mongodb->aggregateDocs($this->client_select_pipeline);
         echo $this->twig->render('clients/clients_select.html', array('SELECT_CLIENTS' => $select_clients));
+      } else if($params['dom_id'] == 'project-tag-list' && $params['_id'] != 0){
+        $this->mongodb->switchCollection('clients');
+        $result = $this->mongodb->getDocument(array("_id" => new \MongoId($params['_id'])),array("_id" => 0, "project_tags" => 1));
+        echo $this->twig->render('clients/list-group-item.html', array('PROJECT_TAGS' => $result['project_tags']));
       } 
     }
 
@@ -65,11 +81,22 @@
      *
      * @access public
      */
-    public function saveDocEntry($params){
+    public function saveEntry($params){
       if($params['values']['_id'] == ''){
         $params['values']['is_user'] = 0;
       }
-      parent::saveDocEntry($params);  
+      parent::saveEntry($params);  
+    }
+
+    /**
+     * Saves a set to an existing doc to the database
+     *
+     * @param mixed array $params    
+     * @access public
+     */
+    public function addSetToEntry($params){
+      $params['doc']['values'] = strtoupper($params['doc']['values']);
+      parent::addSetToEntry($params);
     }
   }
 ?>

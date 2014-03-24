@@ -1,116 +1,138 @@
 $(document).ready(function(){
-	refreshBLLSelectOptions("#projects_form select#project_id", "projects", site_url+"projects", "project_title", "project_id", "project_title ASC");
-	refreshBLLSelectOptions("#projects_form select#client_id", "clients", site_url+"projects", "company", "client_id", "company ASC");
-	$('#projects_form select#project_id').change(function(){
-		updateBLLFormFields('projects_form','projects',site_url+'projects'); 
-		updateProjectStatusForm($(this).val());
+	$('#projects_select').change(function(){
+		updateForm($(this).val(),'projects',['mongoid','client_id','project_tag','project_description']);
+		$('#timeline-desc').html('<p align="center">Nothing to show</p>');
+		if($(this).val() != ''){
+			disableElement('clients_select', true);
+			disableElement('description', false);
+			reloadFormElement('tag_select_container', 'projects', $('#client_id').val());
+			$('#tag_select_container').show();	
+			$('#tag_select').change(function(){
+				$('#project_tag').val($(this).val());
+			});
+			reloadFormElement('timeline-list', 'projects', $('#projects_select').val());
+		} else {
+			disableElement('clients_select', false);
+			disableElement('description', true);
+			$('#tag_select_container').hide();
+			reloadFormElement('tag_select_container', 'projects');
+			reloadFormElement('timeline-list', 'projects');
+		}
 	});
-    $('#project_status_form input[name="saveBtn"]').attr('disabled', 'disabled');
-    $('#project_status_form input[name="saveBtn"]').addClass('disabled');
+	$('#clients_select').change(function(){
+		$('#client_id').val($(this).val());
+		$('#project_tag').val('');
+		if($(this).val() != ''){
+			reloadFormElement('tag_select_container', 'projects', $(this).val());
+			$('#tag_select_container').show();	
+			$('#tag_select').change(function(){
+				$('#project_tag').val($(this).val());
+			});
+		} else {
+			$('#tag_select_container').hide();
+			reloadFormElement('tag_select_container', 'projects');
+		}
+	});
+	$('#submitBtn').click(function(){
+		disableElement('project_tag', false);
+		saveDoc('projects',true);
+		disableElement('project_tag', true);
+	});
+	$('#deleteBtn').click(function(){
+		deleteDoc('projects',true);
+	});
+	$('#resetBtn').click(function(){
+		reloadPageElements('projects',false);
+	});
+	$('#updateBtn').click(function(){
+		if($('#description').val() != ''){
+			var d = new Date();
+			var docObj = {};
+			docObj.url = 'projects',
+			docObj.collection = 'projects',
+			docObj.set = 'project_timeline',
+			docObj.values = {},
+			docObj._id = $('#projects_select').val();
+			docObj.values.description = $('#description').val();
+			addSetToDoc(docObj);
+			$('#description').val('');
+			reloadFormElement('timeline-list', 'projects', $('#projects_select').val());
+		}		
+	});
+	disableElement('project_tag', true);
+	disableElement('description', true);
+	$('#tag_select_container').hide();
 });
 
 /**
  * Reloads page elements to reflect changes in the database
  */
-function reloadPageElements(){
-	refreshBLLSelectOptions("#projects_form select#project_id", "projects", site_url+"projects", "project_title", "project_id", "project_title ASC");
-	$("#projects_form")[0].reset();
-	$("#project_status_form")[0].reset();
-	$('#project_status_form #project_status_date').val('');
-    $('#project_status_form #project_status_id').val('');
-}
-
-/**
- * Saves the project form
- */
-function saveProject(){
-	var results = saveEntry('Projects');
-	if(results.length > 0){
-		if(results[0] == 'error'){
-			popUpMsg("Form is not complete!");
-   			displayErrors(results[1], 'projects');
-    		return false;
-	  	} else if(results[0] == 'pass') {
-	    	popUpMsg("Project was saved successfully!");
-	    	reloadPageElements();
-	    	return true;
-	  	}
-	}
-}
-
-/**
- * Saves the project status form
- */
-function saveStatus(){
-	var results = saveEntry('project_status');
-	if(results.length > 0){
-		if(results[0] == 'error'){
-			popUpMsg("Form is not complete!");
-   			displayErrors(results[1], 'project_status');
-    		return false;
-	  	} else if(results[0] == 'pass') {
-	    	popUpMsg("Project status was saved successfully!");
-	    	return true;
-	  	}
-	}
-}
-
-/**
- * Delete the project form
- */
-function deleteProject(){
-	var result = "";
-	$.prompt("<p>Are you sure you want to delete this project?</p><p>If you delete this project, the project status will be deleted as well.</p>", {
-		title: "Are you sure?",
-		buttons: { "Yes": true, "No": false },
-		submit: function(e,v,m,f){ 
-			if(v){
-				result = deleteEntry('Projects');
-				if(result == "Deletion Success"){
-					reloadPageElements();	
-				}
+function reloadPageElements(collection, ajax){
+  	$('#'+collection+'_form')[0].reset();
+  	$('#'+collection+'_form #_id').val('');
+  	$('#client_id').val('');
+  	$('#'+collection+'_select').prop('selectedIndex',0);
+  	$('#clients_select').prop('selectedIndex',0);
+  	$('#tag_select_container').hide();
+	reloadFormElement('tag_select_container', 'projects');
+	reloadFormElement('timeline-list', 'projects');
+  	disableElement('clients_select', false);
+  	disableElement('description', true);
+  	$('#timeline-desc').html('<p align="center">Nothing to show</p>');
+  	if(ajax){
+  		reloadFormElement('projects_select_container','projects');
+		$('#projects_select').change(function(){
+			updateForm($(this).val(),'projects',['mongoid','client_id','project_tag','project_description']);
+			if($(this).val() != ''){
+				disableElement('clients_select', true);
+				disableElement('description', false);
+				reloadFormElement('tag_select_container', 'projects', $('#client_id').val());
+				$('#tag_select_container').show();	
+				$('#tag_select').change(function(){
+					$('#project_tag').val($(this).val());
+				});
+			} else {
+				disableElement('clients_select', false);
+				disableElement('description', true);
+				$('#tag_select_container').hide();
+				reloadFormElement('tag_select_container', 'projects');
 			}
-			$.prompt.close();
-		}
-	});
+		});
+  	}
 }
 
 /**
-  * Update form fields by database entry
-  *
-  * @param projectID 
-  */
-function updateProjectStatusForm(projectID){
-	projectID = (projectID != "") ? projectID : 0;
-    var statusResult = $.ajax({
+ * Function updates the form with database information
+ *
+ * @param _id - mongo id number
+ * @param collection - mongo collection
+ * @param fields - mongo key attributes to be collected
+ */
+function updateForm(_id, collection, fields){
+  if(_id != ''){
+    var mongoid = false;
+    if($.inArray('mongoid',fields) > -1){mongoid = true;}
+    var result = $.ajax({
         type: "POST",
         dataType: "json",
-        url: '/admin/projects',
+        url: site_url+collection,
         async: false,
-        data: {projectID: projectID, _ajaxFunc: "getProjectStatus"}
+        data: {_id: _id, collection: collection, mongoid: mongoid, _ajaxFunc: "getEntry"}
     });
-
-    var statusFormValues = $.parseJSON(statusResult.responseText);
-    statusFormValues = statusFormValues[0];
-    if(typeof(statusFormValues) != "undefined"){
-      $('#project_status_form #project_status_id').val(statusFormValues['project_status_id']);
-      $('#project_status_form #project_id').val(statusFormValues['project_id']);
-      $('#project_status_form #status').val(statusFormValues['status']);
-      $('#project_status_form #description').val(statusFormValues['description']);
-      $('#project_status_form #project_status_date').val(statusFormValues['project_status_date']);
-      $('#project_status_form input[name="saveBtn"]').removeAttr('disabled');
-      $('#project_status_form input[name="saveBtn"]').removeClass('disabled');
-    } else {
-      $('#project_status_form')[0].reset();
-      $('#project_status_form #project_status_date').val('');
-      $('#project_status_form #project_status_id').val('');
-      if(projectID == 0){
-        $('#project_status_form input[name="saveBtn"]').attr('disabled', 'disabled');
-        $('#project_status_form input[name="saveBtn"]').addClass('disabled');
+    var formValues = $.parseJSON(result.responseText);
+    $('#'+collection+'_form')[0].reset();
+    for(var i = 0; i < fields.length; i++){
+      if(fields[i] == 'mongoid'){
+        $('#'+collection+'_form #_id').val(formValues._id['$id']);
+      } else if(fields[i] == 'client_id'){
+        $('#'+collection+'_form #client_id').val(formValues.client_id['$id']);
       } else {
-        $('#project_status_form #project_id').val(projectID);
-        $('#project_status_form input[name="saveBtn"]').removeAttr('disabled');
-        $('#project_status_form input[name="saveBtn"]').removeClass('disabled');
+        $('#'+collection+'_form #'+fields[i]).val(formValues[fields[i]]);
       }
     }
+  } else {
+    $('#'+collection+'_form')[0].reset();
+    $('#'+collection+'_form #_id').val('');
+    $('#'+collection+'_form #client_id').val('');
+  }
 }
