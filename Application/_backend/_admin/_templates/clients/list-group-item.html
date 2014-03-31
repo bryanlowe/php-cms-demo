@@ -1,3 +1,7 @@
-{% if PROJECT_TAGS|length > 0 %}
-	{{PROJECT_TAGS|join(', ')}}
+{% if PROJECT_TAGS%}
+	{% for tag in PROJECT_TAGS %}
+	    <div class="list-group-item">Tag: {{ tag }} <button class="close" type="button" onclick="removeProjectTag('{{ tag }}');">×</button></div>
+	{% endfor %}
+{% else %}
+	<p align="center">No tags</p>
 {% endif %}

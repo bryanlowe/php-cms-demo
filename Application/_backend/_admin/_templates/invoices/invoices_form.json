@@ -1,0 +1,46 @@
+{
+	"id": "invoices",
+	"form": [
+		{ 
+			"order": 1, 
+			"required": 0, 
+			"type": "hidden", 
+			"id": "_id",
+			"value": ""
+		},
+		{ 
+			"order": 1, 
+			"required": 1, 
+			"type": "hidden", 
+			"id": "client_id",
+			"value": ""
+		},
+		{ 
+			"order": 1, 
+			"required": 1, 
+			"type": "text", 
+			"label": "Invoice Number",
+			"id": "invoice_number",
+			"value": "", 
+			"class": "form-control"
+		},
+		{ 
+			"order": 1, 
+			"required": 1, 
+			"type": "text", 
+			"label": "Cost",
+			"id": "invoice_cost",
+			"value": "", 
+			"class": "form-control"
+		},
+		{ 
+			"order": 2, 
+			"required": 1, 
+			"type": "textarea", 
+			"label": "Description",
+			"id": "invoice_description",
+			"value": "", 
+			"class": "form-control"
+		}
+	]
+}

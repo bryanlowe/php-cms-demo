@@ -246,6 +246,30 @@ namespace Framework\_engine\_db\_mongo;
     }
 
     /**
+     * Creates the syntax for push normal operations. The $key is passed in as the push parameter, $values is set to the $key parameter
+     * This adds a value to a set. There is no 'unique' restriction as there is in addToSet
+     * 
+     * @return string array
+     * @param string $key
+     * @access public
+     */
+    public function pushOp($key, $values){
+      return array('$push' => array($key => $values));    
+    }
+
+    /**
+     * Creates the syntax for pull normal operations. The $key is passed in as the pull parameter, $values is set to the $key parameter
+     * This removes a value from the set, no matter where it lies in the set
+     * 
+     * @return string array
+     * @param string $key
+     * @access public
+     */
+    public function pullOp($key, $values){
+      return array('$pull' => array($key => $values));    
+    }
+
+    /**
      * Creates the syntax for set operations. The $values is passed in as the set parameter
      * 
      * @return mixed array

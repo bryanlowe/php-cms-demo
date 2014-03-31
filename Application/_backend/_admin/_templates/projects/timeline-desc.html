@@ -1,7 +1,0 @@
-<label for="projects_select">Select a project to edit</label><br>
-<select class="form-control" name="projects_select" id="projects_select">
-	<option value="">Please select a project</option>
-	{% for project in SELECT_PROJECTS %}
-	    <option value="{{ project._id }}">Company: {{ project.clients.company }} -- Project Tag: {{ project.project_tag}}</option>
-	{% endfor %}
-</select>

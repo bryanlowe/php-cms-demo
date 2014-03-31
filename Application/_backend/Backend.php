@@ -125,12 +125,25 @@
      */
     public function addSetToEntry($params){
       if($this->isAdminUser()){
-        $results = foo(new MongoAccessLayer($params['doc']['collection']))->addSetToDocEntry($params['doc']['set'], $params['doc']['values'], $params['doc']['_id']);
+        $results = foo(new MongoAccessLayer($params['doc']['collection']))->addSetToDocEntry($params['doc']['set'], $params['doc']['values'], $params['doc']['_id'], $params['doc']['mongoid']);
         echo json_encode($results);
-      }
+      }    
     }
 
     /**
+     * Removes a set value from the doc in the database
+     *
+     * @param mixed array $params    
+     * @access public
+     */
+    public function removeSetFromEntry($params){
+      if($this->isAdminUser()){
+        $results = foo(new MongoAccessLayer($params['doc']['collection']))->pullSetFromDocEntry($params['doc']['set'], $params['doc']['values'], $params['doc']['_id'], $params['doc']['mongoid']);
+        echo json_encode($results);
+      }    
+    }
+
+	  /**
      * Deletes a doc from the database
      *
      * @param mixed array $params    

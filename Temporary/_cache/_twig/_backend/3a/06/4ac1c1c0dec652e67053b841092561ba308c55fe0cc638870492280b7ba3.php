@@ -39,7 +39,7 @@ class __TwigTemplate_3a064ac1c1c0dec652e67053b841092561ba308c55fe0cc638870492280
         // line 8
         echo "<div class=\"container\">
 \t<div class=\"row login-form\">
-\t\t<div class=\"col-lg-4 col-lg-offset-4\">
+\t\t<div class=\"col-lg-3 col-lg-offset-4\">
 \t\t\t<div class=\"panel panel-primary\">
 \t\t\t\t<div class=\"panel-heading\">
 \t\t\t\t\t<h3 class=\"panel-title\">Log In</h3>

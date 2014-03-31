@@ -30,14 +30,18 @@
   display: none;
 }
 
-.clear, .button_panel {
+.clear {
   clear: both;
   padding: 10px;
 }
 
-.btn_container{
+.btn_container, .input_container{
   float: left;
-  padding: 10px;
+  padding-left: 10px;
+}
+
+.form-wrapper {
+  margin-left: 40px;
 }
 
 #pleaseWaitDialog {

@@ -54,6 +54,7 @@ $(document).ready(function(){
 			docObj.values = {},
 			docObj._id = $('#projects_select').val();
 			docObj.values.description = $('#description').val();
+			docObj.mongoid = 1;
 			addSetToDoc(docObj);
 			$('#description').val('');
 			reloadFormElement('timeline-list', 'projects', $('#projects_select').val());
@@ -135,4 +136,19 @@ function updateForm(_id, collection, fields){
     $('#'+collection+'_form #_id').val('');
     $('#'+collection+'_form #client_id').val('');
   }
+}
+
+/**
+ * Removes an timeline event from the database
+ */
+function removeEvent(event){
+  var docObj = {};
+  docObj.url = 'projects',
+  docObj.collection = 'projects',
+  docObj.set = 'project_timeline',
+  docObj.values = event;
+  docObj._id = $('#projects_select').val();
+  docObj.mongoid = 1;
+  removeSetFromDoc(docObj);
+  reloadFormElement('timeline-list', 'projects', $('#projects_select').val());
 }

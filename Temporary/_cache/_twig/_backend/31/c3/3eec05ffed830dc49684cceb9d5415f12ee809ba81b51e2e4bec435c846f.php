@@ -47,6 +47,7 @@ class __TwigTemplate_31c33eec05ffed830dc49684cceb9d5415f12ee809ba81b51e2e4bec435
         // line 16
         echo (isset($context["CLIENT_FORM"]) ? $context["CLIENT_FORM"] : null);
         echo "
+\t\t\t\t\t<div class=\"clear\"></div>
 \t\t\t\t\t<div class=\"button_panel\">
 \t\t\t\t\t\t<div class=\"btn_container\">
 \t\t\t\t\t\t\t<input type=\"button\" class=\"btn btn-success\" value=\"SAVE\" name=\"submitBtn\" id=\"submitBtn\">
@@ -68,7 +69,8 @@ class __TwigTemplate_31c33eec05ffed830dc49684cceb9d5415f12ee809ba81b51e2e4bec435
 \t\t\t\t\t\t<label for=\"project_tag\">New Tag</label><br>
 \t\t\t\t\t\t<input type=\"text\" class=\"form-control\" value=\"\" name=\"project_tag\" id=\"project_tag\">
 \t\t\t\t\t</div>
-\t\t\t\t\t<div style=\"margin-left:-20px;\" class=\"button_panel\">
+\t\t\t\t\t<div class=\"clear\"></div>
+\t\t\t\t\t<div style=\"margin-left:-10px;\" class=\"button_panel\">
 \t\t\t\t\t\t<div class=\"btn_container\">
 \t\t\t\t\t\t\t<input type=\"button\" class=\"btn btn-success\" value=\"ADD TAG\" name=\"addBtn\" id=\"addBtn\">
 \t\t\t\t\t\t</div>
@@ -76,9 +78,9 @@ class __TwigTemplate_31c33eec05ffed830dc49684cceb9d5415f12ee809ba81b51e2e4bec435
 \t\t\t\t\t<div class=\"clear\"><hr></div>
 \t\t\t\t\t<div id=\"project-tag-list\" class=\"list-group\">
 \t\t\t\t\t\t";
-        // line 45
+        // line 47
         $this->env->loadTemplate("clients/list-group-item.html")->display($context);
-        // line 46
+        // line 48
         echo "\t\t\t\t\t</div>
 \t\t\t\t</div>
 \t\t\t</div>
@@ -100,6 +102,6 @@ class __TwigTemplate_31c33eec05ffed830dc49684cceb9d5415f12ee809ba81b51e2e4bec435
 
     public function getDebugInfo()
     {
-        return array (  82 => 46,  80 => 45,  48 => 16,  44 => 14,  42 => 13,  31 => 4,  28 => 3,);
+        return array (  84 => 48,  82 => 47,  48 => 16,  44 => 14,  42 => 13,  31 => 4,  28 => 3,);
     }
 }

@@ -20,8 +20,7 @@ function saveEntry(docObj){
 /**
  * Adds a unique value to an existing set of values in a document
  *
- * @param url
- * @param set
+ * @param docObj
  */
 function addSetToDoc(docObj){
   statusApp.showPleaseWait();
@@ -30,6 +29,23 @@ function addSetToDoc(docObj){
     url: docObj.url,
     async: false,
     data: {doc: docObj, _ajaxFunc: "addSetToEntry"}
+  });
+  statusApp.hidePleaseWait();
+  return result.responseText; 
+}
+
+/**
+ * Adds a unique value to an existing set of values in a document
+ *
+ * @param docObj
+ */
+function removeSetFromDoc(docObj){
+  statusApp.showPleaseWait();
+  var result = $.ajax({
+    type: "POST",
+    url: docObj.url,
+    async: false,
+    data: {doc: docObj, _ajaxFunc: "removeSetFromEntry"}
   });
   statusApp.hidePleaseWait();
   return result.responseText; 
@@ -84,7 +100,7 @@ function createDocFromForm(formID){
       }
     } else if(field.name != '_id') {
       values[field.name] = field.value;
-    }      
+    }     
     $('form#'+formID+' #'+field.name+'_container').removeClass('has-error');
   });
   docObj['values'] = values;
@@ -138,7 +154,7 @@ function saveDoc(collection, mongoid){
       reloadPageElements(collection, true); 
       return true;
     } else {
-      popUpMsg(results.msg);
+      popUpMsg(results.err);
       return false;
     }
   }
@@ -190,8 +206,8 @@ function deleteDoc(collection, mongoid){
  */
 function updateForm(_id, collection, fields){
   if(_id != ''){
-    var mongoid = false;
-    if($.inArray('mongoid',fields) > -1){mongoid = true;}
+    var mongoid = 0;
+    if($.inArray('mongoid',fields)>-1){mongoid = 1;}
     var result = $.ajax({
         type: "POST",
         dataType: "json",

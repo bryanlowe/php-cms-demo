@@ -1,0 +1,7 @@
+<label for="invoices_select">Select a invoice to edit</label><br>
+<select class="form-control" name="invoices_select" id="invoices_select">
+	<option value="">Please select an invoice</option>
+	{% for invoice in SELECT_INVOICES %}
+	    <option value="{{ invoice._id }}">Company: {{ invoice.clients.company }} -- Invoice Number: {{ invoice.invoice_number}}</option>
+	{% endfor %}
+</select>

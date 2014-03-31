@@ -24,6 +24,7 @@ $(document).ready(function(){
 			docObj.set = 'project_tags',
 			docObj.values = $('#project_tag').val();
 			docObj._id = $('#clients_select').val();
+			docObj.mongoid = 1;
 			addSetToDoc(docObj);
 			$('#project_tag').val('');
 			reloadFormElement('project-tag-list', 'clients', $('#clients_select').val());
@@ -52,20 +53,16 @@ function reloadPageElements(collection, ajax){
 }
 
 /**
- * Reloads the element by Dom ID and ajax
- *
- * @param id - dom id
- * @param url - site url for ajax
+ * Removes an timeline event from the database
  */
-function reloadFormElement(id, url, clientID){
-  if(id != ''){
-    var result = $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: site_url+url,
-        async: false,
-        data: {dom_id: id, clientID: clientID, _ajaxFunc: "renderPageElement"}
-    });
-    $('#'+id).html(result.responseText);
-  }
+function removeProjectTag(tag){
+  var docObj = {};
+  docObj.url = 'clients',
+  docObj.collection = 'clients',
+  docObj.set = 'project_tags',
+  docObj.values = tag;
+  docObj._id = $('#clients_select').val();
+  docObj.mongoid = 1;
+  removeSetFromDoc(docObj);
+  reloadFormElement('project-tag-list', 'clients', $('#clients_select').val());
 }

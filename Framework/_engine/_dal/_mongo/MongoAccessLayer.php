@@ -98,11 +98,11 @@
      * @access public
      */
     public function saveDocEntry($values, $_id = '', $mongoid = true){
-      $docCount = $this->mongodb->getCount(array('_id' => $_id));
-      $insert = ($_id != '' && $docCount > 0) ? false : true;
       if($mongoid == true){
         $_id = ($_id != '') ? new \MongoId($_id) : new \MongoId();
       }
+      $docCount = $this->mongodb->getCount(array('_id' => $_id));
+      $insert = ($docCount > 0) ? false : true;
       if($insert){
         $values['_id'] = $_id;
         return $this->mongodb->insertDocument($values);
@@ -126,6 +126,40 @@
         $_id = ($_id != '') ? new \MongoId($_id) : new \MongoId();
       }
       return $this->mongodb->updateDocument(array("_id" => $_id), $this->mongoGen->addToSetOp($set,$values));   
+    }
+
+    /**
+     * Saves a set value to a doc in the database
+     *
+     * @return mixed array results
+     * @param string $set  
+     * @param mixed array $values    
+     * @param mixed $_id
+     * @param boolean $mongoid    
+     * @access public
+     */
+    public function pushSetToDocEntry($set, $values, $_id, $mongoid = true){
+      if($mongoid == true){
+        $_id = ($_id != '') ? new \MongoId($_id) : new \MongoId();
+      }
+      return $this->mongodb->updateDocument(array("_id" => $_id), $this->mongoGen->pushOp($set,$values));   
+    }
+
+    /**
+     * Removes a set value from the doc in the database
+     *
+     * @return mixed array results
+     * @param string $set  
+     * @param mixed array $values    
+     * @param mixed $_id
+     * @param boolean $mongoid    
+     * @access public
+     */
+    public function pullSetFromDocEntry($set, $values, $_id, $mongoid = true){
+      if($mongoid == true){
+        $_id = ($_id != '') ? new \MongoId($_id) : new \MongoId();
+      }
+      return $this->mongodb->updateDocument(array("_id" => $_id), $this->mongoGen->pullOp($set,$values));   
     }
 
     /**

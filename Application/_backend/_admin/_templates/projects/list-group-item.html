@@ -1,6 +1,11 @@
 {% if PROJECT_TIMELINE|length > 0 %}
 	{% for event in PROJECT_TIMELINE %}
-	    <span><a href="javascript:;" class="list-group-item" onclick="$('#timeline-desc').html($('#event_{{ loop.index }}').html());">Timeline Event: {{ event.date }}</a></span>
+		<script type="text/javascript">
+		<!--
+			var timeline_{{ loop.index }} = {description: '{{ event.description }}', date: '{{ event.date }}' };
+		//-->
+		</script>
+	    <div class="list-group-item"><a href="javascript:;" onclick="$('#timeline-desc').html($('#event_{{ loop.index }}').html());">Timeline Event: {{ event.date }}</a> <button class="close" type="button" onclick="removeEvent(timeline_{{ loop.index }});">×</button></div>
 	    <div id="event_{{ loop.index }}" style="display:none;">{{ event.description }}</div>
 	{% endfor %}
 {% else %}

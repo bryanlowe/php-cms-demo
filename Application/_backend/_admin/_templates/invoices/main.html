@@ -3,32 +3,67 @@
 {% block content %}
 <div class="container">
 	<div class="row">
-		<div class="col-lg-4 col-lg-offset-2">
+		<div class="col-lg-6 col-lg-offset-1">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<h3 class="panel-title">Update or Add an Invoice</h3>
 				</div>
 				<div class="panel-body">
+					<div id="invoices_select_container" class="input_container">
+						{% include "invoices/invoices_select.html" %}
+					</div>
+					<div class="clear"></div>
+					<div id="clients_select_container" class="input_container">
+						{% include "invoices/clients_select.html" %}
+					</div>
+					<div class="clear"><hr></div>
 					{{INVOICE_FORM|raw}}
+					<div id="invoice_history_container" class="input_container">
+						<label for="invoice_history">Invoice Status Entry</label><br>
+						<textarea class="form-control" name="description" id="description"></textarea>
+						<div class="clear"></div>
+						<div style="margin-left:-10px;" class="button_panel">
+							<div class="btn_container">
+								<input type="button" class="btn btn-success" value="UPDATE STATUS" name="updateBtn" id="updateBtn">
+							</div>
+						</div>
+					</div>
+					<div class="clear"><hr></div>
+					<div class="button_panel" style="margin-left: 140px;">
+						<div class="btn_container">
+							<input type="button" class="btn btn-success" value="SAVE" name="submitBtn" id="submitBtn">
+						</div>
+						<div class="btn_container">
+							<input type="button" class="btn btn-danger" value="DELETE" name="deleteBtn" id="deleteBtn">
+						</div>
+						<div class="btn_container">
+							<input type="button" class="btn btn-info" value="RESET" name="resetBtn" id="resetBtn">
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 		<div class="col-lg-4">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<h3 class="panel-title">Update Invoice Status</h3>
+					<h3 class="panel-title">Invoice Status History</h3>
 				</div>
 				<div class="panel-body">
-					{{INVOICE_STATUS_FORM|raw}}
+					<div id="status-list" class="list-group">
+						{% include "invoices/list-group-item.html" %}
+					</div>
+					<div class="clear"><hr></div>
+					<div><label>Status Entry</label><div id="status-desc"><p align="center">Nothing to show</p></div></div>
 				</div>
 			</div>
+		</div>
+		<div class="col-lg-4">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<h3 class="panel-title">Upload Invoice File</h3>
 				</div>
 				<div class="panel-body">
-					<p><label>Current Invoice File:</label> <a id="invoice_file_link" href="#">Not Available</a></p>
-					{{INVOICE_FILE_FORM|raw}}
+					{% include "invoices/file_upload.html" %}
 				</div>
 			</div>
 		</div>

@@ -61,6 +61,7 @@ class __TwigTemplate_21cf89e64deb7f580124d9116def00994fb8e05c4c1d91b3979aa74faac
         // line 24
         echo (isset($context["PROJECT_FORM"]) ? $context["PROJECT_FORM"] : null);
         echo "
+\t\t\t\t\t<div class=\"clear\"></div>
 \t\t\t\t\t<div class=\"button_panel\">
 \t\t\t\t\t\t<div class=\"btn_container\">
 \t\t\t\t\t\t\t<input type=\"button\" class=\"btn btn-success\" value=\"SAVE\" name=\"submitBtn\" id=\"submitBtn\">
@@ -85,7 +86,8 @@ class __TwigTemplate_21cf89e64deb7f580124d9116def00994fb8e05c4c1d91b3979aa74faac
 \t\t\t\t\t\t<label for=\"project_tag\">New Entry</label><br>
 \t\t\t\t\t\t<textarea class=\"form-control\" name=\"description\" id=\"description\"></textarea>
 \t\t\t\t\t</div>
-\t\t\t\t\t<div style=\"margin-left:-20px;\" class=\"button_panel\">
+\t\t\t\t\t<div class=\"clear\"></div>
+\t\t\t\t\t<div style=\"margin-left:-10px;\" class=\"button_panel\">
 \t\t\t\t\t\t<div class=\"btn_container\">
 \t\t\t\t\t\t\t<input type=\"button\" class=\"btn btn-success\" value=\"UPDATE TIMELINE\" name=\"updateBtn\" id=\"updateBtn\">
 \t\t\t\t\t\t</div>
@@ -93,9 +95,9 @@ class __TwigTemplate_21cf89e64deb7f580124d9116def00994fb8e05c4c1d91b3979aa74faac
 \t\t\t\t\t<div class=\"clear\"><hr></div>
 \t\t\t\t\t<div id=\"timeline-list\" class=\"list-group\">
 \t\t\t\t\t\t";
-        // line 56
+        // line 58
         $this->env->loadTemplate("projects/list-group-item.html")->display($context);
-        // line 57
+        // line 59
         echo "\t\t\t\t\t</div>
 \t\t\t\t</div>
 \t\t\t</div>
@@ -125,6 +127,6 @@ class __TwigTemplate_21cf89e64deb7f580124d9116def00994fb8e05c4c1d91b3979aa74faac
 
     public function getDebugInfo()
     {
-        return array (  99 => 57,  97 => 56,  62 => 24,  58 => 22,  56 => 21,  51 => 18,  49 => 17,  44 => 14,  42 => 13,  31 => 4,  28 => 3,);
+        return array (  101 => 59,  99 => 58,  62 => 24,  58 => 22,  56 => 21,  51 => 18,  49 => 17,  44 => 14,  42 => 13,  31 => 4,  28 => 3,);
     }
 }

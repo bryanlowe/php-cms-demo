@@ -31,7 +31,7 @@
   	<xsl:param name="field_name" />
   	<xsl:param name="field_id" />
   	<xsl:param name="field_value" />
-  	<div id="{$field_id}_container">
+  	<div id="{$field_id}_container" class="input_container">
   	    <xsl:call-template name="input_label">
   				<xsl:with-param name="field_label" select="$field_label" />
   				<xsl:with-param name="field_name" select="$field_name" />
@@ -78,7 +78,7 @@
     <xsl:param name="field_name" />
     <xsl:param name="field_id" />
     <xsl:param name="field_value" />
-    <div id="{$field_id}_container">
+    <div id="{$field_id}_container" class="input_container">
         <xsl:call-template name="input_label">
           <xsl:with-param name="field_label" select="$field_label" />
           <xsl:with-param name="field_name" select="$field_name" />
@@ -125,7 +125,7 @@
     <xsl:param name="field_name" />
     <xsl:param name="field_id" />
     <xsl:param name="field_value" />
-    <div id="{$field_id}_container">
+    <div id="{$field_id}_container" class="input_container">
         <xsl:call-template name="input_label">
           <xsl:with-param name="field_label" select="$field_label" />
           <xsl:with-param name="field_name" select="$field_name" />
@@ -172,7 +172,7 @@
   	<xsl:param name="field_name" />
   	<xsl:param name="field_id" />
   	<xsl:param name="field_value" />
-  	<div id="{$field_id}_container">
+  	<div id="{$field_id}_container" class="input_container">
   	    <xsl:call-template name="input_label">
   				<xsl:with-param name="field_label" select="$field_label" />
   			</xsl:call-template>
@@ -230,7 +230,7 @@
   	<xsl:param name="field_name" />
   	<xsl:param name="field_id" />
   	<xsl:param name="field_value" />
-  	<div id="{$field_id}_container">
+  	<div id="{$field_id}_container" class="input_container">
   	    <xsl:call-template name="input_label">
   				<xsl:with-param name="field_label" select="$field_label" />
   			</xsl:call-template>
@@ -272,7 +272,7 @@
   	<xsl:param name="field_id" />
   	<xsl:param name="options" />
   	<xsl:param name="field_value" />
-  	<div id="{$field_id}_container">
+  	<div id="{$field_id}_container" class="input_container">
   	    <xsl:call-template name="input_label">
   				<xsl:with-param name="field_label" select="$field_label" />
   			</xsl:call-template>
@@ -318,7 +318,7 @@
   	<xsl:param name="field_id" />
   	<xsl:param name="options" />
   	<xsl:param name="field_value" />
-  	<div id="{$field_id}_container">
+  	<div id="{$field_id}_container" class="input_container">
   	    <xsl:call-template name="input_label">
   				<xsl:with-param name="field_label" select="$field_label" />
   			</xsl:call-template>
@@ -364,7 +364,7 @@
   	<xsl:param name="field_label" />
   	<xsl:param name="field_name" />
   	<xsl:param name="field_id" />
-  	<div id="{$field_id}_container">
+  	<div id="{$field_id}_container" class="input_container">
   	    <xsl:call-template name="input_label">
   				<xsl:with-param name="field_label" select="$field_label" />
           <xsl:with-param name="field_name" select="$field_name" />
@@ -403,7 +403,7 @@
     <xsl:param name="field_name" />
     <xsl:param name="field_id" />
     <xsl:param name="field_value" />
-    <div id="{$field_id}_container">
+    <div id="{$field_id}_container" class="input_container">
         <xsl:call-template name="input_label">
           <xsl:with-param name="field_label" select="$field_label" />
           <xsl:with-param name="field_name" select="$field_name" />
@@ -425,7 +425,7 @@
     <xsl:param name="field_name" />
     <xsl:param name="field_id" />
     <xsl:param name="field_value" />
-    <div id="{$field_id}_container">
+    <div id="{$field_id}_container" class="input_container">
         <input id="{$field_id}" name="{$field_name}" type="submit" value="{$field_value}">
           <xsl:if test="$class != ''">
             <xsl:attribute name="class"><xsl:value-of select="$class" /></xsl:attribute> 

@@ -21,56 +21,55 @@ class __TwigTemplate_c8b8dcbf7a4a64b4af88d4f7aad974133c05435b38a73bcd5c79fddd742
         // line 1
         echo "<!DOCTYPE HTML>
 <html lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">
-<head>
-\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">
-    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
-    <link href=\"";
+  <head>
+  \t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">
+      <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+      <link href=\"";
         // line 6
         echo (isset($context["IMAGEPATH"]) ? $context["IMAGEPATH"] : null);
         echo "/_common/favicon.ico\" rel=\"SHORTCUT ICON\">
-    <title>";
+      <title>";
         // line 7
         echo (isset($context["TITLE"]) ? $context["TITLE"] : null);
         echo "</title>
-    ";
+      ";
         // line 8
         $context['_parent'] = (array) $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["CSS"]) ? $context["CSS"] : null));
         foreach ($context['_seq'] as $context["_key"] => $context["css_import"]) {
             // line 9
-            echo "    <link type=\"text/css\" href=\"";
+            echo "      <link type=\"text/css\" href=\"";
             echo (isset($context["css_import"]) ? $context["css_import"] : null);
             echo "\" rel=\"stylesheet\" />
-    ";
+      ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['css_import'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
         // line 11
-        echo "</head>
-<html>  
+        echo "  </head> 
   <body>
   \t";
-        // line 14
+        // line 13
         $this->displayBlock('header', $context, $blocks);
-        // line 45
+        // line 44
         echo "        
     ";
-        // line 46
+        // line 45
         $this->displayBlock('content', $context, $blocks);
-        // line 48
+        // line 47
         echo "    
     ";
-        // line 49
+        // line 48
         $this->displayBlock('footer', $context, $blocks);
-        // line 59
+        // line 58
         echo "
     ";
-        // line 60
+        // line 59
         $context['_parent'] = (array) $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["JS"]) ? $context["JS"] : null));
         foreach ($context['_seq'] as $context["_key"] => $context["js_import"]) {
-            // line 61
+            // line 60
             echo "    <script type=\"text/javascript\" src=\"";
             echo (isset($context["js_import"]) ? $context["js_import"] : null);
             echo "\"></script>
@@ -79,21 +78,21 @@ class __TwigTemplate_c8b8dcbf7a4a64b4af88d4f7aad974133c05435b38a73bcd5c79fddd742
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['js_import'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 63
+        // line 62
         echo "  </body>
 </html>";
     }
 
-    // line 14
+    // line 13
     public function block_header($context, array $blocks = array())
     {
-        // line 15
+        // line 14
         echo "    <div id=\"wrapper\">
       <nav role=\"navigation\" class=\"navbar navbar-inverse navbar-fixed-top\">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class=\"navbar-header\">
           <a href=\"";
-        // line 19
+        // line 18
         echo (isset($context["SITE_URL"]) ? $context["SITE_URL"] : null);
         echo "/admin/\" class=\"navbar-brand\">CEM Dashboard - Admin</a>
         </div>
@@ -102,27 +101,27 @@ class __TwigTemplate_c8b8dcbf7a4a64b4af88d4f7aad974133c05435b38a73bcd5c79fddd742
         <div class=\"collapse navbar-collapse navbar-ex1-collapse\">
           <ul class=\"nav navbar-nav side-nav\">
             <li><a href=\"";
-        // line 25
+        // line 24
         echo (isset($context["SITE_URL"]) ? $context["SITE_URL"] : null);
         echo "/admin/feedback\"><i class=\"fa fa-comments\"></i> View Feedback</a></li>
             <li><a href=\"";
-        // line 26
+        // line 25
         echo (isset($context["SITE_URL"]) ? $context["SITE_URL"] : null);
         echo "/admin/orders\"><i class=\"fa fa-pencil-square\"></i> View Orders</a></li>
             <li><a href=\"";
-        // line 27
+        // line 26
         echo (isset($context["SITE_URL"]) ? $context["SITE_URL"] : null);
         echo "/admin/clients\"><i class=\"fa fa-suitcase\"></i> Edit Clients</a></li>
             <li><a href=\"";
-        // line 28
+        // line 27
         echo (isset($context["SITE_URL"]) ? $context["SITE_URL"] : null);
         echo "/admin/invoices\"><i class=\"fa fa-envelope\"></i> Edit Invoices</a></li>
             <li><a href=\"";
-        // line 29
+        // line 28
         echo (isset($context["SITE_URL"]) ? $context["SITE_URL"] : null);
         echo "/admin/projects\"><i class=\"fa fa-tasks\"></i> Edit Projects</a></li>
             <li><a href=\"";
-        // line 30
+        // line 29
         echo (isset($context["SITE_URL"]) ? $context["SITE_URL"] : null);
         echo "/admin/users\"><i class=\"fa fa-users\"></i> Edit Users</a></li>
           </ul>
@@ -130,12 +129,12 @@ class __TwigTemplate_c8b8dcbf7a4a64b4af88d4f7aad974133c05435b38a73bcd5c79fddd742
           <ul class=\"nav navbar-nav navbar-right navbar-user\">
             <li class=\"dropdown user-dropdown\">
               <a data-toggle=\"dropdown\" class=\"dropdown-toggle\" href=\"#\"><i class=\"fa fa-user\"></i> ";
-        // line 35
+        // line 34
         echo twig_template_get_attributes($this, (isset($context["USER_INFO"]) ? $context["USER_INFO"] : null), "email");
         echo " <b class=\"caret\"></b></a>
               <ul class=\"dropdown-menu\">
                 <li><a href=\"";
-        // line 37
+        // line 36
         echo (isset($context["SITE_URL"]) ? $context["SITE_URL"] : null);
         echo "/admin/logout\"><i class=\"fa fa-power-off\"></i> Log Out</a></li>
               </ul>
@@ -147,24 +146,24 @@ class __TwigTemplate_c8b8dcbf7a4a64b4af88d4f7aad974133c05435b38a73bcd5c79fddd742
     ";
     }
 
-    // line 46
+    // line 45
     public function block_content($context, array $blocks = array())
     {
-        // line 47
+        // line 46
         echo "    ";
     }
 
-    // line 49
+    // line 48
     public function block_footer($context, array $blocks = array())
     {
-        // line 50
+        // line 49
         echo "      </div><!-- /#page-wrapper -->
   
     </div><!-- /#wrapper -->
     <script type=\"text/javascript\">
     <!--
         var site_url = \"";
-        // line 55
+        // line 54
         echo (isset($context["SITE_URL"]) ? $context["SITE_URL"] : null);
         echo "/admin/\";
     //-->
@@ -184,6 +183,6 @@ class __TwigTemplate_c8b8dcbf7a4a64b4af88d4f7aad974133c05435b38a73bcd5c79fddd742
 
     public function getDebugInfo()
     {
-        return array (  168 => 55,  161 => 50,  158 => 49,  154 => 47,  151 => 46,  139 => 37,  134 => 35,  126 => 30,  122 => 29,  118 => 28,  114 => 27,  110 => 26,  106 => 25,  97 => 19,  91 => 15,  88 => 14,  83 => 63,  74 => 61,  70 => 60,  67 => 59,  65 => 49,  62 => 48,  60 => 46,  57 => 45,  55 => 14,  41 => 9,  33 => 7,  22 => 1,  50 => 11,  40 => 8,  37 => 8,  32 => 4,  29 => 6,);
+        return array (  167 => 54,  160 => 49,  157 => 48,  153 => 46,  150 => 45,  138 => 36,  133 => 34,  125 => 29,  121 => 28,  117 => 27,  113 => 26,  109 => 25,  105 => 24,  96 => 18,  90 => 14,  87 => 13,  82 => 62,  73 => 60,  69 => 59,  66 => 58,  64 => 48,  61 => 47,  59 => 45,  56 => 44,  54 => 13,  50 => 11,  41 => 9,  37 => 8,  33 => 7,  29 => 6,  22 => 1,);
     }
 }
