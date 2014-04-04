@@ -56,7 +56,7 @@
      */
     protected function assemblePage(){   
       parent::assemblePage();   
-      $form = foo(new FormGenerator(null, $this->config->dir($this->source).'/login/login_form.json'))->getFormHTML();
+      $form = foo(new FormGenerator($this->config->dir($this->source).'/login/login_form.json'))->getFormHTML();
       $this->setDisplayVariables('LOGIN_FORM', $form);
     }   
 
@@ -68,7 +68,7 @@
      */
     public function processLogin($params){
       $this->mongodb->switchCollection('users');
-      $userCount = $this->mongodb->getCount(array('email' => $params['values']['email']));
+      $userCount = $this->mongodb->getCount(array('email' => $params['values']['email'], 'type' => 'ADMIN'));
       if($userCount != 1){
         echo 'restricted';
       } else {

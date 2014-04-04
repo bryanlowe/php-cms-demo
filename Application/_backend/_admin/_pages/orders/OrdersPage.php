@@ -1,9 +1,7 @@
 <?php
   namespace Application\_backend\_admin\_pages\orders;
   use Application\_backend\Backend as Backend;
-  use Framework\_engine\_dal\_mysql\Selection as Selection;
-  use Application\_engine\_bll\_collection\ClientsCollection as ClientsCollection;
-  use Application\_engine\_bll\_collection\OrdersCollection as OrdersCollection;
+  use Framework\_engine\_dal\_mongo\MongoAccessLayer as MongoAccessLayer;
 
   /**
    * Class: OrdersPage
@@ -11,12 +9,6 @@
    * Handles the Orders Page
    */
   class OrdersPage extends Backend{
-    /**
-     * Order entry array
-     *
-     *@access private
-     */
-    private $orderEntries = array();
 
     /**
      * Construct a new OrdersPage object
@@ -35,7 +27,7 @@
      */
     public function init(){
       parent::init();
-      $this->addJS('_admin/orders/scripts.min.js');
+      $this->addJS('_admin/orders/scripts.js');
       $this->setTitle('CEM Dashboard - Order Management');
       $this->setTemplate('orders/main.html');
     }
@@ -47,34 +39,13 @@
      */
     protected function assemblePage(){   
       parent::assemblePage();   
-      $this->getOrderRecords(0);
-      $this->setDisplayVariables('RECENT_ORDERS', $this->orderEntries);
-      $this->getOrderRecords(1);
-      $this->setDisplayVariables('PAST_ORDERS', $this->orderEntries);
-    }
-
-    /**
-     * Get recent posts
-     *    
-     * int param read
-     * @access private
-     */
-    private function getOrderRecords($read){
-      $this->orderEntries = array();
-      $records = foo(new OrdersCollection())->getByQuery('read_status = '.$this->db->quote($read), "order_date DESC");
-      if(($maxRecords = count($records)) > 0){
-        for($i = 0; $i < $maxRecords; $i++){
-          $client = foo(new ClientsCollection())->getByQuery('client_id = '.$this->db->quote($records[$i]['client_id']));
-          $clientName = "Anonymous";
-          $company = "";
-          if(count($client) > 0){
-            $client = array_shift($client);
-            $clientName = $client['client_name'];
-            $company = '-- '.$client['company'];
-          }
-          $this->orderEntries[] = array('order_id' => $records[$i]['order_id'], 'read_status' => $records[$i]['read_status'], 'order_date' => $records[$i]['order_date'], 'order_details' => $records[$i]['description'], 'customer_name' => $clientName, 'company' => $company);
-        } 
-      } 
+      $this->mongodb->switchCollection('feedback');
+      $recent_rst = $this->mongodb->aggregateDocs(array($this->mongoGen->matchStage(array("read" => 0, "type" => "order")), $this->mongoGen->sortStage(array("date" => -1))));
+      $past_rst = $this->mongodb->aggregateDocs(array($this->mongoGen->matchStage(array("read" => 1, "type" => "order")), $this->mongoGen->sortStage(array("date" => -1))));
+      $recent_posts = foo(new MongoAccessLayer('feedback'))->joinCollectionsByID($recent_rst['result'], 'clients', 'client_id');
+      $past_posts = foo(new MongoAccessLayer('feedback'))->joinCollectionsByID($past_rst['result'], 'clients', 'client_id');
+      $this->setDisplayVariables('RECENT_ORDERS', $recent_posts);
+      $this->setDisplayVariables('PAST_ORDERS', $past_posts);
     }
 
     /**
@@ -85,9 +56,7 @@
      */
     public function markAsRead($params){
       if($this->isAdminUser()){
-        $post = foo(new Selection('orders'))->getByID($params['orderID']);
-        $post->assign(array('read_status' => 1));
-        $post->save();
+        foo(new MongoAccessLayer('feedback'))->saveDocEntry(array('read' => 1), $params['_id']);
       }
     }    
   }

@@ -67,7 +67,7 @@
     protected function assemblePage(){   
       parent::assemblePage();   
       $this->mongodb->switchCollection('invoices');
-      $invoiceForm = foo(new FormGenerator(null, $this->config->dir($this->source).'/invoices/invoices_form.json'))->getFormHTML();
+      $invoiceForm = foo(new FormGenerator($this->config->dir($this->source).'/invoices/invoices_form.json'))->getFormHTML();
       $this->setDisplayVariables('INVOICE_FORM', $invoiceForm);
       $results = $this->mongodb->aggregateDocs($this->invoice_select_pipeline);
       $select_invoices = foo(new MongoAccessLayer('invoices'))->joinCollectionsByID($results['result'], 'clients', 'client_id'); 

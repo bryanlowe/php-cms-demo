@@ -5,7 +5,7 @@ function showFeedbackDetails(feedbackID, read){
   $('#feedback-details h2.no-entries').remove();
   $('#feedback-details').html($('#fb-details-'+feedbackID).html());
   if(!read){
-    $('#fb-link-'+feedbackID).attr('href', 'javascript:showFeedbackDetails('+feedbackID+', 1);');
+    $('#fb-link-'+feedbackID).attr('href', "javascript:showFeedbackDetails('"+feedbackID+"', 1);");
     $('#feedback-past').append($('#fb-entry-'+feedbackID).html());
     $('#fb-entry-'+feedbackID).remove();
     $('#feedback-past h2.no-entries').remove();
@@ -16,7 +16,7 @@ function showFeedbackDetails(feedbackID, read){
       type: "POST",
       url: site_url+"feedback",
       async: false,
-      data: {feedbackID: feedbackID, _ajaxFunc: "markAsRead"}
+      data: {_id: feedbackID, _ajaxFunc: "markAsRead"}
     });
   }
 }

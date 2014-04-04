@@ -8,13 +8,12 @@
     {% for css_import in CSS %}
     <link type="text/css" href="{{css_import}}" rel="stylesheet" />
     {% endfor %}
-</head>
-<html>  
+</head>  
   <body>
     {% block header %}
     <div id="welcome-wrapper">
       <div id="welcome-container" class="texture stitch">
-          <span>Welcome {{USER_INFO.user_name}}!</span>
+          <span>Welcome {{USER_INFO.fullname}}!</span>
           <div id="welcome-shadow"></div>
       </div>
     </div>

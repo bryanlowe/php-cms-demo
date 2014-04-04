@@ -26,9 +26,22 @@
      */
     public function init(){
       parent::init();
-      $this->addJS('_admin/home/scripts.min.js');
       $this->setTitle('CEM Dashboard - Admin');
       $this->setTemplate('home/main.html');
+    }
+
+    /**
+     * Gathers all the page elements
+     *              
+     * @access protected   
+     */
+    protected function assemblePage(){   
+      parent::assemblePage();   
+      $this->mongodb->switchCollection('feedback');
+      $post_count = $this->mongodb->getCount(array('read' => 0, 'type' => 'testimonial'));
+      $order_count = $this->mongodb->getCount(array('read' => 0, 'type' => 'order'));
+      $this->setDisplayVariables('POST_COUNT', $post_count);
+      $this->setDisplayVariables('ORDER_COUNT', $order_count);
     }
   }
 ?>

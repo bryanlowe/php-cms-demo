@@ -2,11 +2,9 @@
   namespace Application\_frontend;
   use Framework\_engine\_core\Page as Page;
   use Framework\_widgets\JSONForm\_engine\_core\FormGenerator as FormGenerator;
-  use Framework\_engine\_dal\_mysql\Collection as Collection;
-  use Framework\_engine\_dal\_mysql\Selection as Selection;
+  use Framework\_engine\_dal\_mongo\MongoAccessLayer as MongoAccessLayer;
   use Framework\_engine\_core\Encryption as Encryption;
-  use Framework\_engine\_db\_mysql\DB as DB;
-  use Framework\_engine\_db\_mysql\SQLGenerator as SQLGenerator;
+  use Framework\_engine\_db\_mongo\MongoGenerator as MongoGenerator;
   
   /**
    * Class: Frontend
@@ -80,7 +78,7 @@
       $this->addJS('_cem/bootstrap.min.js');
       $this->addJS('_common/common-functions.js');
       $this->addJS('_widgets/_jsonform/form-functions.js');
-      $this->addJS('_widgets/_sqlform/form-functions.js');
+      $this->addJS('_common/_mongodb/form-functions.js');
       $this->setTitle('CEM Dashboard');
       $this->assemblePage();
     }
@@ -100,40 +98,68 @@
     } 
 
     /**
-     * Performs save and delete actions for forms. 
-     * Calls the specified Form class and saves or deletes entries
-     *
-     * @param assoc array $param
+     * Gets the doc by _id
+     *    
+     * @param mixed array $params    
      * @access public
      */
-    public function processBLLForm($params){
-      $formNS = 'Application\_engine\_sqlform\_forms';
+    public function getEntry($params){
       if($this->isLoggedIn()){
-        $class = $formNS.'\\'.$params['form'].'Form';
-        if($params['action'] == "SAVE"){
-          echo foo(new $class($params['priKey']))->save($params['values']);
-        } else if($params['action'] == "DELETE"){
-          echo foo(new $class($params['priKey']))->delete($params['priKey']);
-        }
-      } 
+        $results = foo(new MongoAccessLayer($params['collection']))->getDocByID($params['_id'], $params['mongoid']);
+        echo json_encode($results);
+      }
     }
 
     /**
-     * Gather BLL Resources from the database
+     * Saves a doc to the database
      *
-     * @param assoc array $param
-     * @param int priKey
+     * @param mixed array $params    
      * @access public
      */
-    public function gatherBLLResource($params){
+    public function saveEntry($params){
       if($this->isLoggedIn()){
-        $where = "";
-        if($params['bllAction'] == "SELECTION"){
-          echo json_encode(array(foo(new Selection($params['table']))->getByID($params['primaryKey'])->getValues()));  
-        } else {
-          echo json_encode(foo(new Collection($params['table']))->getAll(null, null, null, $params['order']));  
-        }
+        $results = foo(new MongoAccessLayer($params['doc']['collection']))->saveDocEntry($params['doc']['values'], $params['doc']['_id']);
+        echo json_encode($results);
+      }
+    }
+
+    /**
+     * Saves a set to an existing doc to the database
+     *
+     * @param mixed array $params    
+     * @access public
+     */
+    public function addSetToEntry($params){
+      if($this->isLoggedIn()){
+        $results = foo(new MongoAccessLayer($params['doc']['collection']))->addSetToDocEntry($params['doc']['set'], $params['doc']['values'], $params['doc']['_id'], $params['doc']['mongoid']);
+        echo json_encode($results);
       }    
+    }
+
+    /**
+     * Removes a set value from the doc in the database
+     *
+     * @param mixed array $params    
+     * @access public
+     */
+    public function removeSetFromEntry($params){
+      if($this->isLoggedIn()){
+        $results = foo(new MongoAccessLayer($params['doc']['collection']))->pullSetFromDocEntry($params['doc']['set'], $params['doc']['values'], $params['doc']['_id'], $params['doc']['mongoid']);
+        echo json_encode($results);
+      }    
+    }
+
+    /**
+     * Deletes a doc from the database
+     *
+     * @param mixed array $params    
+     * @access public
+     */
+    public function deleteEntry($params){
+      if($this->isLoggedIn()){
+        $results = foo(new MongoAccessLayer($params['doc']['collection']))->deleteDocEntry($params['doc']['_id'], $params['doc']['mongoid']);
+        echo json_encode($results);
+      }
     }
 
     /**

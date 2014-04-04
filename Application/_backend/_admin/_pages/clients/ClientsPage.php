@@ -54,7 +54,7 @@
       $this->mongodb->switchCollection('clients');
       $select_clients = $this->mongodb->aggregateDocs($this->client_select_pipeline);
       $this->setDisplayVariables('SELECT_CLIENTS', $select_clients['result']);
-      $clientForm = foo(new FormGenerator(null, $this->config->dir($this->source).'/clients/clients_form.json'))->getFormHTML();
+      $clientForm = foo(new FormGenerator($this->config->dir($this->source).'/clients/clients_form.json'))->getFormHTML();
       $this->setDisplayVariables('CLIENT_FORM', $clientForm);
     }
 

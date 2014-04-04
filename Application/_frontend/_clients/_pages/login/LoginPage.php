@@ -3,9 +3,8 @@
   use Application\_frontend\Frontend as Frontend;
   use Framework\_engine\_core\Register as Register;
   use Framework\_widgets\JSONForm\_engine\_core\FormGenerator as FormGenerator;
-  use Application\_engine\_bll\_collection\ClientsCollection as ClientsCollection;
-  use Application\_engine\_bll\_collection\UsersCollection as UsersCollection;
   use Framework\_engine\_core\Encryption as Encryption;
+  use Framework\_engine\_dal\_mongo\MongoAccessLayer as MongoAccessLayer;
   
   /**
    * Class: LoginPage
@@ -28,9 +27,7 @@
      */
     public function __construct(){
       $this->config = Register::getInstance()->get('config');
-      $this->pageRequests = Register::getInstance()->get('pageRequests');
-      $this->db = Register::getInstance()->get('db');
-      $this->uri = Register::getInstance()->get('uri');
+      $this->mongodb = Register::getInstance()->get('mongodb');
       $this->source = "client-templates";
       $this->pass_enc = new Encryption(MCRYPT_BlOWFISH, MCRYPT_MODE_CBC);
       $this->loader = new \Twig_Loader_Filesystem($this->config->dir($this->source));
@@ -60,31 +57,30 @@
      */
     protected function assemblePage(){   
       parent::assemblePage();   
-      $form = foo(new FormGenerator(null, $this->config->dir($this->source).'/login/login_form.json'))->getFormHTML();
+      $form = foo(new FormGenerator($this->config->dir($this->source).'/login/login_form.json'))->getFormHTML();
       $this->setDisplayVariables('LOGIN_FORM', $form);
     }
 
     /**
-     * Processes the client login form
+     * Processes the admin login form
      * 
      * @param assoc array $params
      * @access public
      */
     public function processLogin($params){
-      $userCount = foo(new UsersCollection())->getLoginCount($params['values']['email'], $params['values']['type']);
+      $this->mongodb->switchCollection('users');
+      $userCount = $this->mongodb->getCount(array('email' => $params['values']['email'], 'type' => 'CLIENT'));
       if($userCount != 1){
         echo 'restricted';
       } else {
-        $userInfo = foo(new UsersCollection())->getByQuery('email = '.$this->db->quote($params['values']['email']));
-        $user = array_shift($userInfo);
-        $decryptedPassword = $this->pass_enc->decrypt(base64_decode($user['password']), $this->config->passwords['login']);
+        $userInfo = $this->mongodb->getDocument(array('email' => $params['values']['email']));
+        $decryptedPassword = $this->pass_enc->decrypt(base64_decode($userInfo['password']), $this->config->passwords['login']);
         if($decryptedPassword == $params['values']['password']){
           $_SESSION[$this->config->sessionID]['LOGGED_IN'] = true;
           $_SESSION[$this->config->sessionID]['USER_TYPE'] = "CLIENT";
-          $_SESSION[$this->config->sessionID]['USER_INFO'] = $user;
-          $clientInfo = foo(new ClientsCollection())->getByQuery('email = '.$this->db->quote($params['values']['email']));
-          $client = array_shift($clientInfo);
-          $_SESSION[$this->config->sessionID]['CLIENT_INFO'] = $client;
+          $_SESSION[$this->config->sessionID]['USER_INFO'] = $userInfo;
+          $clientInfo = foo(new MongoAccessLayer('users'))->joinCollectionsByID(array($userInfo), 'clients', '_id');
+          $_SESSION[$this->config->sessionID]['CLIENT_INFO'] = $clientInfo[0]['clients'];
           echo 'pass';  
         } else {
           echo 'restricted';

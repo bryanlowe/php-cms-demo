@@ -1,9 +1,7 @@
 <?php
   namespace Application\_frontend\_clients\_pages\account;
   use Application\_frontend\Frontend as Frontend;
-  use Application\_engine\_bll\_collection\ClientsCollection as ClientsCollection;
-  use Framework\_engine\_dal\_mysql\Selection as Selection;
-  use Framework\_widgets\SQLForm\_engine\_core\Form as Form;
+  use Framework\_widgets\JSONForm\_engine\_core\FormGenerator as FormGenerator;
   
   /**
    * Class: AccountPage
@@ -30,7 +28,7 @@
       parent::init();
       $this->addCSS('_common/jquery-ui.css');
       $this->addJS('_common/jquery-ui.js');
-      $this->addJS('_clients/account/scripts.min.js');
+      $this->addJS('_clients/account/scripts.js');
       $this->setTitle('CEM Dashboard - Edit Account');
       $this->setTemplate('account/main.html');
     }
@@ -41,11 +39,23 @@
      * @access protected   
      */
     protected function assemblePage(){   
-      parent::assemblePage();   
-      $clientForm = foo(new Form('clients'))->getFormHTML();
+      parent::assemblePage();  
+      $_SESSION[$this->config->sessionID]['CLIENT_INFO']['_id'] = (string) $_SESSION[$this->config->sessionID]['CLIENT_INFO']['_id'];
+      $clientForm = foo(new FormGenerator($this->config->dir($this->source).'/account/clients_form.json', $_SESSION[$this->config->sessionID]['CLIENT_INFO']))->getFormHTML();
       $this->setDisplayVariables('CLIENT_FORM', $clientForm);
-      $this->setDisplayVariables('CLIENT_ID', $_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_id']);
       $this->setDisplayVariables('CLIENT_RATE', number_format($_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_rate'], 2, '.', ','));
+    }
+
+    /**
+     * Saves a doc to the database
+     *
+     * @param mixed array $params    
+     * @access public
+     */
+    public function saveEntry($params){
+      parent::saveEntry($params);
+      $this->mongodb->switchCollection('clients');
+      $_SESSION[$this->config->sessionID]['CLIENT_INFO'] = $this->mongodb->getDocument(array('_id' => new \MongoId($params['doc']['_id'])));
     }
   }
 ?>

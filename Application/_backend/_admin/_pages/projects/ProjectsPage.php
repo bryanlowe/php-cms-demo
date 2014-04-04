@@ -65,7 +65,7 @@
     protected function assemblePage(){   
       parent::assemblePage();   
       $this->mongodb->switchCollection('projects');
-      $projectForm = foo(new FormGenerator(null, $this->config->dir($this->source).'/projects/projects_form.json'))->getFormHTML();
+      $projectForm = foo(new FormGenerator($this->config->dir($this->source).'/projects/projects_form.json'))->getFormHTML();
       $this->setDisplayVariables('PROJECT_FORM', $projectForm);
       $results = $this->mongodb->aggregateDocs($this->project_select_pipeline);
       $select_projects = foo(new MongoAccessLayer('projects'))->joinCollectionsByID($results['result'], 'clients', 'client_id'); 

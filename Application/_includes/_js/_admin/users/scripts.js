@@ -16,7 +16,7 @@ $(document).ready(function(){
 /**
  * Reloads page elements to reflect changes in the database
  */
-function reloadPageElements(collection,false){
+function reloadPageElements(collection, ajax){
   	$('#'+collection+'_form')[0].reset();
   	$('#'+collection+'_form #_id').val('');
   	$('#'+collection+'_select').prop('selectedIndex',0);
@@ -33,8 +33,6 @@ function reloadPageElements(collection,false){
  * Function updates the user form with client information
  *
  * @param clientid - mongo client id number
- * @param collection - mongo collection
- * @param fields - mongo key attributes to be collected
  */
 function clientToUserForm(clientid){
   if(clientid != ''){
@@ -43,7 +41,7 @@ function clientToUserForm(clientid){
         dataType: "json",
         url: site_url+'users',
         async: false,
-        data: {_id: clientid, collection: 'clients', mongoid: true, _ajaxFunc: "getDocByID"}
+        data: {_id: clientid, collection: 'clients', mongoid: true, _ajaxFunc: "getEntry"}
     });
     var formValues = $.parseJSON(result.responseText);
     $('#users_form')[0].reset();

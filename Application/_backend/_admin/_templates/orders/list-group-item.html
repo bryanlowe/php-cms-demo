@@ -1,10 +1,10 @@
-<span id="order-entry-{{order.order_id}}">
-	<a id="order-link-{{order.order_id}}" class="list-group-item" href="javascript:showOrderDetails({{order.order_id}}, {{order.read_status}});">
-	   <span class="badge">{{order.order_date}}</span>
-	   Order Request: {{order.customer_name}} {{order.company}}
+<span id="order-entry-{{order._id}}">
+	<a id="order-link-{{order._id}}" class="list-group-item" href="javascript:showOrderDetails('{{order._id}}', {{order.read}});">
+	   <span class="badge">{{order.date}}</span>
+	   Order Request: {{order.clients.client_name}} {{order.clients.company}}
 	</a>
-	<div id="order-details-{{order.order_id}}" style="display: none;">
-		{{order.order_details}}
-		<p align="right"><i>-- {{order.customer_name}} {{order.company}}</i></p>
+	<div id="order-details-{{order._id}}" style="display: none;">
+		{{order.description}}
+		<p align="right"><i>-- {{order.clients.client_name}} {{order.clients.company}}</i></p>
 	</div>
 </span>

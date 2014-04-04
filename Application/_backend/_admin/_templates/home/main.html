@@ -8,14 +8,23 @@
 	<div class="row task-panel">
 		<!-- Feedback Block -->
 		<div class="col-lg-3 col-lg-offset-3">
-        <div id="feedback-container" class="panel panel-info">
+        {% if POST_COUNT > 0 %}
+          <div id="feedback-container" class="panel panel-success">
+        {% else %}
+            <div id="feedback-container" class="panel panel-info">
+        {% endif %}
           	<div class="panel-heading">
             	<div class="row">
                 	<div class="col-xs-6">
                   	<i class="fa fa-comment fa-5x"></i>
                 	</div>
                 	<div id="feedback-title" class="col-xs-6 text-right">
-                  	<p class="task-title">Feedback</p>
+                    {% if POST_COUNT > 0 %}
+                      <p class="announcement-heading">{{ POST_COUNT }}</p>
+                      <p class="announcement-text">New Feedback!</p>
+                    {% else %}
+                  	  <p class="task-title">Feedback</p>
+                    {% endif %}
                 	</div>
             	</div>
           	</div>
@@ -37,14 +46,23 @@
 
     <!-- Order Block -->
     <div class="col-lg-3">
-      <div id="order-container" class="panel panel-info">
+      {% if ORDER_COUNT > 0 %}
+        <div id="order-container" class="panel panel-success">
+      {% else %}
+          <div id="order-container" class="panel panel-info">
+      {% endif %}
         <div class="panel-heading">
           <div class="row">
             <div class="col-xs-6">
               <i class="fa fa-pencil-square fa-5x"></i>
             </div>
             <div id="order-title" class="col-xs-6 text-right">
-              <p class="task-title">Orders</p>
+              {% if ORDER_COUNT > 0 %}
+                <p class="announcement-heading">{{ ORDER_COUNT }}</p>
+                <p class="announcement-text">New Orders!</p>
+              {% else %}
+                <p class="task-title">Orders</p>
+              {% endif %}
             </div>
           </div>
         </div>

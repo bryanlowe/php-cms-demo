@@ -231,13 +231,28 @@ a.welcome-link:active {
     background: transparent;
 }
 #quoteme {
-    width: 330px;
+    width: 280px;
     display: block;
     float :left;
     clear: both;
     padding: 30px 10px 10px;
 }
 #slider, #sliderb {
-    width: 305px;
+    width: 245px;
 }
 /* End Quote Calculator */
+
+.clear {
+  clear: both;
+  padding: 10px;
+}
+
+.btn_container, .input_container{
+  float: left;
+  padding-left: 10px;
+}
+
+hr { 
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

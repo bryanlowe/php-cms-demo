@@ -53,34 +53,29 @@
      *
      * @access public
      */
-    public function __construct($json = null, $values = array()){
+    public function __construct($jsonStr = null, $jsonFile = null){
       $this->config = Register::getInstance()->get('config');     
-      if($json == null){
+      if($jsonStr == null && $jsonFile == null){
         $this->form = "<p>No JSON source entered.</p>";
       } else {
-        $type = "";
-        if(is_array($json)){
-          $type = 'array';
-          $this->json = json_encode($json);
-          $this->json = json_decode($this->json);
-        } else if(is_object($json)){
-          $type = 'object';
-          $this->json = json_decode($json);
-        } else if(is_file($json)){
-          $type = 'file';
-          $this->json = json_decode(file_get_contents($json)); 
-        } else if(is_string($json)){
-          $type = 'string';
-          $this->json = json_decode($json);
-        }       
-  
-        if($this->json != null){
-          $this->setValues($values);
-          $this->jsonToXML();
-          $this->createForm();
+        if($jsonStr != null){
+          $this->json = json_decode($jsonStr);  
+          if($this->json != null){
+            $this->jsonToXML();
+            $this->createForm();
+          } else {
+            $this->form = "<p>JSON string source has bad syntax.</p>";
+          }
         } else {
-          $this->form = "<p>JSON ".$type." source has bad syntax.</p>";
-        }        
+          $this->json = json_decode(file_get_contents($jsonFile)); 
+          if($this->json != null){
+            $this->jsonToXML();
+            $this->createForm();
+          } else {
+            $this->form = "<p>JSON file source has bad syntax.</p>";
+          }
+        }
+        
       }
     }
 
@@ -92,21 +87,6 @@
      */
     public function getFormHTML(){
       return $this->form;
-    }
-
-    /**
-     * Adds values into the JSON array
-     *
-     * @access private
-     */
-    private function setValues($values){
-      if(isset($values)){
-        foreach($this->json->form as $input){
-          if(array_key_exists($input->id, $values)){
-            $input->value = $values[$input->id];
-          }
-        }
-      }
     }
   
     /**   

@@ -5,7 +5,7 @@ function showOrderDetails(orderID, read){
   $('#order-details h2.no-entries').remove();
   $('#order-details').html($('#order-details-'+orderID).html());
   if(!read){
-    $('#order-link-'+orderID).attr('href', 'javascript:showOrderDetails('+orderID+', 1);');
+    $('#order-link-'+orderID).attr('href', "javascript:showOrderDetails('"+orderID+"', 1);");
     $('#order-past').append($('#order-entry-'+orderID).html());
     $('#order-entry-'+orderID).remove();
     $('#order-past h2.no-entries').remove();
@@ -16,7 +16,7 @@ function showOrderDetails(orderID, read){
       type: "POST",
       url: site_url+"orders",
       async: false,
-      data: {orderID: orderID, _ajaxFunc: "markAsRead"}
+      data: {_id: orderID, _ajaxFunc: "markAsRead"}
     });
   }
 }

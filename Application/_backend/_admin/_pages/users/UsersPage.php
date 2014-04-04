@@ -30,7 +30,7 @@
      */
     public function init(){
       parent::init();
-      $this->addJS('_admin/users/scripts.min.js');
+      $this->addJS('_admin/users/scripts.js');
       $this->setTitle('CEM Dashboard - User Management');
       $this->setTemplate('users/main.html');
     }
@@ -45,7 +45,7 @@
       $this->mongodb->switchCollection('users');
       $select_users = $this->mongodb->getDocuments(array(),array("fullname" => 1));
       $this->setDisplayVariables('SELECT_USERS', $select_users);
-      $userForm = foo(new FormGenerator(null, $this->config->dir($this->source).'/users/user_form.json'))->getFormHTML();
+      $userForm = foo(new FormGenerator($this->config->dir($this->source).'/users/user_form.json'))->getFormHTML();
       $this->setDisplayVariables('USER_FORM', $userForm);
       $this->mongodb->switchCollection('clients');
       $nonuser_clients = $this->mongodb->getDocuments(array("is_user" => 0),array("company" => 1, "client_name" => 1));
@@ -94,8 +94,9 @@
       if($this->isAdminUser()){
         $params['doc']['values']['password'] = base64_encode($this->pass_enc->encrypt($params['doc']['values']['password'], $this->config->passwords['login']));
         $results = foo(new MongoAccessLayer($params['doc']['collection']))->saveDocEntry($params['doc']['values'], $params['doc']['_id']);
-        if(($clientCount = $this->mongodb->getCount(array('_id' => $params['doc']['_id']))) == 1){
-          $client = $this->mongodb->getDocument(array('_id' => $params['doc']['_id']));
+        $this->mongodb->switchCollection('clients');
+        if(($clientCount = $this->mongodb->getCount(array('_id' => new \MongoId($params['doc']['_id'])))) == 1){
+          $client = $this->mongodb->getDocument(array('_id' => new \MongoId($params['doc']['_id'])), array('_id' => 0));
           $client['is_user'] = 1;
           foo(new MongoAccessLayer('clients'))->saveDocEntry($client, $params['doc']['_id']);
         }
@@ -112,9 +113,10 @@
     public function deleteEntry($params){
       if($this->isAdminUser()){
         $results = foo(new MongoAccessLayer($params['doc']['collection']))->deleteDocEntry($params['doc']['_id'], $params['doc']['mongoid']);
-        if(($clientCount = $this->mongodb->getCount(array('_id' => $params['doc']['_id']))) == 1){
-          $client = $this->mongodb->getDocument(array('_id' => $params['doc']['_id']));
-          $client['is_user'] = 0;
+        $this->mongodb->switchCollection('clients');
+        if(($clientCount = $this->mongodb->getCount(array('_id' => new \MongoId($params['doc']['_id'])))) == 1){
+          $client = $this->mongodb->getDocument(array('_id' => new \MongoId($params['doc']['_id'])));
+          $client['is_user'] = 1;
           foo(new MongoAccessLayer('clients'))->saveDocEntry($client, $params['doc']['_id']);
         }
         echo json_encode($results);

@@ -1,10 +1,18 @@
-<span id="fb-entry-{{post.feedback_id}}">
-	<a id="fb-link-{{post.feedback_id}}" class="list-group-item" href="javascript:showFeedbackDetails({{post.feedback_id}}, {{post.read_status}});">
-	   <span class="badge">{{post.feedback_date}}</span>
-	   Feedback: {{post.customer_name}} {{post.company}}
+<span id="fb-entry-{{post._id}}">
+	<a id="fb-link-{{post._id}}" class="list-group-item" href="javascript:showFeedbackDetails('{{post._id}}', {{post.read}});">
+	    <span class="badge">{{post.date}}</span>
+	    {% if post.clients %}
+	   		Feedback: {{post.clients.client_name}} {{post.clients.company}}
+	    {% else %}
+	   		Feedback: Anonymous
+	   	{% endif %}
 	</a>
-	<div id="fb-details-{{post.feedback_id}}" style="display: none;">
-		{{post.feedback_details}}
-		<p align="right"><i>-- {{post.customer_name}} {{post.company}}</i></p>
+	<div id="fb-details-{{post._id}}" style="display: none;">
+		{{post.description}}
+		{% if post.client %}
+	   		<p align="right"><i>-- {{post.clients.client_name}} {{post.clients.company}}</i></p>
+	    {% else %}
+	   		<p align="right"><i>-- Anonymous</i></p>
+	   	{% endif %}
 	</div>
 </span>
