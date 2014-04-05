@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<form_config>
-  <form title="User Group">
-    <input order="1" type="hidden" label="user_group_id" id="user_group_id" class="primaryKey"/>
-    <input order="1" type="text" label="group_name" id="group_name"/>
-    <input order="1" type="button" id="saveBtn" value="SAVE ENTRY" onclick="saveEntry('UserGroup');"/>
-    <input order="1" type="button" id="deleteBtn" value="DELETE ENTRY" onclick="deleteEntry('UserGroup');"/>
-  </form>
-</form_config>
