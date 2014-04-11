@@ -1,12 +1,18 @@
 <tr>
-	<td><a id="project_{{project.project_id}}" class="toggleDesc">{{project.project_title}}</a></td>
-	<td>{{project.status}}</td>
-	<td>{{project.update_date}}</td>
+	<td><a id="project_{{project._id}}" class="toggleDesc">{{project.project_tag}}</a><div id="project_{{project._id}}_desc" class="hide">{{project.project_description}}</div></td>
+	<td>{{project.project_date}}</td>
 </tr>
-<div id="project_{{project.project_id}}_details" class="hide">
-	<p><strong>Last Updated:</strong> {{project.update_date}}</p>
-	<p><strong>Description:</strong></p>
-	<p>{{project.description}}</p>
-	<p><strong>Current Status:</strong></p>
-	<p>{{project.status_desc}}</p>
+<div id="project_{{project._id}}_details" class="hide">
+	{% if project.project_timeline %}
+		{% for event in project.project_timeline %}
+			<p><strong>Date:</strong> {{event.date}}</p>
+			<p><strong>Description:</strong></p>
+			<p>{{event.description}}</p>
+			{% if not loop.last %}
+				<hr>
+			{% endif %}
+		{% endfor %}
+	{% else %}
+		No project timeline available
+	{% endif %}
 </div>

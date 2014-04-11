@@ -1,13 +1,26 @@
 <tr>
-	<td><a id="invoice_{{invoice.invoice_id}}" class="toggleDesc">{{invoice.invoice_number}}</a></td>
-	<td><a href="{{invoice.link_href}}" {{invoice.link_target}}>{{invoice.invoice_file}}</a></td>
-	<td>{{invoice.update_date}}</td>
-	<td>{{invoice.cost}}</td>
+	<td><a id="invoice_{{invoice._id}}" class="toggleDesc">{{invoice.invoice_number}}</a><div id="invoice_{{invoice._id}}_desc" class="hide">{{invoice.invoice_description}}</div></td>
+	<td>
+		{% if invoice.invoice_filename %}
+			<a href="/Media/_documents/_invoices/{{invoice.invoice_filename}}" target="_blank">{{invoice.invoice_filename}}</a>
+		{% else %}
+			<a>Not Available</a>
+		{% endif %}
+	</td>
+	<td>{{invoice.invoice_date}}</td>
+	<td>{{invoice.invoice_cost}}</td>
 </tr>
-<div id="invoice_{{invoice.invoice_id}}_details" class="hide">
-	<p><strong>Last Updated:</strong> {{invoice.update_date}}</p>
-	<p><strong>Description:</strong></p>
-	<p>{{invoice.description}}</p>
-	<p><strong>Current Status:</strong></p>
-	<p>{{invoice.status}}</p>
+<div id="invoice_{{invoice._id}}_details" class="hide">
+	{% if invoice.invoice_history %}
+		{% for event in invoice.invoice_history %}
+			<p><strong>Date:</strong> {{event.date}}</p>
+			<p><strong>Description:</strong></p>
+			<p>{{event.description}}</p>
+			{% if not loop.last %}
+				<hr>
+			{% endif %}
+		{% endfor %}
+	{% else %}
+		No invoice status timeline available
+	{% endif %}
 </div>

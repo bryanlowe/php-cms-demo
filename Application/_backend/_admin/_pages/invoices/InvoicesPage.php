@@ -116,6 +116,7 @@
       if(isset($params['doc']['values']['client_id'])){
         $params['doc']['values']['client_id'] = new \MongoId($params['doc']['values']['client_id']);
       }
+      $params['doc']['values']['invoice_date'] = date("m-d-Y H:i:s");
       parent::saveEntry($params);
     }
 

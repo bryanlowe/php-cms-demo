@@ -40,10 +40,11 @@
      */
     protected function assemblePage(){   
       parent::assemblePage();  
-      $_SESSION[$this->config->sessionID]['CLIENT_INFO']['_id'] = (string) $_SESSION[$this->config->sessionID]['CLIENT_INFO']['_id'];
-      $clientForm = foo(new FormGenerator($this->config->dir($this->source).'/account/clients_form.json', $_SESSION[$this->config->sessionID]['CLIENT_INFO']))->getFormHTML();
+      $clientInfo = $_SESSION[$this->config->sessionID]['CLIENT_INFO'];
+      $clientInfo['_id'] = (string) $clientInfo['_id'];
+      $clientForm = foo(new FormGenerator($this->config->dir($this->source).'/account/clients_form.json', $clientInfo))->getFormHTML();
       $this->setDisplayVariables('CLIENT_FORM', $clientForm);
-      $this->setDisplayVariables('CLIENT_RATE', number_format($_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_rate'], 2, '.', ','));
+      $this->setDisplayVariables('CLIENT_RATE', number_format($clientInfo['client_rate'], 2, '.', ','));
     }
 
     /**

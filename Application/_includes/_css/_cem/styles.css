@@ -256,3 +256,7 @@ hr {
     margin-top: 5px;
     margin-bottom: 5px;
 }
+
+table#invoiceHistoryTbl th {
+    white-space: nowrap;
+}

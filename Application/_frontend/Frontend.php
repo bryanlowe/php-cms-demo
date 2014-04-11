@@ -49,6 +49,7 @@
      */
     public function __construct(){
       parent::__construct();
+      $this->mongoGen = new MongoGenerator();
       $this->pass_enc = new Encryption(MCRYPT_BlOWFISH, MCRYPT_MODE_CBC);
       if(!$_SESSION[$this->config->sessionID]['LOGGED_IN']
       || $_SESSION[$this->config->sessionID]['USER_TYPE'] != $this->userType){

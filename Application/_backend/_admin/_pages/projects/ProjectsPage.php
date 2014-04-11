@@ -116,7 +116,10 @@
      * @access public
      */
     public function saveEntry($params){
-      $params['doc']['values']['client_id'] = new \MongoId($params['doc']['values']['client_id']);
+      if(isset($params['doc']['values']['client_id'])){
+        $params['doc']['values']['client_id'] = new \MongoId($params['doc']['values']['client_id']);
+      }
+      $params['doc']['values']['project_date'] = date("m-d-Y H:i:s");
       parent::saveEntry($params);
     }
 
