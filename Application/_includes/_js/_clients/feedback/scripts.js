@@ -1,54 +1,44 @@
 $(document).ready(function(){
-	$("#client_id").val($("#client_id_holder").val());
-	$("#description").attr('rows', '15');
-	$("#anonymous_1").click(function(){
-		if($(this).is(":checked")){
-			$("#client_id").val(0);	
-			$("#project").val("");
-			$("#project").attr('disabled', true);
+	$("#description_container").addClass('col-xs-12');
+	$("#description").prop('rows', 15);
+	$('#submitBtn').click(function(){
+		saveFeedback();
+	});
+	$('#anonymous_select').change(function(){
+		if($(this).val() > 0){
+			$("#projects_select").prop('disabled', false);	
 		} else {
-			$("#client_id").val($("#client_id_holder").val());	
-			$("#project").val("");
-			$("#project").attr('disabled', false);
+			$("#projects_select").val('');	
+			$("#projects_select").prop('disabled', true);	
 		}
 	});
-	var select = $("#project").prop("options");
-    var optJSON = $.parseJSON(clientProjects);
-    $.each(optJSON, function(i, opt) {
-        select[select.length] = new Option(opt['project_title'], opt['project_title']);
-    });
 });
 
 /**
- * Reloads page elements to reflect changes in the database
- */
-function reloadPageElements(){
-	$("#feedback_form")[0].reset();
-	$("#client_id").val($("#client_id_holder").val());
-}
-
-/**
- * Saves the order form
+ * Saves the feedback form
  */
 function saveFeedback(){
-	var description = $("#description").val();
-	if($("#project").val() != ""){
-		var projectTitle = "Project Title: " + $("#project").val() + " -- \n\n";
-		if(description.indexOf(projectTitle) != 0){
-			description = projectTitle + description;
-			$("#description").val(description);
-		}
+	if(validateForm('feedback_form') != false){
+		statusApp.showPleaseWait();
+	    var docObj = createDocFromForm('feedback_form');
+	    docObj.project_id = $('#projects_select').val();
+	    docObj.anonymous = $('#anonymous_select').val();
+	    var results = $.ajax({
+		    type: "POST",
+		    url: site_url+'feedback',
+		    async: false,
+		    data: {doc: docObj, _ajaxFunc: "saveEntry"}
+		});
+	    results = $.parseJSON(results.responseText);
+	  	statusApp.hidePleaseWait();
+	    if(results.err == null){
+	      popUpMsg("Thank you for your feedback!");
+	      $("#feedback_form")[0].reset();
+	      return true;
+	    } else {
+	      popUpMsg(results.err);
+	      return false;
+	    }
 	}
-	var results = saveEntry('Feedback');
-	if(results.length > 0){
-		if(results[0] == 'error'){
-			popUpMsg("Form is not complete!");
-   			displayErrors(results[1], 'feedback');
-    		return false;
-	  	} else if(results[0] == 'pass') {
-	    	popUpMsg("Your feedback has been submitted!");
-	    	reloadPageElements();
-	    	return true;
-	  	}
-	}
+	return false;
 }

@@ -59,5 +59,17 @@
         foo(new MongoAccessLayer('feedback'))->saveDocEntry(array('read' => 1), $params['_id']);
       }
     }
+
+    /**
+     * Delete a post
+     *    
+     * mixed array params
+     * @access public
+     */
+    public function deletePost($params){
+      if($this->isAdminUser()){
+        foo(new MongoAccessLayer('feedback'))->deleteDocEntry($params['_id']);
+      }
+    }
   }
 ?>

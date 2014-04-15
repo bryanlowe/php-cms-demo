@@ -3,22 +3,33 @@
 {% block content %}
 <div class="container">
 	<div class="row">
-		<div class="col-lg-6 col-lg-offset-2">
+		<div class="col-lg-6 col-lg-offset-3">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<h3 class="panel-title">Let us know what you think!</h3>
 				</div>
 				<div class="panel-body">
+					<div id="projects_select_container">
+						{% include "feedback/projects_select.html" %}
+					</div>
+					<div class="clear"></div>
+					<div id="anonymous_select_container">
+						<label for="anonymous_select">I prefer to be:</label><br>
+						<select class="form-control" name="anonymous_select" id="anonymous_select">
+							<option value="1">myself</option>
+							<option value="0">anonymous</option>
+						</select>
+					</div>
+					<div class="clear"></div>
 					{{FEEDBACK_FORM|raw}}
+					<div class="button_panel">
+						<div class="btn_container">
+							<input type="button" class="btn btn-success" value="SUBMIT FEEDBACK" name="submitBtn" id="submitBtn">
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-<input type="hidden" id="client_id_holder" value="{{CLIENT_ID}}" />
-<script type="text/javascript">
-<!--
-	var clientProjects = '{{PROJECTS}}';
-//-->
-</script>
 {% endblock %}

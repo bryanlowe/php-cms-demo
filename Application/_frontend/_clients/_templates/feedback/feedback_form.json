@@ -1,0 +1,13 @@
+{
+	"id": "feedback",
+	"form": [
+		{ 
+			"order": 1, 
+			"required": 1, 
+			"type": "textarea", 
+			"id": "description",
+			"value": "", 
+			"class": "form-control input-lg"
+		}
+	]
+}

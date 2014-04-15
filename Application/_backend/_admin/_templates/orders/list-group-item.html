@@ -1,10 +1,16 @@
 <span id="order-entry-{{order._id}}">
-	<a id="order-link-{{order._id}}" class="list-group-item" href="javascript:showOrderDetails('{{order._id}}', {{order.read}});">
-	   <span class="badge">{{order.date}}</span>
-	   Order Request: {{order.clients.client_name}} {{order.clients.company}}
-	</a>
-	<div id="order-details-{{order._id}}" style="display: none;">
-		{{order.description}}
-		<p align="right"><i>-- {{order.clients.client_name}} {{order.clients.company}}</i></p>
+	<div class="list-group-item">
+		{% if order.read == 1 %}
+		<button class="close" type="button" onclick="deletePost('{{ order._id }}');">×</button>
+		{% else %}
+		<span class="badge">{{order.date}}</span>
+		{% endif %}
+		<a id="order-link-{{order._id}}" href="javascript:showOrderDetails('{{order._id}}', {{order.read}});">	   
+		   Order Request: {{order.clients.client_name}} {{order.clients.company}}
+		</a>
+		<div id="order-details-{{order._id}}" style="display: none;">
+			{{order.description}}
+			<p align="right"><i>-- {{order.clients.client_name}} {{order.clients.company}}</i></p>
+		</div>
 	</div>
 </span>

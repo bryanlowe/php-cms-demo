@@ -1,18 +1,24 @@
 <span id="fb-entry-{{post._id}}">
-	<a id="fb-link-{{post._id}}" class="list-group-item" href="javascript:showFeedbackDetails('{{post._id}}', {{post.read}});">
-	    <span class="badge">{{post.date}}</span>
-	    {% if post.clients %}
-	   		Feedback: {{post.clients.client_name}} {{post.clients.company}}
-	    {% else %}
-	   		Feedback: Anonymous
-	   	{% endif %}
-	</a>
-	<div id="fb-details-{{post._id}}" style="display: none;">
-		{{post.description}}
-		{% if post.client %}
-	   		<p align="right"><i>-- {{post.clients.client_name}} {{post.clients.company}}</i></p>
-	    {% else %}
-	   		<p align="right"><i>-- Anonymous</i></p>
-	   	{% endif %}
+	<div class="list-group-item">
+		{% if post.read == 1 %}
+		<button class="close" type="button" onclick="deletePost('{{ post._id }}');">×</button>
+		{% else %}
+		<span class="badge">{{post.date}}</span>
+		{% endif %}
+		<a id="fb-link-{{post._id}}" href="javascript:showFeedbackDetails('{{post._id}}', {{post.read}});">
+		    {% if post.clients %}
+		   		Feedback: {{post.clients.client_name}} {{post.clients.company}}
+		    {% else %}
+		   		Feedback: Anonymous
+		   	{% endif %}
+		</a>
+		<div id="fb-details-{{post._id}}" style="display: none;">
+			{{post.description}}
+			{% if post.clients %}
+		   		<p align="right"><i>-- {{post.clients.client_name}} {{post.clients.company}}</i></p>
+		    {% else %}
+		   		<p align="right"><i>-- Anonymous</i></p>
+		   	{% endif %}
+		</div>
 	</div>
 </span>
