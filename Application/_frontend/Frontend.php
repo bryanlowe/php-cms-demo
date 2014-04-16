@@ -72,6 +72,7 @@
       $this->addCSS('_cem/bootstrap.min.css');
       $this->addCSS('font-awesome/css/font-awesome.min.css');
       $this->addCSS('_common/jquery-impromptu.css');
+      $this->addCSS('_common/pure-min.css');
       $this->addCSS('_cem/styles.css');
       $this->addJS('_common/jquery-1.10.2.min.js');
       $this->addJS('_common/jquery.idle.min.js');

@@ -12,15 +12,18 @@
   <body>
     {% block header %}
     <div id="welcome-wrapper">
-      <div id="welcome-container" class="texture stitch">
+      <div id="welcome-container" class="gray">
           <span>Welcome {{USER_INFO.fullname}}!</span>
-          <div id="welcome-shadow"></div>
       </div>
+    </div>
+    <div id="logo">
+      <a href="http://www.contentequalsmoney.com"><img src="{{IMAGEPATH}}/_cem/FlatLogoCEM.png" width="683" border="0" /></a>
     </div>
     <div id="wrap">
       <div id="header">
         <nav role="navigation" class="navbar">
           <div class="navbar-header">
+            <a href="{{SITE_URL}}/" class="btn btn-default navbar-btn">HOME</a>
             <a href="{{SITE_URL}}/feedback" class="btn btn-default navbar-btn">SUBMIT FEEDBACK</a>
             <a href="{{SITE_URL}}/orders" class="btn btn-default navbar-btn">PLACE AN ORDER</a>
             <a href="{{SITE_URL}}/projects" class="btn btn-default navbar-btn">VIEW PROJECT DETAILS</a>

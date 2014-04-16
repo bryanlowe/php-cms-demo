@@ -26,10 +26,10 @@ body {
 
 #welcome-container {
     background: none repeat scroll 0 0 #60AB2B;
-    border-bottom: 3px solid #FFFFFF;
     color: #FFFFFF;
     height: 33px;
     font-family: Trebuchet MS,sans-serif;
+    font-weight: bold;
     line-height: 30px;
     margin: 0;
     overflow: visible;
@@ -46,6 +46,11 @@ body {
 
 #welcome-container.texture {
     background-image: url("/Application/_includes/_images/_cem/textures.png");
+    background-repeat: repeat-x;
+}
+
+#welcome-container.gray {
+    background-image: url("/Application/_includes/_images/_cem/HBar.png");
     background-repeat: repeat-x;
 }
 
@@ -87,18 +92,28 @@ a.welcome-link:active {
     top: 1px;
 }
 
+#logo {
+    background-color: #fff;
+}
+
+#logo img {
+    margin-top: 50px;
+    margin-left: 300px;
+}
+
 #wrap {
-    background: url("/Application/_includes/_images/_cem/CEM_HEADER_NEW_Repeating_section.gif") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
+    background: url("/Application/_includes/_images/_cem/CEM_HEADER_NEW_Repeating_section.gif") repeat-x scroll 0 -30px rgba(0, 0, 0, 0);
     margin: 0 auto;
     overflow: hidden;
+    border-top: 3px solid #FFFFFF;
 }
 
 #header {
-    background: url("/Application/_includes/_images/_cem/CEM_HEADER_NEW_Repeating_section.gif") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
     margin: 0 auto;
-    min-height: 177px;
+    margin-top: -30px;
+    min-height: 130px;
     overflow: hidden;
-    width: 960px;
+    width: 1000px;
 }
 
 #page-content {
@@ -165,10 +180,6 @@ a.welcome-link:active {
 .navbar {
     top: 47px;
     margin-bottom: 0;
-}
-
-.navbar-header {
-    float: right;
 }
 
 #pleaseWaitDialog {
@@ -259,4 +270,8 @@ hr {
 
 table#invoiceHistoryTbl th {
     white-space: nowrap;
+}
+
+.task-panel {
+    margin-top: 50px;
 }

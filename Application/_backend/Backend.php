@@ -65,6 +65,7 @@
       $this->addCSS('_common/sb-admin.css');
       $this->addCSS('font-awesome/css/font-awesome.min.css');
       $this->addCSS('_common/jquery-impromptu.css');
+      $this->addCSS('_common/pure-min.css');
       $this->addCSS('_common/styles.css');
       $this->addJS('_common/jquery-1.10.2.min.js');
       $this->addJS('_common/jquery.idle.min.js');

@@ -48,8 +48,8 @@ var popUpProperties = {
 				title: 'lead',
 				message: '',
 				buttons: '',
-				button: 'btn',
-				defaultButton: 'btn-primary'
+				button: 'pure-button',
+				defaultButton: 'pure-button-primary'
 			 }
 }
 
