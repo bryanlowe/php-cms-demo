@@ -34,13 +34,44 @@
 			"class": "form-control"
 		},
 		{ 
+			"order": 1, 
+			"required": 1, 
+			"type": "select", 
+			"label": "Status",
+			"id": "invoice_status",
+			"value": "", 
+			"options": [
+				{
+					"name": "Please select a status",
+					"value": ""
+				},
+				{
+					"name": "Open",
+					"value": "OPEN"
+				},
+				{
+					"name": "Paid",
+					"value": "PAID"
+				}
+			], 
+			"class": "form-control"
+		},
+		{ 
 			"order": 2, 
 			"required": 1, 
 			"type": "textarea", 
 			"label": "Description",
 			"id": "invoice_description",
 			"value": "", 
-			"class": "form-control"
+			"class": "form-control textarea-md"
+		},
+		{ 
+			"order": 2, 
+			"required": 0, 
+			"type": "button",
+			"id": "file_upload",
+			"label": "Upload Invoice File", 
+			"class": "btn btn-success"
 		}
 	]
 }

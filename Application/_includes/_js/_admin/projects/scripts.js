@@ -1,42 +1,25 @@
 $(document).ready(function(){
 	$('#projects_select').change(function(){
-		updateForm($(this).val(),'projects',['mongoid','client_id','project_tag','project_description']);
-		$('#timeline-desc').html('<p align="center">Nothing to show</p>');
-		if($(this).val() != ''){
-			disableElement('clients_select', true);
-			disableElement('description', false);
-			reloadFormElement('tag_select_container', 'projects', $('#client_id').val());
-			$('#tag_select_container').show();	
-			$('#tag_select').change(function(){
-				$('#project_tag').val($(this).val());
-			});
-			reloadFormElement('timeline-list', 'projects', $('#projects_select').val());
-		} else {
-			disableElement('clients_select', false);
-			disableElement('description', true);
-			$('#tag_select_container').hide();
-			reloadFormElement('tag_select_container', 'projects');
-			reloadFormElement('timeline-list', 'projects');
-		}
+		projects_select();
 	});
 	$('#clients_select').change(function(){
 		$('#client_id').val($(this).val());
-		$('#project_tag').val('');
 		if($(this).val() != ''){
-			reloadFormElement('tag_select_container', 'projects', $(this).val());
-			$('#tag_select_container').show();	
-			$('#tag_select').change(function(){
-				$('#project_tag').val($(this).val());
-			});
+			reloadFormElement('project_tags_container', 'projects', $('#client_id').val());
+			if($('#projects_select').val() == ""){
+				disableElement('project_tags', true);
+				disableElement('addTagBtn', true);
+			}
 		} else {
-			$('#tag_select_container').hide();
-			reloadFormElement('tag_select_container', 'projects');
+			reloadFormElement('project_tags_container', 'projects');
+			if($('#projects_select').val() == ""){
+				disableElement('project_tags', true);
+				disableElement('addTagBtn', true);
+			}
 		}
 	});
 	$('#submitBtn').click(function(){
-		disableElement('project_tag', false);
 		saveDoc('projects',true);
-		disableElement('project_tag', true);
 	});
 	$('#deleteBtn').click(function(){
 		deleteDoc('projects',true);
@@ -44,26 +27,33 @@ $(document).ready(function(){
 	$('#resetBtn').click(function(){
 		reloadPageElements('projects',false);
 	});
-	$('#updateBtn').click(function(){
-		if($('#description').val() != ''){
-			var d = new Date();
-			var docObj = {};
-			docObj.url = 'projects',
-			docObj.collection = 'projects',
-			docObj.set = 'project_timeline',
-			docObj.values = {},
-			docObj._id = $('#projects_select').val();
-			docObj.values.description = $('#description').val();
-			docObj.mongoid = 1;
-			addSetToDoc(docObj);
-			$('#description').val('');
-			reloadFormElement('timeline-list', 'projects', $('#projects_select').val());
+	$('#addTagBtn').click(function(){
+		if($('#project_tags').val() != ''){
+			addProjectTag();
 		}		
 	});
-	disableElement('project_tag', true);
-	disableElement('description', true);
-	$('#tag_select_container').hide();
+	disableElement('project_tags', true);
+	disableElement('addTagBtn', true);
 });
+
+function projects_select(){
+	statusApp.showPleaseWait();
+	updateForm($('#projects_select').val(),'projects',['mongoid','client_id','project_title','project_status','project_description']);
+	if($('#projects_select').val() != ''){
+		disableElement('clients_select', true);
+		disableElement('project_tags', false);
+		disableElement('addTagBtn', false);
+		reloadFormElement('project_tags_container', 'projects', $('#client_id').val());
+		reloadFormElement('current_tags', 'projects', $('#projects_select').val());
+	} else {
+		disableElement('clients_select', false);
+		disableElement('project_tags', true);
+		disableElement('addTagBtn', true);
+		reloadFormElement('project_tags_container', 'projects');
+		reloadFormElement('current_tags', 'projects');
+	}
+	statusApp.hidePleaseWait();
+}
 
 /**
  * Reloads page elements to reflect changes in the database
@@ -74,30 +64,15 @@ function reloadPageElements(collection, ajax){
   	$('#client_id').val('');
   	$('#'+collection+'_select').prop('selectedIndex',0);
   	$('#clients_select').prop('selectedIndex',0);
-  	$('#tag_select_container').hide();
-	reloadFormElement('tag_select_container', 'projects');
-	reloadFormElement('timeline-list', 'projects');
   	disableElement('clients_select', false);
-  	disableElement('description', true);
-  	$('#timeline-desc').html('<p align="center">Nothing to show</p>');
+  	reloadFormElement('project_tags_container', 'projects');
+  	reloadFormElement('current_tags', 'projects');
+  	disableElement('project_tags', true);
+	disableElement('addTagBtn', true);
   	if(ajax){
   		reloadFormElement('projects_select_container','projects');
 		$('#projects_select').change(function(){
-			updateForm($(this).val(),'projects',['mongoid','client_id','project_tag','project_description']);
-			if($(this).val() != ''){
-				disableElement('clients_select', true);
-				disableElement('description', false);
-				reloadFormElement('tag_select_container', 'projects', $('#client_id').val());
-				$('#tag_select_container').show();	
-				$('#tag_select').change(function(){
-					$('#project_tag').val($(this).val());
-				});
-			} else {
-				disableElement('clients_select', false);
-				disableElement('description', true);
-				$('#tag_select_container').hide();
-				reloadFormElement('tag_select_container', 'projects');
-			}
+			projects_select();
 		});
   	}
 }
@@ -127,6 +102,9 @@ function updateForm(_id, collection, fields){
         $('#'+collection+'_form #_id').val(formValues._id['$id']);
       } else if(fields[i] == 'client_id'){
         $('#'+collection+'_form #client_id').val(formValues.client_id['$id']);
+        $('#clients_select').val(formValues.client_id['$id']);
+        $('#clients_select').change();
+        disableElement('clients_select', true);
       } else {
         $('#'+collection+'_form #'+fields[i]).val(formValues[fields[i]]);
       }
@@ -135,20 +113,38 @@ function updateForm(_id, collection, fields){
     $('#'+collection+'_form')[0].reset();
     $('#'+collection+'_form #_id').val('');
     $('#'+collection+'_form #client_id').val('');
+    $('#clients_select').val('');
+    $('#clients_select').change();
   }
 }
 
 /**
- * Removes an timeline event from the database
+ * Adds a project tag to this project
  */
-function removeEvent(event){
+function addProjectTag(){
+	var docObj = {};
+	docObj.url = 'projects',
+	docObj.collection = 'projects',
+	docObj.set = 'project_tags',
+	docObj.values = {},
+	docObj._id = $('#projects_select').val();
+	docObj.values = $('#project_tags').val();
+	docObj.mongoid = 1;
+	addSetToDoc(docObj);
+	reloadFormElement('current_tags', 'projects', $('#projects_select').val());
+}
+
+/**
+ * Removes a project tag from the project
+ */
+function removeProjectTag(tag){
   var docObj = {};
   docObj.url = 'projects',
   docObj.collection = 'projects',
-  docObj.set = 'project_timeline',
-  docObj.values = event;
+  docObj.set = 'project_tags',
+  docObj.values = tag;
   docObj._id = $('#projects_select').val();
   docObj.mongoid = 1;
   removeSetFromDoc(docObj);
-  reloadFormElement('timeline-list', 'projects', $('#projects_select').val());
+  reloadFormElement('current_tags', 'projects', $('#projects_select').val());
 }

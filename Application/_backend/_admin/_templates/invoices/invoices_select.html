@@ -2,6 +2,6 @@
 <select class="form-control" name="invoices_select" id="invoices_select">
 	<option value="">Please select an invoice</option>
 	{% for invoice in SELECT_INVOICES %}
-	    <option value="{{ invoice._id }}">Company: {{ invoice.clients.company }} -- Invoice Number: {{ invoice.invoice_number}}</option>
+	    <option value="{{ invoice._id }}">{{ invoice.clients.company }} -- #{{ invoice.invoice_number}}</option>
 	{% endfor %}
 </select>

@@ -1,0 +1,7 @@
+{% if SELECT_TAGS %}
+	{% for tag in SELECT_TAGS %}
+		<div class="list-group-item">{{ tag }} <button class="close" type="button" onclick="removeProjectTag('{{ tag }}');">×</button></div>
+	{% endfor %}
+{% else %}
+	<p align="center"><strong>Currently No Tags Assigned</strong></p>
+{% endif %}

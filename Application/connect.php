@@ -5,7 +5,7 @@
 
   set_time_limit(0);
   session_start();
-  date_default_timezone_set('UTC');
+  date_default_timezone_set('EST5EDT');
 
   error_reporting(E_ALL & ~E_NOTICE);
 

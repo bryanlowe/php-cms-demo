@@ -40,8 +40,8 @@
         $this->mongoGen->sortStage(array("client_name" => 1, 'company' => 1))
       );
       $this->project_select_pipeline = array(
-        $this->mongoGen->projectStage(array("project_tag" => 1, "client_id" => 1)),
-        $this->mongoGen->sortStage(array("project_tag" => 1))
+        $this->mongoGen->projectStage(array("project_title" => 1, "client_id" => 1)),
+        $this->mongoGen->sortStage(array("project_title" => 1))
       );
     }
     
@@ -90,7 +90,7 @@
         $this->mongodb->switchCollection('clients');
         $select_clients = $this->mongodb->aggregateDocs($this->client_select_pipeline);
         echo $this->twig->render('projects/clients_select.html', array('SELECT_CLIENTS' => $select_clients['result']));
-      } else if($params['dom_id'] == 'tag_select_container'){
+      } else if($params['dom_id'] == 'project_tags_container'){
         if($params['_id'] != 0){
           $this->mongodb->switchCollection('clients');
           $result = $this->mongodb->getDocument(array("_id" => new \MongoId($params['_id'])),array("_id" => 0, "project_tags" => 1));
@@ -98,13 +98,13 @@
         } else {
           echo $this->twig->render('projects/tag_select.html', array('SELECT_TAGS' => array()));
         }
-      } else if($params['dom_id'] == 'timeline-list'){
+      } else if($params['dom_id'] == 'current_tags'){
         if($params['_id'] != 0){
           $this->mongodb->switchCollection('projects');
-          $result = $this->mongodb->getDocument(array("_id" => new \MongoId($params['_id'])),array("_id" => 0, "project_timeline" => 1));
-          echo $this->twig->render('projects/list-group-item.html', array('PROJECT_TIMELINE' => $result['project_timeline']));
+          $result = $this->mongodb->getDocument(array("_id" => new \MongoId($params['_id'])),array("_id" => 0, "project_tags" => 1));
+          echo $this->twig->render('projects/current_tags.html', array('SELECT_TAGS' => $result['project_tags']));
         } else {
-          echo $this->twig->render('projects/list-group-item.html', array('PROJECT_TIMELINE' => array()));
+          echo $this->twig->render('projects/current_tags.html', array('SELECT_TAGS' => array()));
         }
       }
     }
@@ -119,19 +119,11 @@
       if(isset($params['doc']['values']['client_id'])){
         $params['doc']['values']['client_id'] = new \MongoId($params['doc']['values']['client_id']);
       }
-      $params['doc']['values']['project_date'] = date("m-d-Y H:i:s");
+      if($params['doc']['_id'] == ""){
+        $params['doc']['values']['invoiced'] = 0;  
+      }
+      $params['doc']['values']['project_date'] = date("U");
       parent::saveEntry($params);
-    }
-
-    /**
-     * Saves a set to an existing doc to the database
-     *
-     * @param mixed array $params    
-     * @access public
-     */
-    public function addSetToEntry($params){
-      $params['doc']['values']['date'] = date("m-d-Y H:i:s");
-      parent::addSetToEntry($params);
     }
   }
 ?>

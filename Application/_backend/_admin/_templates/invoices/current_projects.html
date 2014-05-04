@@ -1,0 +1,9 @@
+<div class="panel panel-default">
+	{% if SELECT_PROJECTS %}
+		{% for project in SELECT_PROJECTS %}
+			<div class="list-group-item">{{ project.project_title }} <button class="close" type="button" onclick="removeProject('{{ project._id }}');">×</button></div>
+		{% endfor %}
+	{% else %}
+		<p align="center"><strong>No Projects</strong></p>
+	{% endif %}
+</div>

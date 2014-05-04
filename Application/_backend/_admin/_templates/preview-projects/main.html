@@ -1,0 +1,54 @@
+{% extends "_common/base.html" %}
+
+{% block content %}
+<div id="container">
+	<div class="row task-panel">
+		<div class="col-lg-4 col-lg-offset-4">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Preview Clients</h3>
+				</div>
+				<div class="panel-body">
+					<div id="clients_select_container">
+						{% include "preview-invoices/clients_select.html" %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-6">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title"><i class="fa fa-tasks"></i> Projects</h3>
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table id="projectTbl" class="table table-bordered table-hover table-striped tablesorter">
+							<thead>
+		                    	<tr>
+			                        <th class="header">Title <i class="fa fa-sort"></i></th>
+			                        <th class="header">Last Updated <i class="fa fa-sort"></i></th>
+		                      	</tr>
+	                      	</thead>
+	                      	<tbody id="project_entries">
+              					{% include 'preview-projects/project-entry.html' %}
+              				</tbody>
+                 	 	</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title"><i class="fa fa-search"></i> Project Description</h3>
+				</div>
+				<div id="projectDesc" class="panel-body">
+					<p>Click on an project tag above to view its description.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container">
 	<div class="row task-panel">
-		<div class="col-lg-6 col-lg-offset-1">
+		<div class="col-lg-10 col-lg-offset-1">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<h3 class="panel-title">Update or Add an Invoice</h3>
@@ -12,24 +12,28 @@
 					<div id="invoices_select_container" class="input_container">
 						{% include "invoices/invoices_select.html" %}
 					</div>
-					<div class="clear"></div>
+					<div id="toggleInvoice" class="button_panel input_container">
+						{% include "invoices/invoice_status.html" %}
+					</div>
 					<div id="clients_select_container" class="input_container">
 						{% include "invoices/clients_select.html" %}
 					</div>
-					<div class="clear"><hr></div>
-					{{INVOICE_FORM|raw}}
-					<div id="invoice_history_container" class="input_container">
-						<label for="invoice_history">Invoice Status Entry</label><br>
-						<textarea class="form-control" name="description" id="description"></textarea>
-						<div class="clear"></div>
-						<div style="margin-left:-10px;" class="button_panel">
-							<div class="btn_container">
-								<input type="button" class="btn btn-success" value="UPDATE STATUS" name="updateBtn" id="updateBtn">
-							</div>
+					<div class="clear"></div>
+					<div id="projects_select_container" class="input_container">
+						{% include "invoices/projects_select.html" %}
+					</div>
+					<div id="addProjectBtn" class="button_panel input_container">
+						<div class="btn_container">
+							<input type="button" class="btn btn-success" value="ADD PROJECT" name="addBtn" id="addBtn">
 						</div>
 					</div>
+					<div id="current_projects" class="list-group col-lg-5 col-lg-offset-1 input_container">
+						{% include "invoices/current_projects.html" %}
+					</div>
 					<div class="clear"><hr></div>
-					<div class="button_panel" style="margin-left: 140px;">
+					{{INVOICE_FORM|raw}}
+					<div class="clear"><hr></div>
+					<div class="button_panel" style="margin-left: 310px;">
 						<div class="btn_container">
 							<input type="button" class="btn btn-success" value="SAVE" name="submitBtn" id="submitBtn">
 						</div>
@@ -40,30 +44,6 @@
 							<input type="button" class="btn btn-info" value="RESET" name="resetBtn" id="resetBtn">
 						</div>
 					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-4">
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<h3 class="panel-title">Invoice Status History</h3>
-				</div>
-				<div class="panel-body">
-					<div id="status-list" class="list-group">
-						{% include "invoices/list-group-item.html" %}
-					</div>
-					<div class="clear"><hr></div>
-					<div><label>Status Entry</label><div id="status-desc"><p align="center">Nothing to show</p></div></div>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-4">
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<h3 class="panel-title">Upload Invoice File</h3>
-				</div>
-				<div class="panel-body">
-					{% include "invoices/file_upload.html" %}
 				</div>
 			</div>
 		</div>

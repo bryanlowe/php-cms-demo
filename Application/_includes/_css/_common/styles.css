@@ -14,17 +14,6 @@
 
 */
 
-.saveBtn_container, 
-.deleteBtn_container, 
-.matchSuccess_container,
-.matchFailure_container,
-#create_bll_settings_container, 
-#delete_bll_settings_container, 
-#create_bll_forms_container, 
-#delete_bll_forms_container {
-  float: left;
-  padding-right: 10px;
-}
 
 .hide {
   display: none;
@@ -70,4 +59,38 @@
   font-weight: bold;
   color: #000;
   text-decoration: none;
+}
+
+.textarea-lg {
+  width: 700px;
+  min-height: 200px;
+}
+
+.textarea-md {
+  width: 500px;
+  min-height: 200px;
+}
+
+.addTagBtn {
+  margin-top: 6px;
+}
+
+#toggleInvoice, #addProjectBtn {
+  margin-top: 25px;
+}
+
+.btn-glow-success {
+  box-shadow: 1px 1px 12px #4CAE4C;
+}
+
+.btn-glow-danger {
+  box-shadow: 1px 1px 12px #D43F3A;
+}
+
+.btn-glow-warning {
+  box-shadow: 1px 1px 12px #EEA236;
+}
+
+.btn-glow-info {
+  box-shadow: 1px 1px 12px #46B8DA;
 }

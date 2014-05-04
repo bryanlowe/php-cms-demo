@@ -19,9 +19,63 @@
 			"order": 1, 
 			"required": 1, 
 			"type": "text", 
-			"label": "Project Tag (Clients must have tags set)",
-			"id": "project_tag",
+			"label": "Project Title",
+			"id": "project_title",
 			"value": "", 
+			"class": "form-control"
+		},
+		{ 
+			"order": 1, 
+			"required": 0, 
+			"type": "select", 
+			"label": "Project Tags",
+			"id": "project_tags",
+			"value": "", 
+			"options": [
+				{
+					"name": "Please select a tag",
+					"value": ""
+				}
+			],
+			"class": "form-control"
+		},
+		{ 
+			"order": 1, 
+			"required": 0, 
+			"type": "button",
+			"id": "addTagBtn",
+			"value": "ADD TAG", 
+			"class": "btn btn-success addTagBtn"
+		},
+		{ 
+			"order": 1, 
+			"required": 1, 
+			"type": "select", 
+			"label": "Project Status",
+			"id": "project_status",
+			"value": "",
+			"options": [
+				{
+					"name": "Please select a status",
+					"value": ""
+				},
+				{
+					"name": "Created",
+					"value": "Created"
+				},
+				{
+					"name": "Waiting on Writer",
+					"value": "Waiting on Writer"
+				},
+				{
+					"name": "Waiting on Editor",
+					"value": "Waiting on Editor"
+				},
+				{
+					"name": "Completed",
+					"value": "Completed"
+				}
+			], 
 			"class": "form-control"
 		},
 		{ 
@@ -31,7 +85,7 @@
 			"label": "Description",
 			"id": "project_description",
 			"value": "", 
-			"class": "form-control"
+			"class": "form-control textarea-lg"
 		}
 	]
 }

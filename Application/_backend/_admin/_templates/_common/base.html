@@ -25,13 +25,15 @@
             <li><a href="{{SITE_URL}}/admin/orders"><i class="fa fa-pencil-square"></i> View Orders</a></li>
             <li><a href="{{SITE_URL}}/admin/clients"><i class="fa fa-suitcase"></i> Edit Clients</a></li>
             <li><a href="{{SITE_URL}}/admin/invoices"><i class="fa fa-envelope"></i> Edit Invoices</a></li>
+            <li><a href="{{SITE_URL}}/admin/preview-invoices"><i class="fa fa-eye"></i> Preview Invoices</a></li>
             <li><a href="{{SITE_URL}}/admin/projects"><i class="fa fa-tasks"></i> Edit Projects</a></li>
+            <li><a href="{{SITE_URL}}/admin/preview-projects"><i class="fa fa-eye"></i> Preview Projects</a></li>
             <li><a href="{{SITE_URL}}/admin/users"><i class="fa fa-users"></i> Edit Users</a></li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right navbar-user">
             <li class="dropdown user-dropdown">
-              <a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fa fa-user"></i> {{USER_INFO.email}} <b class="caret"></b></a>
+              <a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fa fa-user"></i> Welcome {{USER_INFO.fullname}} <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="{{SITE_URL}}/admin/logout"><i class="fa fa-power-off"></i> Log Out</a></li>
               </ul>

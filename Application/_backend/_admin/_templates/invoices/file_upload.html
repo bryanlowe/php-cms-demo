@@ -1,8 +1,12 @@
-<p><label>Current Invoice File:</label> <a id="invoice_file_link" href="#">Not Available</a></p>
-<div class="file_upload_container">
-	<input type="file" multiple="" name="file_upload" id="file_upload">
-</div>
-<div class="clear"></div>
-<div class="button_panel">
-	<input type="button" class="btn btn-danger" value="DELETE INVOICE FILE" id="deleteFileBtn" name="deleteFileBtn">
+<div class="panel panel-default">
+	{% if SELECT_INVOICE.invoice_filename != '' %}
+		<div class="list-group-item">
+			<button class="close" type="button" onclick="destroyInvoiceFile('{{ SELECT_INVOICE._id }}');">×</button>
+			<a href="/Media/_documents/_invoices/{{ SELECT_INVOICE.invoice_filename }}" target="_blank">
+			    {{ SELECT_INVOICE.invoice_filename }}
+			</a>
+		</div>
+	{% else %}
+		<p align="center"><strong>No File Uploaded</strong></p>
+	{% endif %}
 </div>

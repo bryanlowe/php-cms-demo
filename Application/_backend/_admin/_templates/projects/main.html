@@ -3,27 +3,26 @@
 {% block content %}
 <div class="container">
 	<div class="row task-panel">
-		<div class="col-lg-4 col-lg-offset-2">
+		<div class="col-lg-8 col-lg-offset-2">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<h3 class="panel-title">Update or Add Projects</h3>
 				</div>
 				<div class="panel-body">
-					<div id="projects_select_container">
+					<div id="projects_select_container" class="input_container">
 						{% include "projects/projects_select.html" %}
 					</div>
-					<div class="clear"></div>
-					<div id="clients_select_container">
+					<div id="clients_select_container" class="input_container">
 						{% include "projects/clients_select.html" %}
 					</div>
-					<div class="clear"></div>
-					<div id="tag_select_container">
-						{% include "projects/tag_select.html" %}
-					</div>
-					<div class="clear"></div>
+					<div class="clear"><hr></div>
 					{{PROJECT_FORM|raw}}
 					<div class="clear"></div>
-					<div class="button_panel">
+					<div id="current_tags" class="list-group" style="border: 1px solid #000; padding: 10px;">
+						{% include "projects/current_tags.html" %}
+					</div>
+					<div class="clear"><hr></div>
+					<div class="button_panel" style="margin-left: 240px;">
 						<div class="btn_container">
 							<input type="button" class="btn btn-success" value="SAVE" name="submitBtn" id="submitBtn">
 						</div>
@@ -34,37 +33,6 @@
 							<input type="button" class="btn btn-info" value="RESET" name="resetBtn" id="resetBtn">
 						</div>
 					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-4">
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<h3 class="panel-title">Update Timeline</h3>
-				</div>
-				<div class="panel-body">
-					<div id="project_tag_container">
-						<label for="project_tag">New Entry</label><br>
-						<textarea class="form-control" name="description" id="description"></textarea>
-					</div>
-					<div class="clear"></div>
-					<div style="margin-left:-10px;" class="button_panel">
-						<div class="btn_container">
-							<input type="button" class="btn btn-success" value="UPDATE TIMELINE" name="updateBtn" id="updateBtn">
-						</div>
-					</div>
-					<div class="clear"><hr></div>
-					<div id="timeline-list" class="list-group">
-						{% include "projects/list-group-item.html" %}
-					</div>
-				</div>
-			</div>
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<h3 class="panel-title">Project Timeline</h3>
-				</div>
-				<div id="timeline-desc" class="panel-body">
-					<p align="center">Nothing to show</p>
 				</div>
 			</div>
 		</div>

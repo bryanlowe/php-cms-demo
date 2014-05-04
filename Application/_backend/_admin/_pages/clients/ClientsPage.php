@@ -68,7 +68,7 @@
       if($params['dom_id'] == 'clients_select_container'){
         $this->mongodb->switchCollection('clients');
         $select_clients = $this->mongodb->aggregateDocs($this->client_select_pipeline);
-        echo $this->twig->render('clients/clients_select.html', array('SELECT_CLIENTS' => $select_clients));
+        echo $this->twig->render('clients/clients_select.html', array('SELECT_CLIENTS' => $select_clients['result']));
       } else if($params['dom_id'] == 'project-tag-list' && $params['_id'] != 0){
         $this->mongodb->switchCollection('clients');
         $result = $this->mongodb->getDocument(array("_id" => new \MongoId($params['_id'])),array("_id" => 0, "project_tags" => 1));
@@ -82,8 +82,8 @@
      * @access public
      */
     public function saveEntry($params){
-      if($params['values']['_id'] == ''){
-        $params['values']['is_user'] = 0;
+      if($params['doc']['values']['_id'] == ''){
+        $params['doc']['values']['is_user'] = 0;
       }
       parent::saveEntry($params);  
     }

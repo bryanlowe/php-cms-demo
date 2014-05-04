@@ -1,10 +1,23 @@
 $(document).ready(function(){
   $('#invoice_history_container').insertAfter('#invoice_description_container');
 	$('#invoices_select').change(function(){
-      invoices_select($(this).val());
+      invoices_select();
   });
   $('#clients_select').change(function(){
     $('#client_id').val($(this).val());
+    if($(this).val() != ""){
+      reloadFormElement('projects_select_container', 'invoices', $('#clients_select').val());
+      if($('#invoices_select').val() == ""){
+        disableElement('projects_select', true);
+        disableElement('addBtn', true);
+      }
+    } else {
+      reloadFormElement('projects_select_container', 'invoices');
+      if($('#invoices_select').val() == ""){
+        disableElement('projects_select', true);
+        disableElement('addBtn', true);
+      }
+    }
   });
   $('#submitBtn').click(function(){
     disableElement('description', true);
@@ -16,26 +29,29 @@ $(document).ready(function(){
   $('#resetBtn').click(function(){
     reloadPageElements('invoices',false);
   });
-  $('#updateBtn').click(function(){
-    if($('#description').val() != ''){
-      var d = new Date();
-      var docObj = {};
-      docObj.url = 'invoices',
-      docObj.collection = 'invoices',
-      docObj.set = 'invoice_history',
-      docObj.values = {},
-      docObj._id = $('#invoices_select').val();
-      docObj.values.description = $('#description').val();
-      docObj.mongoid = 1;
-      addSetToDoc(docObj);
-      $('#description').val('');
-      reloadFormElement('status-list', 'invoices', $('#invoices_select').val());
-    }   
+  $('#addBtn').click(function(){
+    if($('#projects_select').val() != ""){
+      addProject();
+    }
   });
-  disableElement('description', true);
-  $('#deleteFileBtn').click(function(){
-    if($('#invoices_select').val() != ''){
-      destroyInvoiceFile($('#invoices_select').val());
+  $('#invoice_status').change(function(){
+    if($(this).val() != ""){
+      if($(this).val() == "PAID"){
+        $('#paidBtn').prop('disabled', false);
+        $('#paidBtn').addClass('btn-glow-success');
+        $('#unpaidBtn').prop('disabled', true);
+        $('#unpaidBtn').removeClass('btn-glow-danger');
+      } else {
+        $('#paidBtn').prop('disabled', true);
+        $('#paidBtn').removeClass('btn-glow-success');
+        $('#unpaidBtn').prop('disabled', false);
+        $('#unpaidBtn').addClass('btn-glow-danger');
+      }
+    } else {
+      $('#paidBtn').prop('disabled', true);
+      $('#paidBtn').removeClass('.btn-glow-success');
+      $('#unpaidBtn').prop('disabled', true);
+      $('#unpaidBtn').removeClass('.btn-glow-danger');
     }
   });
   var new_site_url = site_url.replace('/admin/','/');
@@ -45,6 +61,7 @@ $(document).ready(function(){
 			'timestamp' : timestamp,
 			'token'     : token
 		},
+    'multi'    : false,
 		'buttonText' : 'SELECT INVOICE FILE',
 		'buttonClass' : 'btn btn-success',
 		'fileTypeDesc' : 'Invoice Files',
@@ -52,9 +69,7 @@ $(document).ready(function(){
 		'swf'      : new_site_url+'Utilities/uploadify/uploadify.swf',
 		'uploader' : new_site_url.replace('https','http')+'/Utilities/uploadify/uploadify.php',
 		'onUploadSuccess' : function(file, data, response) {
-			$('#invoice_file_link').html(file.name);
-			$('#invoice_file_link').attr('href','/Media/_documents/_invoices/'+file.name);
-			$('#invoice_file_link').attr('target','_blank');
+      statusApp.showPleaseWait();
       var docObj = {};
       docObj.values = {},
       docObj._id = $('#invoices_form #_id').val(),
@@ -63,7 +78,9 @@ $(document).ready(function(){
       docObj.mongoid = 1;
       docObj.values.invoice_filename = file.name;
       var results = saveEntry(docObj);
+      statusApp.hidePleaseWait();
       if(results.err == null){
+        reloadFormElement('file_link', 'invoices', $('#invoices_select').val());
         popUpMsg("File upload was successful!");
         return true;
       } else {
@@ -76,46 +93,59 @@ $(document).ready(function(){
     } 
 	});
 	$('#file_upload-button').attr('style', '');
+  $('<div id="file_link" class="list-group col-lg-5" style="margin-left:10px;"></div>').insertAfter('#file_upload_container');
+  disableElement('projects_select', true);
+  disableElement('addBtn', true);
 });
 
-function invoices_select(invoiceID){
-  updateForm(invoiceID,'invoices',['mongoid','client_id','invoice_number','invoice_cost','invoice_filename','invoice_description']);
-  if(invoiceID != ''){
-    disableElement('clients_select', true);
-    disableElement('description', false);
+function invoices_select(){
+  statusApp.showPleaseWait();
+  updateForm($('#invoices_select').val(),'invoices',['mongoid','client_id','invoice_number','invoice_cost','invoice_description']);
+  if($('#invoices_select').val() != ''){
+    disableElement('projects_select', false);
+    disableElement('addBtn', false);
     $("#file_upload").uploadify("disable",false);
-    reloadFormElement('status-list', 'invoices', invoiceID);
+    reloadFormElement('toggleInvoice','invoices',$('#invoices_select').val());
+    reloadFormElement('current_projects', 'invoices', $('#invoices_select').val());
+    reloadFormElement('file_link', 'invoices', $('#invoices_select').val());
   } else {
-    disableElement('clients_select', false);
-    disableElement('description', true);
+    disableElement('projects_select', true);
+    disableElement('addBtn', true);
     $("#file_upload").uploadify("disable",true);
-    reloadFormElement('status-list', 'invoices');
+    reloadFormElement('toggleInvoice','invoices');
+    reloadFormElement('current_projects', 'invoices');
+    reloadFormElement('file_link', 'invoices');
   }
+  statusApp.hidePleaseWait();
 }
 
 /**
  * Reloads page elements to reflect changes in the database
  */
 function reloadPageElements(collection, ajax){
+  statusApp.showPleaseWait();
   $('#'+collection+'_form')[0].reset();
   $('#'+collection+'_form #_id').val('');
   $('#client_id').val('');
   $('#'+collection+'_select').prop('selectedIndex',0);
   $('#clients_select').prop('selectedIndex',0);
-  reloadFormElement('status-list', 'invoices');
+  $('#projects_select').prop('selectedIndex',0);
   disableElement('clients_select', false);
-  disableElement('description', true);
+  reloadFormElement('projects_select_container','invoices');
+  reloadFormElement('toggleInvoice','invoices');
+  reloadFormElement('current_projects', 'invoices');
+  reloadFormElement('file_link', 'invoices');
+  disableElement('projects_select', true);
+  disableElement('addBtn', true);
   $("#file_upload").uploadify("disable",true);
-  $('#invoice_file_link').html('Not Available');
-  $('#invoice_file_link').attr('href','#');
-  $('#invoice_file_link').attr('target','');
-  $('#status-desc').html('<p align="center">Nothing to show</p>');
+  reloadFormElement('file_link', 'invoices');
   if(ajax){
     reloadFormElement('invoices_select_container','invoices');
     $('#invoices_select').change(function(){
-      invoices_select($(this).val());
+      invoices_select();
     });
   }
+  statusApp.hidePleaseWait();
 }  
 
 /**
@@ -143,16 +173,9 @@ function updateForm(_id, collection, fields){
         $('#'+collection+'_form #_id').val(formValues._id['$id']);
       } else if(fields[i] == 'client_id'){
         $('#'+collection+'_form #client_id').val(formValues.client_id['$id']);
-      } else if(fields[i] == 'invoice_filename'){
-        if(formValues[fields[i]] != ''){
-          $('#invoice_file_link').html(formValues[fields[i]]);
-          $('#invoice_file_link').attr('href','/Media/_documents/_invoices/'+formValues[fields[i]]);
-          $('#invoice_file_link').attr('target','_blank');
-        } else {
-          $('#invoice_file_link').html('Not Available');
-          $('#invoice_file_link').attr('href','#');
-          $('#invoice_file_link').attr('target','');
-        }
+        $('#clients_select').val(formValues.client_id['$id']);
+        $('#clients_select').change();
+        disableElement('clients_select', true);
       } else {
         $('#'+collection+'_form #'+fields[i]).val(formValues[fields[i]]);
       }
@@ -161,43 +184,58 @@ function updateForm(_id, collection, fields){
     $('#'+collection+'_form')[0].reset();
     $('#'+collection+'_form #_id').val('');
     $('#'+collection+'_form #client_id').val('');
-    $('#invoice_file_link').html('Not Available');
-    $('#invoice_file_link').attr('href','#');
-    $('#invoice_file_link').attr('target','');
   }
 }
 
 /**
- * Removes an status event from the database
+ * Adds a project to the project list
  */
-function removeEvent(event){
+function addProject(){
   var docObj = {};
   docObj.url = 'invoices',
   docObj.collection = 'invoices',
-  docObj.set = 'invoice_history',
-  docObj.values = event;
+  docObj.set = 'project_list',
+  docObj.values = {},
+  docObj._id = $('#invoices_select').val();
+  docObj.values = $('#projects_select').val();
+  docObj.mongoid = 1;
+  addSetToDoc(docObj);
+  reloadFormElement('current_projects', 'invoices', $('#invoices_select').val());
+  reloadFormElement('projects_select_container', 'invoices', $('#clients_select').val());
+}
+
+/**
+ * Removes a project from the project list
+ */
+function removeProject(projectID){
+  var docObj = {};
+  docObj.url = 'invoices',
+  docObj.collection = 'invoices',
+  docObj.set = 'project_list',
+  docObj.values = projectID;
   docObj._id = $('#invoices_select').val();
   docObj.mongoid = 1;
   removeSetFromDoc(docObj);
-  reloadFormElement('status-list', 'invoices', $('#invoices_select').val());
+  reloadFormElement('current_projects', 'invoices', $('#invoices_select').val());
+  reloadFormElement('projects_select_container', 'invoices', $('#clients_select').val());
 }
 
 /**
  * Remove invoice file from media 
  */
 function destroyInvoiceFile(_id){
+  statusApp.showPleaseWait();
   var result = $.ajax({
     type: "POST",
     url: site_url+"invoices",
     async: false,
     data: {_id: _id, _ajaxFunc: "removeInvoiceFile"}
   });
+  statusApp.hidePleaseWait();
   if(result.responseText != 'pass'){
     popUpMsg(result.responseText);  
   } else {
-    $('#invoice_file_link').html('Not Available');
-    $('#invoice_file_link').attr('href','#');
-    $('#invoice_file_link').attr('target','');
+    reloadFormElement('file_link', 'invoices', $('#invoices_select').val());
     popUpMsg('Invoice file successfully deleted.');
   }
 }

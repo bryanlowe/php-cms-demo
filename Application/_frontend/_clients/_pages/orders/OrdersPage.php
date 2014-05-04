@@ -55,18 +55,24 @@
       $params['doc']['collection'] = "feedback";
       $params['doc']['values']['description'] = '<p>'.$params['doc']['values']['description'].'</p>';
       $params['doc']['values']['client_id'] = $_SESSION[$this->config->sessionID]['CLIENT_INFO']['_id'];
-      $params['doc']['values']['date'] = date("m-d-Y H:i:s");
+      $params['doc']['values']['date'] = date("U");
       $params['doc']['values']['read'] = 0;
       $params['doc']['values']['type'] = 'order';
       parent::saveEntry($params);
-      //$to = ($_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_name'] != "") ? $_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_name'] : $_SESSION[$this->config->sessionID]['CLIENT_INFO']['company'];
-      //$to .= '<'.$_SESSION[$this->config->sessionID]['CLIENT_INFO']['email'].'>';
       $to = array('email' => $_SESSION[$this->config->sessionID]['CLIENT_INFO']['email'], 'name' => $_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_name']);
       $from = array('email' => 'dashboard@contentequalsmoney.com', 'name' => 'Content Equals Money');
-      $reply = array('email' => 'info@contentequalsmoney.com', 'name' => 'Content Equals Money');
+      $reply = array('email' => 'amie@contentequalsmoney.com', 'name' => 'Amie Marse');
       $subject = 'Thank you for your new order!';
       $message = array('body' => 'Your order has been sent to be reviewed. A representative will contact you shortly.', 'altbody' => 'Your order has been sent to be reviewed. A representative will contact you shortly.');
       foo(new Email($to, $from, $reply, $subject, $message, $this->config->smtpInfo))->sendEmail();
+
+      $cem_to = array('email' => 'amie@contentequalsmoney.com', 'name' => 'Amie Marse');
+      $cem_from = array('email' => 'dashboard@contentequalsmoney.com', 'name' => 'Content Equals Money');
+      $cem_reply = array('email' => 'dashboard@contentequalsmoney.com', 'name' => 'Content Equals Money');
+      $cem_subject = 'New Order Submission From: '.$_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_name'].', Date: '.$params['doc']['values']['date'];
+      $messageBody = '<p>You have recieved a new order from '.$_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_name'].'.</p><p>Please <a href="https://dashboard.contentequalsmoney.com/admin" target="_blank">login</a> for more details.</p>';
+      $cem_message = array('body' => $messageBody, 'altbody' => $messageBody);
+      foo(new Email($cem_to, $cem_from, $cem_reply, $cem_subject, $cem_message, $this->config->smtpInfo))->sendEmail();
     }
   }
 ?>

@@ -1,6 +1,7 @@
 <?php
   namespace Application\_frontend\_clients\_pages\feedback;
   use Application\_frontend\Frontend as Frontend;
+  use Framework\_engine\_core\Email as Email;
   use Framework\_widgets\JSONForm\_engine\_core\FormGenerator as FormGenerator;
     
   /**
@@ -47,6 +48,10 @@
         $this->mongoGen->sortStage(array("project_date" => -1))
       );
       $projects = $this->mongodb->aggregateDocs($pipeline);
+      $maxProjects = count($projects['result']);
+      for($i = 0; $i < $maxProjects; $i++){
+        $projects['result']['project_date'] = date('m-d-Y H:ia EST', $projects['result']['project_date']);
+      }
       $this->setDisplayVariables('PROJECTS', $projects['result']);
     }
 
@@ -68,17 +73,24 @@
         $params['doc']['values']['description'] = '<p>'.$params['doc']['values']['description'].'</p>';
       }
       $params['doc']['values']['client_id'] = ($params['doc']['anonymous'] == 1) ? $_SESSION[$this->config->sessionID]['CLIENT_INFO']['_id'] : new \MongoId();
-      $params['doc']['values']['date'] = date("m-d-Y H:i:s");
+      $params['doc']['values']['date'] = date("U");
       $params['doc']['values']['read'] = 0;
       $params['doc']['values']['type'] = 'testimonial';
       parent::saveEntry($params);
-      $to = array('email' => 'mr.bryan.lowe@gmail.com', 'name' => 'Bryan Lowe');
-      $from = array('email' => 'bryan.lowe@contentequalsmoney.com', 'name' => 'Bryan Lowe');
-      $reply = array('email' => 'info@contentequalsmoney.com', 'name' => 'Content Equals Money');
+      $to = array('email' => $_SESSION[$this->config->sessionID]['CLIENT_INFO']['email'], 'name' => $_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_name']);
+      $from = array('email' => 'dashboard@contentequalsmoney.com', 'name' => 'Content Equals Money');
+      $reply = array('email' => 'amie@contentequalsmoney.com', 'name' => 'Amie Marse');
       $subject = 'Thank you for your feedback!';
       $message = array('body' => 'Your feedback has been recieved. We look forward to hearing from you again!', 'altbody' => 'Your feedback has been recieved. We look forward to hearing from you again!');
-      $smtpInfo = array('host' => 'smtp.gmail.com', 'port' => 587, 'auth' => true, 'username' => 'bryan.lowe@contentequalsmoney.com', 'password' => 'drfunk3nst3in');
-      foo(new Email($to, $from, $reply, $subject, $message, $smtpInfo))->sendEmail();
+      foo(new Email($to, $from, $reply, $subject, $message, $this->config->smtpInfo))->sendEmail();
+
+      $cem_to = array('email' => 'amie@contentequalsmoney.com', 'name' => 'Amie Marse');
+      $cem_from = array('email' => 'dashboard@contentequalsmoney.com', 'name' => 'Content Equals Money');
+      $cem_reply = array('email' => 'dashboard@contentequalsmoney.com', 'name' => 'Content Equals Money');
+      $cem_subject = 'New Feedback Submission From: '.$_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_name'].', Date: '.$params['doc']['values']['date'];
+      $messageBody = '<p>You have recieved feedback from '.$_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_name'].'.</p><p>Please <a href="https://dashboard.contentequalsmoney.com/admin" target="_blank">login</a> for more details.</p>';
+      $cem_message = array('body' => $messageBody, 'altbody' => $messageBody);
+      foo(new Email($cem_to, $cem_from, $cem_reply, $cem_subject, $cem_message, $this->config->smtpInfo))->sendEmail();
     }
   }
 ?>

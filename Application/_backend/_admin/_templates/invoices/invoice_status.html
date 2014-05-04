@@ -1,0 +1,24 @@
+{% if INVOICE_STATUS %}
+	{% if INVOICE_STATUS == "PAID" %}
+		<div class="btn_container">
+			<input type="button" class="btn btn-success btn-glow-success" value="PAID" name="paidBtn" id="paidBtn" />
+		</div>
+		<div class="btn_container">
+			<input type="button" class="btn btn-danger" value="OPEN" name="unpaidBtn" id="unpaidBtn" disabled />
+		</div>
+	{% else %}
+		<div class="btn_container">
+			<input type="button" class="btn btn-success" value="PAID" name="paidBtn" id="paidBtn" disabled />
+		</div>
+		<div class="btn_container">
+			<input type="button" class="btn btn-danger btn-glow-danger" value="OPEN" name="unpaidBtn" id="unpaidBtn" />
+		</div>
+	{% endif %}
+{% else %}
+	<div class="btn_container">
+		<input type="button" class="btn btn-success" value="PAID" name="paidBtn" id="paidBtn" disabled />
+	</div>
+	<div class="btn_container">
+		<input type="button" class="btn btn-danger" value="OPEN" name="unpaidBtn" id="unpaidBtn" disabled />
+	</div>
+{% endif %}

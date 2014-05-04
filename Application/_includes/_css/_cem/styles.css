@@ -242,14 +242,14 @@ a.welcome-link:active {
     background: transparent;
 }
 #quoteme {
-    width: 280px;
+    width: 350px;
     display: block;
     float :left;
     clear: both;
     padding: 30px 10px 10px;
 }
 #slider, #sliderb {
-    width: 245px;
+    width: 330px;
 }
 /* End Quote Calculator */
 
