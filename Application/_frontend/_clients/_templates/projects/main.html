@@ -13,18 +13,12 @@
 						<table id="projectTbl" class="table table-bordered table-hover table-striped tablesorter">
 							<thead>
 		                    	<tr>
-			                        <th class="header">Tag <i class="fa fa-sort"></i></th>
+			                        <th class="header">Title <i class="fa fa-sort"></i></th>
 			                        <th class="header">Last Updated <i class="fa fa-sort"></i></th>
 		                      	</tr>
 	                      	</thead>
-	                      	<tbody>
-              					{% if PROJECT_ENTRIES %}
-	                      			{% for project in PROJECT_ENTRIES %}
-	                      				{% include 'projects/project-entry.html' %}
-	                      			{% endfor %}
-	                      		{% else %}
-	                      		<tr><td colspan="4"><p align="center">There are no active projects to show.</p></td></tr>
-	                      		{% endif %}
+	                      	<tbody id="project_entries">
+              					{% include 'projects/project-entry.html' %}
               				</tbody>
                  	 	</table>
 					</div>
@@ -34,32 +28,10 @@
 		<div class="col-lg-6">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<h3 class="panel-title"><i class="fa fa-search"></i> Project Status</h3>
-				</div>
-				<div class="panel-body">
-					<div class="table-responsive">
-						<table class="table table-bordered table-hover table-striped">
-							<tbody>
-								<tr>
-									<td id="projectStatus">
-										<p>Click on an project title on the left to view its status.</p>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="panel panel-primary">
-				<div class="panel-heading">
 					<h3 class="panel-title"><i class="fa fa-search"></i> Project Description</h3>
 				</div>
 				<div id="projectDesc" class="panel-body">
-					<p>Click on an project tag above to view its description.</p>
+					<p>Click on an project title to view its description.</p>
 				</div>
 			</div>
 		</div>

@@ -40,7 +40,8 @@
         $this->mongoGen->sortStage(array("client_name" => 1, 'company' => 1))
       );
       $this->project_select_pipeline = array(
-        $this->mongoGen->projectStage(array("project_title" => 1, "client_id" => 1)),
+        $this->mongoGen->projectStage(array("project_title" => 1, "client_id" => 1, "invoiced" => 1)),
+        $this->mongoGen->matchStage(array("invoiced" => 0)),
         $this->mongoGen->sortStage(array("project_title" => 1))
       );
     }
@@ -52,7 +53,7 @@
      */
     public function init(){
       parent::init();
-      $this->addJS('_admin/projects/scripts.js');
+      $this->addJS('_admin/projects/scripts.min.js');
       $this->setTitle('CEM Dashboard - Project Management');
       $this->setTemplate('projects/main.html');
     }

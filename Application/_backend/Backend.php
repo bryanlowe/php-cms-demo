@@ -72,8 +72,7 @@
       $this->addJS('_common/jquery-impromptu.min.js');
       $this->addJS('_common/bootstrap.js');
       $this->addJS('_common/common-functions.js');
-      $this->addJS('_widgets/_jsonform/form-functions.min.js');
-      $this->addJS('_common/_mongodb/form-functions.js');
+      $this->addJS('_common/_mongodb/form-functions.min.js');
       $this->setTitle('CEM Dashboard - Admin');
       $this->assemblePage();
     }

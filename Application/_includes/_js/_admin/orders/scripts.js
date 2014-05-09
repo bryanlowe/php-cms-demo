@@ -1,3 +1,15 @@
+$(document).ready(function(){
+  $('#create_project').hide();
+  $('#submitBtn').click(function(){
+    if($('#project_title').val() != ""
+    && $('#order_id').val() != ""){
+      createProject();
+    }
+  });
+  $('#project_title').prop('disabled', true);
+  $('#submitBtn').prop('disabled', true);
+});
+
 /**
  * Updates the order records and shows order information
  */
@@ -20,6 +32,42 @@ function showOrderDetails(orderID, read){
       async: false,
       data: {_id: orderID, _ajaxFunc: "markAsRead"}
     });
+  }
+  $('#order_id').val(orderID);
+  $('#create_project').show();
+  $('#project_title').prop('disabled', false);
+  $('#submitBtn').prop('disabled', false);
+}
+
+/**
+ * Creates a project from the order
+ */
+function createProject(){
+  statusApp.showPleaseWait();
+  var docObj = {};
+  docObj.order_id = $('#order_id').val();
+  docObj.project_title = $('#project_title').val();
+  var result = $.ajax({
+    type: "POST",
+    url: site_url+"orders",
+    async: false,
+    data: {doc: docObj, _ajaxFunc: "createProject"}
+  });
+  statusApp.hidePleaseWait();
+  result = result.responseText;
+  if(result.err == null){
+    deletePost($('#order_id').val());
+    $('#create_project').hide();
+    $('#order_id').val('');
+    $('#project_title').val('');
+    $('#project_title').prop('disabled', true);
+    $('#submitBtn').prop('disabled', true);
+    $('#order-details').html('')
+    popUpMsg("Project has been created!");
+    return true;
+  } else {
+    popUpMsg(results.err);
+    return false;
   }
 }
 

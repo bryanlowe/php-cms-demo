@@ -27,7 +27,7 @@
      */
     public function init(){
       parent::init();
-      $this->addJS('_admin/orders/scripts.js');
+      $this->addJS('_admin/orders/scripts.min.js');
       $this->setTitle('CEM Dashboard - Order Management');
       $this->setTemplate('orders/main.html');
     }
@@ -44,14 +44,44 @@
       $past_rst = $this->mongodb->aggregateDocs(array($this->mongoGen->matchStage(array("read" => 1, "type" => "order")), $this->mongoGen->sortStage(array("date" => -1))));
       $recent_posts = foo(new MongoAccessLayer('feedback'))->joinCollectionsByID($recent_rst['result'], 'clients', 'client_id');
       $past_posts = foo(new MongoAccessLayer('feedback'))->joinCollectionsByID($past_rst['result'], 'clients', 'client_id');
+      $maxResults = count($recent_posts);
+      for($i = 0; $i < $maxResults; $i++){
+        $recent_posts[$i]['date'] = date('m-d-Y h:ia', $recent_posts[$i]['date']).' EST';
+      }
       $this->setDisplayVariables('RECENT_ORDERS', $recent_posts);
       $this->setDisplayVariables('PAST_ORDERS', $past_posts);
     }
 
     /**
+     * Creates a project from an order
+     *
+     * @param mixed array params
+     * @access public
+     */
+    public function createProject($params){
+      if($this->isAdminUser()){
+        $this->mongodb->switchCollection('feedback');
+        $order = $this->mongodb->getDocument(array('_id' => new \Mongoid($params['doc']['order_id'])));
+        if($order != null){
+          $project = array(
+            'project_title' => $params['doc']['project_title'], 
+            'project_description' => $order['description'],
+            'project_tags' => $order['project_tags'],
+            'client_id' => $order['client_id'],
+            'invoiced' => 0,
+            'project_date' => date("U"),
+            'project_status' => 'Created'
+          );
+          $results = foo(new MongoAccessLayer('projects'))->saveDocEntry($project);
+          echo json_encode($results);
+        }
+      }
+    }
+
+    /**
      * Mark a post as read
      *    
-     * mixed array params
+     * @param mixed array params
      * @access public
      */
     public function markAsRead($params){
@@ -63,7 +93,7 @@
     /**
      * Delete a post
      *    
-     * mixed array params
+     * @param mixed array params
      * @access public
      */
     public function deletePost($params){

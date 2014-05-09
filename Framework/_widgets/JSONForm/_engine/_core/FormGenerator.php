@@ -61,8 +61,7 @@
         $type = "";
         if(is_array($json)){
           $type = 'array';
-          $this->json = json_encode($json);
-          $this->json = json_decode($this->json);
+          $this->json = json_decode(json_encode($json));
         } else if(is_object($json)){
           $type = 'object';
           $this->json = json_decode($json);
@@ -103,7 +102,14 @@
       if(isset($values)){
         foreach($this->json->form as $input){
           if(array_key_exists($input->id, $values)){
-            $input->value = $values[$input->id];
+            if(is_array($values[$input->id])){
+              $input->value = $values[$input->id]['value'];
+              if(isset($values[$input->id]['options'])){
+                $input->options = json_decode(json_encode($values[$input->id]['options']));
+              }
+            } else {
+              $input->value = $values[$input->id];
+            }
           }
         }
       }

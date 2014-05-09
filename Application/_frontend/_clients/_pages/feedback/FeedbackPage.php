@@ -27,7 +27,7 @@
      */
     public function init(){
       parent::init();
-      $this->addJS('_clients/feedback/scripts.js');
+      $this->addJS('_clients/feedback/scripts.min.js');
       $this->setTitle('CEM Dashboard - Submit Feedback');
       $this->setTemplate('feedback/main.html');
     }
@@ -43,15 +43,12 @@
       $this->setDisplayVariables('FEEDBACK_FORM', $feedbackForm);
       $this->mongodb->switchCollection('projects');
       $pipeline = array(
-        $this->mongoGen->matchStage(array("client_id" => $_SESSION[$this->config->sessionID]['CLIENT_INFO']['_id'])),
-        $this->mongoGen->projectStage(array("project_tag" => 1, "project_date" => 1)),
+        $this->mongoGen->matchStage(array("client_id" => $_SESSION[$this->config->sessionID]['CLIENT_INFO']['_id'], 'invoiced' => 0)),
+        $this->mongoGen->projectStage(array("project_title" => 1, "project_date" => 1)),
         $this->mongoGen->sortStage(array("project_date" => -1))
       );
       $projects = $this->mongodb->aggregateDocs($pipeline);
       $maxProjects = count($projects['result']);
-      for($i = 0; $i < $maxProjects; $i++){
-        $projects['result']['project_date'] = date('m-d-Y H:ia EST', $projects['result']['project_date']);
-      }
       $this->setDisplayVariables('PROJECTS', $projects['result']);
     }
 
@@ -67,10 +64,10 @@
       if($params['doc']['project_id'] != ''){
         $this->mongodb->switchCollection('projects');
         $project = $this->mongodb->getDocument(array('_id' => new \MongoId($params['doc']['project_id'])));
-        $projectDesc = '<div><p><strong>This concerns a '.$project['project_tag'].' project. This project was last updated '.$project['project_date'].'.</strong></p><p>Project Description: '.$project['project_description'].'</p></div>';
-        $params['doc']['values']['description'] = $projectDesc.'<p>Feedback: '.$params['doc']['values']['description'].'</p>';
+        $projectDesc = '<div><p><strong>This concerns project "'.$project['project_title'].'". This project was last updated '.date('m-d-Y h:ia EST', $project['project_date']).'.</strong></p><p>Project Description: '.$project['project_description'].'</p></div>';
+        $params['doc']['values']['description'] = $projectDesc.'\n\nFeedback: '.$params['doc']['values']['description'];
       } else {
-        $params['doc']['values']['description'] = '<p>'.$params['doc']['values']['description'].'</p>';
+        $params['doc']['values']['description'] = $params['doc']['values']['description'];
       }
       $params['doc']['values']['client_id'] = ($params['doc']['anonymous'] == 1) ? $_SESSION[$this->config->sessionID]['CLIENT_INFO']['_id'] : new \MongoId();
       $params['doc']['values']['date'] = date("U");

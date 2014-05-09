@@ -31,7 +31,7 @@
     public function init(){
       parent::init();
       $this->addJS('_common/jquery.tablesorter.min.js');
-      $this->addJS('_admin/preview-projects/scripts.js');
+      $this->addJS('_admin/preview-projects/scripts.min.js');
       $this->setTitle('CEM Dashboard - View Project Details');
       $this->setTemplate('preview-projects/main.html');
     }
@@ -59,15 +59,14 @@
         if($params['_id'] != 0){
           $this->mongodb->switchCollection('projects');
           $pipeline = array(
-            $this->mongoGen->matchStage(array('client_id' => (new \MongoId($params['_id'])))),
+            $this->mongoGen->matchStage(array('client_id' => (new \MongoId($params['_id'])), 'invoiced' => 0)),
             $this->mongoGen->sortStage(array('project_date' => -1))
           );
           $results = $this->mongodb->aggregateDocs($pipeline);
           $select_projects = $results['result']; 
           $maxResults = count($select_projects);
-          $this->mongodb->switchCollection('projects');
           for($i = 0; $i < $maxResults; $i++){
-            $select_projects[$i]['project_date'] = date('m-d-Y H:ia', $select_projects[$i]['project_date']).' EST';
+            $select_projects[$i]['project_date'] = date('m-d-Y h:ia', $select_projects[$i]['project_date']).' EST';
           }
           echo $this->twig->render('preview-projects/project-entry.html', array('PROJECT_ENTRIES' => $select_projects));        
         } else {

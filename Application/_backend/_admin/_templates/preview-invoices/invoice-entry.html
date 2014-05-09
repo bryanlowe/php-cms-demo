@@ -17,19 +17,21 @@
 					<p>{{invoice.invoice_description}}</p>
 				</div>
 			</td>
+			<td style="white-space: nowrap;">{{invoice.invoice_date}}</td>
+			<td>${{invoice.invoice_cost}}</td>
 			<td>
-				{% if invoice.invoice_filename %}
-					<a href="/Media/_documents/_invoices/{{invoice.invoice_filename}}" target="_blank">{{invoice.invoice_filename}}</a>
-				{% else %}
-					<a>Not Available</a>
-				{% endif %}
+				<a href="https://contentequalsmoney.com/pay-invoice-online/?invoice_id={{invoice.wp_invoice_id}}&format=pdf" target="_blank">PDF</a>
 			</td>
-			<td>{{invoice.invoice_date}}</td>
-			<td>{{invoice.invoice_cost}}</td>
 			{% if invoice.invoice_status == "PAID" %}
 				<td><span class="btn btn-success">{{invoice.invoice_status}}</span></td>
+				<td>
+					<a href="https://contentequalsmoney.com/pay-invoice-online/?invoice_id={{invoice.wp_invoice_id}}" target="_blank">View</a>
+				</td>
 			{% else %}
 				<td><span class="btn btn-danger">{{invoice.invoice_status}}</span></td>
+				<td>
+					<a href="https://contentequalsmoney.com/pay-invoice-online/?invoice_id={{invoice.wp_invoice_id}}" target="_blank">Pay</a>
+				</td>
 			{% endif %}
 		</tr>		
 	{% endfor %}

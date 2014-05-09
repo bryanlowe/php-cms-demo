@@ -21,11 +21,13 @@
                                  '/' => array('dir' => 'home', 'class' => 'HomePage'),
                                  '/account' => array('dir' => 'account', 'class' => 'AccountPage'),
                                  '/feedback' => array('dir' => 'feedback', 'class' => 'FeedbackPage'),
+                                 '/forgot-password' => array('dir' => 'forgot_password', 'class' => 'ForgotPasswordPage'),
                                  '/invoices' => array('dir' => 'invoices', 'class' => 'InvoicesPage'),
                                  '/login' => array('dir' => 'login', 'class' => 'LoginPage'),
                                  '/logout' => array('dir' => 'logout', 'class' => 'LogoutPage'),
                                  '/orders' => array('dir' => 'orders', 'class' => 'OrdersPage'),
-                                 '/projects' => array('dir' => 'projects', 'class' => 'ProjectsPage')),
+                                 '/projects' => array('dir' => 'projects', 'class' => 'ProjectsPage'),
+                                 '/register' => array('dir' => 'register', 'class' => 'RegisterPage')),
 
                                 'writers' => array(
                                  '/writers' => array('dir' => 'home', 'class' => 'HomePage'),

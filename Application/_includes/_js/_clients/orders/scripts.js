@@ -4,6 +4,9 @@ $(document).ready(function(){
 	$('#submitBtn').click(function(){
 		saveOrder();
 	});
+	if($('#project_tags_1').length == 0){
+		$('#project_tags_container').hide();
+	}
 });
 
 /**

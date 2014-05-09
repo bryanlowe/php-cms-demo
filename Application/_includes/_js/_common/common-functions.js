@@ -1,23 +1,24 @@
 /**
  * If the user is idle for 5 minutes, they are automatically logged out.
- 
+ */
 $(document).idle({
   onIdle: function(){
   	if(window.location.href.indexOf("admin") > -1){
   		if(window.location.href.indexOf("logout") == -1
 	  	&& window.location.href.indexOf("login") == -1){
-	  		location.replace(site_url+"admin/logout");
+	  		location.replace(site_url+"logout");
 	  	}
   	} else {
   		if(window.location.href.indexOf("logout") == -1
-	  	&& window.location.href.indexOf("login") == -1){
+	  	&& window.location.href.indexOf("login") == -1
+	  	&& window.location.href.indexOf("register") == -1
+	  	&& window.location.href.indexOf("forgot-password") == -1){
 	  		location.replace(site_url+"logout");
 	  	}
   	}
   },
-  idle: 300000
+  idle: 600000
 });
-*/
 
 /**
  * Status bar

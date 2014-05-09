@@ -9,7 +9,17 @@
 		   Order Request: {{order.clients.client_name}} {{order.clients.company}}
 		</a>
 		<div id="order-details-{{order._id}}" style="display: none;">
-			{{order.description}}
+			{% if order.project_tags %}
+				<h3>Project Tags:</h3>
+				<div class="list-group input_container">
+					{% for tag in order.project_tags %}
+						<div class="list-group-item">{{ tag }}</div>
+					{% endfor %}
+				</div>
+				<div class="clear"><hr></div>
+			{% endif %}
+			<h3>Description:</h3>
+			<p>{{order.description}}</p>
 			<p align="right"><i>-- {{order.clients.client_name}} {{order.clients.company}}</i></p>
 		</div>
 	</div>

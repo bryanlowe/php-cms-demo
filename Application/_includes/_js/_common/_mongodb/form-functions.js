@@ -66,6 +66,34 @@ function validateForm(formID){
       $('form#'+formID+' #'+$(this).attr('name')+'_container').removeClass("has-error");
     }
   });
+  var radioButtons = [];
+  $('form#'+formID+' input[required="1"][type="radio"]').each(function(){
+    radioButtons.push($(this).attr('name'));
+  });
+  if(radioButtons.length > 0){
+    for(var i = 0; i < radioButtons.length; i++){
+      if($('input[name="'+radioButtons[i]+'"]').filter(':checked').length == 0){
+        $('form#'+formID+' #'+radioButtons[i]+'_container').addClass("has-error");
+        errorCount++;
+      } else {
+        $('form#'+formID+' #'+radioButtons[i]+'_container').removeClass("has-error");
+      }
+    }
+  }
+  var checkBoxes = [];
+  $('form#'+formID+' input[required="1"][type="radio"]').each(function(){
+    checkBoxes.push($(this).attr('name'));
+  });
+  if(checkBoxes.length > 0){
+    for(var i = 0; i < checkBoxes.length; i++){
+      if($('input[name="'+checkBoxes[i]+'"]').filter(':checked').length == 0){
+        $('form#'+formID+' #'+checkBoxes[i]+'_container').addClass("has-error");
+        errorCount++;
+      } else {
+        $('form#'+formID+' #'+checkBoxes[i]+'_container').removeClass("has-error");
+      }
+    }
+  }
   $('form#'+formID+' textarea[required="1"]').each(function(){
     if($.trim($(this).val()).length == 0){
       $('form#'+formID+' #'+$(this).attr('name')+'_container').addClass("has-error");
@@ -93,10 +121,18 @@ function validateForm(formID){
 function createDocFromForm(formID){
   var docObj = {},
       values = {};
-  $.each($('form#'+formID).serializeArray(), function(i, field) {
-    if(field.type == 'radio' || field.type == 'checkbox'){
-      if(field.checked){
+  $.each($('form#'+formID).serializeArray(), function(i, field) {   
+    var fieldType = $('form#'+formID+' input[name="'+field.name+'"]').prop('type');
+    if(fieldType == 'radio' || fieldType == 'checkbox'){
+      if(fieldType == 'checkbox' 
+      && (typeof(values[field.name]) !== 'object')
+      || typeof(values[field.name]) === 'undefined'){
+        values[field.name] = [];
+      }
+      if(fieldType == 'radio'){
         values[field.name] = field.value;
+      } else if(fieldType == 'checkbox'){
+        values[field.name].push(field.value);
       }
     } else if(field.name != '_id') {
       values[field.name] = field.value;

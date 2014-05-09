@@ -28,7 +28,7 @@
      */
     public function init(){
       parent::init();
-      $this->addJS('_clients/orders/scripts.js');
+      $this->addJS('_clients/orders/scripts.min.js');
       $this->setTitle('CEM Dashboard - Place An Order');
       $this->setTemplate('orders/main.html');
     }
@@ -40,8 +40,25 @@
      */
     protected function assemblePage(){   
       parent::assemblePage();   
-      $orderForm = foo(new FormGenerator($this->config->dir($this->source).'/orders/order_form.json'))->getFormHTML();
+      $tagOpts = array('project_tags' => array('value' => '', 'options' => $this->gatherTagOptions()));
+      $orderForm = foo(new FormGenerator($this->config->dir($this->source).'/orders/order_form.json', $tagOpts))->getFormHTML();
       $this->setDisplayVariables('ORDER_FORM', $orderForm);
+    }
+
+    /**
+     * Gathers project tags from the client
+     *
+     * @access private
+     * @return string array options
+     */
+    private function gatherTagOptions(){
+      $options = array();
+      $tags = $_SESSION[$this->config->sessionID]['CLIENT_INFO']['project_tags'];
+      $maxTags = count($tags);
+      for($i = 0; $i < $maxTags; $i++){
+        $options[] = array('name' => $tags[$i], 'value' => $tags[$i]); 
+      }
+      return $options;
     }
 
     /**
@@ -53,7 +70,7 @@
     public function saveEntry($params){
       $params['doc']['_id'] = '';
       $params['doc']['collection'] = "feedback";
-      $params['doc']['values']['description'] = '<p>'.$params['doc']['values']['description'].'</p>';
+      $params['doc']['values']['description'] = $params['doc']['values']['description'];
       $params['doc']['values']['client_id'] = $_SESSION[$this->config->sessionID]['CLIENT_INFO']['_id'];
       $params['doc']['values']['date'] = date("U");
       $params['doc']['values']['read'] = 0;

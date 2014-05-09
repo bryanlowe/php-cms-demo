@@ -27,7 +27,7 @@
      */
     public function init(){
       parent::init();
-      $this->addJS('_admin/feedback/scripts.js');
+      $this->addJS('_admin/feedback/scripts.min.js');
       $this->setTitle('CEM Dashboard - Feedback Management');
       $this->setTemplate('feedback/main.html');
     }

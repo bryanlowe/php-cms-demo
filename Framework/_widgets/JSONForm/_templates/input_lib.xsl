@@ -263,7 +263,7 @@
     </div>
   </xsl:template>
   
-  <xsl:template name="radio_input">
+  <xsl:template name="radio_vertical_input">
     <xsl:param name="class" />
     <xsl:param name="required" />
     <xsl:param name="onclick" />
@@ -272,44 +272,110 @@
   	<xsl:param name="field_id" />
   	<xsl:param name="options" />
   	<xsl:param name="field_value" />
-  	<div id="{$field_id}_container" class="input_container">
+  	<div id="{$field_id}_container" class="input_container form-group">
   	    <xsl:call-template name="input_label">
   				<xsl:with-param name="field_label" select="$field_label" />
   			</xsl:call-template>
   			<xsl:for-each select="$options/option">
   			  <xsl:choose>
     			  <xsl:when test="contains($field_value,value)">
-    			    <input id="{$field_name}_{position()}" name="{$field_name}" type="radio" value="{value}" checked="true">
-                <xsl:if test="$class != ''">
-                  <xsl:attribute name="class"><xsl:value-of select="$class" /></xsl:attribute> 
-                </xsl:if>
-                <xsl:if test="$required != ''">
-                  <xsl:attribute name="required"><xsl:value-of select="$required" /></xsl:attribute> 
-                </xsl:if>
-                <xsl:if test="$onclick != ''">
-                  <xsl:attribute name="onclick"><xsl:value-of select="$onclick" /></xsl:attribute> 
-                </xsl:if>
-              </input> <span><xsl:value-of select="name" /></span><br />
+    			    <div class="radio">
+                <label>
+                  <input id="{$field_name}_{position()}" name="{$field_name}" type="radio" value="{value}" checked="true">
+                    <xsl:if test="$class != ''">
+                      <xsl:attribute name="class"><xsl:value-of select="$class" /></xsl:attribute> 
+                    </xsl:if>
+                    <xsl:if test="$required != ''">
+                      <xsl:attribute name="required"><xsl:value-of select="$required" /></xsl:attribute> 
+                    </xsl:if>
+                    <xsl:if test="$onclick != ''">
+                      <xsl:attribute name="onclick"><xsl:value-of select="$onclick" /></xsl:attribute> 
+                    </xsl:if>
+                  </input> 
+                  <xsl:value-of select="name" />
+                </label>
+              </div>
         		</xsl:when>
         		<xsl:otherwise>
-        			<input id="{$field_name}_{position()}" name="{$field_name}" type="radio" value="{value}">
-                <xsl:if test="$class != ''">
-                  <xsl:attribute name="class"><xsl:value-of select="$class" /></xsl:attribute> 
-                </xsl:if>
-                <xsl:if test="$required != ''">
-                  <xsl:attribute name="required"><xsl:value-of select="$required" /></xsl:attribute> 
-                </xsl:if>
-                <xsl:if test="$onclick != ''">
-                  <xsl:attribute name="onclick"><xsl:value-of select="$onclick" /></xsl:attribute> 
-                </xsl:if>
-              </input> <span><xsl:value-of select="name" /></span><br />
+              <div class="radio">
+                <label>
+            			<input id="{$field_name}_{position()}" name="{$field_name}" type="radio" value="{value}">
+                    <xsl:if test="$class != ''">
+                      <xsl:attribute name="class"><xsl:value-of select="$class" /></xsl:attribute> 
+                    </xsl:if>
+                    <xsl:if test="$required != ''">
+                      <xsl:attribute name="required"><xsl:value-of select="$required" /></xsl:attribute> 
+                    </xsl:if>
+                    <xsl:if test="$onclick != ''">
+                      <xsl:attribute name="onclick"><xsl:value-of select="$onclick" /></xsl:attribute> 
+                    </xsl:if>
+                  </input> 
+                  <xsl:value-of select="name" />
+                </label>
+              </div>
         		</xsl:otherwise>
           </xsl:choose> 
   			</xsl:for-each>
     </div>
   </xsl:template>
+
+  <xsl:template name="radio_horizontal_input">
+    <xsl:param name="class" />
+    <xsl:param name="required" />
+    <xsl:param name="onclick" />
+    <xsl:param name="field_label" />
+    <xsl:param name="field_name" />
+    <xsl:param name="field_id" />
+    <xsl:param name="options" />
+    <xsl:param name="field_value" />
+    <div id="{$field_id}_container" class="input_container form-group">
+        <xsl:call-template name="input_label">
+          <xsl:with-param name="field_label" select="$field_label" />
+        </xsl:call-template>
+        <xsl:for-each select="$options/option">
+          <xsl:choose>
+            <xsl:when test="contains($field_value,value)">
+              <div class="radio-inline">
+                <label>
+                  <input id="{$field_name}_{position()}" name="{$field_name}" type="radio" value="{value}" checked="true">
+                    <xsl:if test="$class != ''">
+                      <xsl:attribute name="class"><xsl:value-of select="$class" /></xsl:attribute> 
+                    </xsl:if>
+                    <xsl:if test="$required != ''">
+                      <xsl:attribute name="required"><xsl:value-of select="$required" /></xsl:attribute> 
+                    </xsl:if>
+                    <xsl:if test="$onclick != ''">
+                      <xsl:attribute name="onclick"><xsl:value-of select="$onclick" /></xsl:attribute> 
+                    </xsl:if>
+                  </input> 
+                  <xsl:value-of select="name" />
+                </label>
+              </div>
+            </xsl:when>
+            <xsl:otherwise>
+              <div class="radio-inline">
+                <label>
+                  <input id="{$field_name}_{position()}" name="{$field_name}" type="radio" value="{value}">
+                    <xsl:if test="$class != ''">
+                      <xsl:attribute name="class"><xsl:value-of select="$class" /></xsl:attribute> 
+                    </xsl:if>
+                    <xsl:if test="$required != ''">
+                      <xsl:attribute name="required"><xsl:value-of select="$required" /></xsl:attribute> 
+                    </xsl:if>
+                    <xsl:if test="$onclick != ''">
+                      <xsl:attribute name="onclick"><xsl:value-of select="$onclick" /></xsl:attribute> 
+                    </xsl:if>
+                  </input> 
+                  <xsl:value-of select="name" />
+                </label>
+              </div>
+            </xsl:otherwise>
+          </xsl:choose> 
+        </xsl:for-each>
+    </div>
+  </xsl:template>
   
-  <xsl:template name="checkbox_input">
+  <xsl:template name="checkbox_vertical_input">
     <xsl:param name="class" />
     <xsl:param name="required" />
     <xsl:param name="onclick" />
@@ -318,40 +384,104 @@
   	<xsl:param name="field_id" />
   	<xsl:param name="options" />
   	<xsl:param name="field_value" />
-  	<div id="{$field_id}_container" class="input_container">
+  	<div id="{$field_id}_container" class="input_container form-group">
   	    <xsl:call-template name="input_label">
   				<xsl:with-param name="field_label" select="$field_label" />
   			</xsl:call-template>
   			<xsl:for-each select="$options/option">
   			  <xsl:choose>
     			  <xsl:when test="contains($field_value,value)">
-    			    <input id="{$field_name}_{position()}" name="{$field_name}" type="checkbox" value="{value}" checked="true">
-                <xsl:if test="$class != ''">
-                  <xsl:attribute name="class"><xsl:value-of select="$class" /></xsl:attribute> 
-                </xsl:if>
-                <xsl:if test="$required != ''">
-                  <xsl:attribute name="required"><xsl:value-of select="$required" /></xsl:attribute> 
-                </xsl:if>
-                <xsl:if test="$onclick != ''">
-                  <xsl:attribute name="onclick"><xsl:value-of select="$onclick" /></xsl:attribute> 
-                </xsl:if>
-              </input> <span><xsl:value-of select="name" /></span><br />
+              <div class="checkbox">
+                <label>
+        			    <input id="{$field_name}_{position()}" name="{$field_name}" type="checkbox" value="{value}" checked="true">
+                    <xsl:if test="$class != ''">
+                      <xsl:attribute name="class"><xsl:value-of select="$class" /></xsl:attribute> 
+                    </xsl:if>
+                    <xsl:if test="$required != ''">
+                      <xsl:attribute name="required"><xsl:value-of select="$required" /></xsl:attribute> 
+                    </xsl:if>
+                    <xsl:if test="$onclick != ''">
+                      <xsl:attribute name="onclick"><xsl:value-of select="$onclick" /></xsl:attribute> 
+                    </xsl:if>
+                  </input> 
+                  <xsl:value-of select="name" />
+                </label>
+              </div>
         		</xsl:when>
         		<xsl:otherwise>
-        			<input id="{$field_name}_{position()}" name="{$field_name}" type="checkbox" value="{value}">
-                <xsl:if test="$class != ''">
-                  <xsl:attribute name="class"><xsl:value-of select="$class" /></xsl:attribute> 
-                </xsl:if>
-                <xsl:if test="$required != ''">
-                  <xsl:attribute name="required"><xsl:value-of select="$required" /></xsl:attribute> 
-                </xsl:if>
-                <xsl:if test="$onclick != ''">
-                  <xsl:attribute name="onclick"><xsl:value-of select="$onclick" /></xsl:attribute> 
-                </xsl:if>
-              </input> <span><xsl:value-of select="name" /></span><br />
+              <div class="checkbox">
+                <label>
+            			<input id="{$field_name}_{position()}" name="{$field_name}" type="checkbox" value="{value}">
+                    <xsl:if test="$class != ''">
+                      <xsl:attribute name="class"><xsl:value-of select="$class" /></xsl:attribute> 
+                    </xsl:if>
+                    <xsl:if test="$required != ''">
+                      <xsl:attribute name="required"><xsl:value-of select="$required" /></xsl:attribute> 
+                    </xsl:if>
+                    <xsl:if test="$onclick != ''">
+                      <xsl:attribute name="onclick"><xsl:value-of select="$onclick" /></xsl:attribute> 
+                    </xsl:if>
+                  </input> <xsl:value-of select="name" />
+                </label>
+              </div>
         		</xsl:otherwise>
           </xsl:choose> 
   			</xsl:for-each>
+    </div>
+  </xsl:template>
+
+  <xsl:template name="checkbox_horizontal_input">
+    <xsl:param name="class" />
+    <xsl:param name="required" />
+    <xsl:param name="onclick" />
+    <xsl:param name="field_label" />
+    <xsl:param name="field_name" />
+    <xsl:param name="field_id" />
+    <xsl:param name="options" />
+    <xsl:param name="field_value" />
+    <div id="{$field_id}_container" class="input_container form-group">
+        <xsl:call-template name="input_label">
+          <xsl:with-param name="field_label" select="$field_label" />
+        </xsl:call-template>
+        <xsl:for-each select="$options/option">
+          <xsl:choose>
+            <xsl:when test="contains($field_value,value)">
+              <div class="checkbox-inline">
+                <label>
+                  <input id="{$field_name}_{position()}" name="{$field_name}" type="checkbox" value="{value}" checked="true">
+                    <xsl:if test="$class != ''">
+                      <xsl:attribute name="class"><xsl:value-of select="$class" /></xsl:attribute> 
+                    </xsl:if>
+                    <xsl:if test="$required != ''">
+                      <xsl:attribute name="required"><xsl:value-of select="$required" /></xsl:attribute> 
+                    </xsl:if>
+                    <xsl:if test="$onclick != ''">
+                      <xsl:attribute name="onclick"><xsl:value-of select="$onclick" /></xsl:attribute> 
+                    </xsl:if>
+                  </input> 
+                  <xsl:value-of select="name" />
+                </label>
+              </div>
+            </xsl:when>
+            <xsl:otherwise>
+              <div class="checkbox-inline">
+                <label>
+                  <input id="{$field_name}_{position()}" name="{$field_name}" type="checkbox" value="{value}">
+                    <xsl:if test="$class != ''">
+                      <xsl:attribute name="class"><xsl:value-of select="$class" /></xsl:attribute> 
+                    </xsl:if>
+                    <xsl:if test="$required != ''">
+                      <xsl:attribute name="required"><xsl:value-of select="$required" /></xsl:attribute> 
+                    </xsl:if>
+                    <xsl:if test="$onclick != ''">
+                      <xsl:attribute name="onclick"><xsl:value-of select="$onclick" /></xsl:attribute> 
+                    </xsl:if>
+                  </input> <xsl:value-of select="name" />
+                </label>
+              </div>
+            </xsl:otherwise>
+          </xsl:choose> 
+        </xsl:for-each>
     </div>
   </xsl:template>
   

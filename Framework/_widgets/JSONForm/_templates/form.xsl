@@ -139,8 +139,8 @@
             <xsl:with-param name="onkeydown" select="$onkeydown" /> 
           </xsl:call-template>
         </xsl:when>
-        <xsl:when test="@type='radio'">
-          <xsl:call-template name="radio_input">
+        <xsl:when test="@type='radio-h'">
+          <xsl:call-template name="radio_horizontal_input">
             <xsl:with-param name="field_label" select="$field_label"/>
             <xsl:with-param name="field_name" select="$field_name"/>
             <xsl:with-param name="field_id" select="$field_id"/> 
@@ -151,8 +151,32 @@
             <xsl:with-param name="options" select="./options"/>
           </xsl:call-template>
         </xsl:when>
-        <xsl:when test="@type='checkbox'">
-          <xsl:call-template name="checkbox_input">
+        <xsl:when test="@type='radio-v'">
+          <xsl:call-template name="radio_vertical_input">
+            <xsl:with-param name="field_label" select="$field_label"/>
+            <xsl:with-param name="field_name" select="$field_name"/>
+            <xsl:with-param name="field_id" select="$field_id"/> 
+            <xsl:with-param name="field_value" select="$field_value" />
+            <xsl:with-param name="class" select="$class" />
+            <xsl:with-param name="required" select="$required" />
+            <xsl:with-param name="onclick" select="$onclick" />
+            <xsl:with-param name="options" select="./options"/>
+          </xsl:call-template>
+        </xsl:when>
+        <xsl:when test="@type='checkbox-h'">
+          <xsl:call-template name="checkbox_horizontal_input">
+            <xsl:with-param name="field_label" select="$field_label"/>
+            <xsl:with-param name="field_name" select="$field_name"/>
+            <xsl:with-param name="field_id" select="$field_id"/> 
+            <xsl:with-param name="field_value" select="$field_value" />
+            <xsl:with-param name="class" select="$class" />
+            <xsl:with-param name="required" select="$required" />
+            <xsl:with-param name="onclick" select="$onclick" />
+            <xsl:with-param name="options" select="./options"/>
+          </xsl:call-template>
+        </xsl:when>
+        <xsl:when test="@type='checkbox-v'">
+          <xsl:call-template name="checkbox_vertical_input">
             <xsl:with-param name="field_label" select="$field_label"/>
             <xsl:with-param name="field_name" select="$field_name"/>
             <xsl:with-param name="field_id" select="$field_id"/> 

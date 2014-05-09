@@ -2,6 +2,6 @@
 <select class="form-control" name="projects_select" id="projects_select">
 	<option value="">Please select a project</option>
 	{% for project in PROJECTS %}
-	    <option value="{{ project._id }}">Project: {{ project.project_tag }} -- Date: {{ project.project_date }}</option>
+	    <option value="{{ project._id }}">{{ project.project_title }}</option>
 	{% endfor %}
 </select>

@@ -1,5 +1,6 @@
 $(document).ready(function(){
-	$('#login_password').keypress(function(event) {
+	$('#login_form').addClass('col-lg-offset-2');
+  $('#login_password').keypress(function(event) {
 		if(event.which == 13){
 			processLogin();
 		}

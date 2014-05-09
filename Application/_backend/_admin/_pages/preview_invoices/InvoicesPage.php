@@ -30,7 +30,7 @@
     public function init(){
       parent::init();
       $this->addJS('_common/jquery.tablesorter.min.js');
-      $this->addJS('_admin/preview-invoices/scripts.js');
+      $this->addJS('_admin/preview-invoices/scripts.min.js');
       $this->setTitle('CEM Dashboard - View Invoice History');
       $this->setTemplate('preview-invoices/main.html');
     }
@@ -66,7 +66,7 @@
           $maxResults = count($select_invoices);
           $this->mongodb->switchCollection('projects');
           for($i = 0; $i < $maxResults; $i++){
-            $select_invoices[$i]['invoice_date'] = date('m-d-Y H:ia', $select_invoices[$i]['invoice_date']).' EST';
+            $select_invoices[$i]['invoice_date'] = date('m-d-Y h:ia', $select_invoices[$i]['invoice_date']).' EST';
             if(count($select_invoices[$i]['project_list']) > 0){
               $select_invoices[$i]['project_list'] = $this->mongodb->getDocuments(array('_id' => array('$in' => $select_invoices[$i]['project_list'])), array('_id' => 0,'project_title' => 1));  
             } else {

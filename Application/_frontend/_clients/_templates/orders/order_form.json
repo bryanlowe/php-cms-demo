@@ -8,6 +8,15 @@
 			"id": "description",
 			"value": "", 
 			"class": "form-control input-lg"
+		},
+		{ 
+			"order": 2, 
+			"required": 0, 
+			"type": "checkbox-v", 
+			"label": "What is type of order is this? (Check all that apply)",
+			"id": "project_tags",
+			"value": "",
+			"options": []
 		}
 	]
 }

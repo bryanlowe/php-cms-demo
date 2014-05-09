@@ -1,0 +1,14 @@
+{
+	"id": "forgot-password",
+	"form": [
+		{ 
+			"order": 1, 
+			"required": 1, 
+			"type": "email", 
+			"label": "Email",
+			"id": "email",
+			"value": "",
+			"class": "form-control"
+		}
+	]
+}

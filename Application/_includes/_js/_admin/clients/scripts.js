@@ -1,14 +1,11 @@
 $(document).ready(function(){
+	$('#zip_container').css('padding-left', '30px');
+    $('#client_name_container').addClass('col-lg-offset-2');
+    $('#phone_number_container').addClass('col-lg-offset-2');
+    $('#city_container').addClass('col-lg-offset-2');
+    $('#zip_container').addClass('col-lg-offset-2');
 	$('#clients_select').change(function(){
-		updateForm($(this).val(),'clients',['mongoid','company','client_name','email','phone_number','client_rate']);
-		$('#project_tag').val('');
-		if($(this).val() != ''){
-			disableElement('project_tag', false);
-			reloadFormElement('project-tag-list', 'clients', $(this).val());
-		} else {
-			disableElement('project_tag', true);
-			reloadFormElement('project-tag-list', 'clients', 0);
-		}
+		clients_select();
 	});
 	$('#submitBtn').click(function(){
 		saveDoc('clients',true);
@@ -34,6 +31,18 @@ $(document).ready(function(){
 	disableElement('project_tag', true);
 });
 
+function clients_select(){
+	updateForm($('#clients_select').val(),'clients',['mongoid','company','client_name','email','phone_number','address','city','state','zip','client_rate']);
+	$('#project_tag').val('');
+	if($('#clients_select').val() != ''){
+		disableElement('project_tag', false);
+		reloadFormElement('project-tag-list', 'clients', $('#clients_select').val());
+	} else {
+		disableElement('project_tag', true);
+		reloadFormElement('project-tag-list', 'clients', 0);
+	}
+}
+
 /**
  * Reloads page elements to reflect changes in the database
  */
@@ -46,7 +55,7 @@ function reloadPageElements(collection, ajax){
   	if(ajax){
   		reloadFormElement('clients_select_container','clients');
 		$('#clients_select').change(function(){
-			updateForm($(this).val(),'clients',['mongoid','company','client_name','email','phone_number','client_rate']);
+			clients_select();
 		});
 		reloadFormElement('project-tag-list','clients',0);
   	}

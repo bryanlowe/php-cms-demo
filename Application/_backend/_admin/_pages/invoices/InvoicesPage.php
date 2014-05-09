@@ -53,8 +53,7 @@
     public function init(){
       parent::init();
       $this->addCSS('_common/uploadify.css');
-      $this->addJS('_common/jquery.uploadify.min.js');
-      $this->addJS('_admin/invoices/scripts.js');
+      $this->addJS('_admin/invoices/scripts.min.js');
       $this->setTitle('CEM Dashboard - Invoice Management');
       $this->setTemplate('invoices/main.html');
     }
@@ -74,9 +73,6 @@
       $this->setDisplayVariables('SELECT_INVOICES', $select_invoices);
       $select_clients = $this->mongodb->aggregateDocs($this->client_select_pipeline);
       $this->setDisplayVariables('SELECT_CLIENTS', $select_clients['result']);
-      $timestamp = time();
-      $this->setDisplayVariables('TIMESTAMP', $timestamp);
-      $this->setDisplayVariables('UPLOAD_TOKEN', md5($this->config->passwords['uploads'] . $timestamp));
     }
 
     /**
