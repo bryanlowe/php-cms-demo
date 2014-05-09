@@ -53,48 +53,6 @@ $(document).ready(function(){
       $('#unpaidBtn').removeClass('.btn-glow-danger');
     }
   });
-  /*
-  var new_site_url = site_url.replace('/admin/','/');
-	$('#file_upload').uploadify({
-		'formData'     : {
-			'TARGET_DEST': '/Media/_documents/_invoices',
-			'timestamp' : timestamp,
-			'token'     : token
-		},
-    'multi'    : false,
-		'buttonText' : 'SELECT INVOICE FILE',
-		'buttonClass' : 'btn btn-success',
-		'fileTypeDesc' : 'Invoice Files',
-    'fileTypeExts' : '*.doc; *.pdf;', 
-		'swf'      : new_site_url+'Utilities/uploadify/uploadify.swf',
-		'uploader' : new_site_url.replace('https','http')+'/Utilities/uploadify/uploadify.php',
-		'onUploadSuccess' : function(file, data, response) {
-      statusApp.showPleaseWait();
-      var docObj = {};
-      docObj.values = {},
-      docObj._id = $('#invoices_form #_id').val(),
-      docObj.url = site_url+'invoices',
-      docObj.collection = 'invoices',
-      docObj.mongoid = 1;
-      docObj.values.invoice_filename = file.name;
-      var results = saveEntry(docObj);
-      statusApp.hidePleaseWait();
-      if(results.err == null){
-        reloadFormElement('file_link', 'invoices', $('#invoices_select').val());
-        popUpMsg("File upload was successful!");
-        return true;
-      } else {
-        popUpMsg(results.err);
-        return false;
-      }
-    },
-    'onSWFReady' : function() {
-        $('#file_upload').uploadify('disable', true);
-    } 
-	});
-	$('#file_upload-button').attr('style', '');
-  $('<div id="file_link" class="list-group col-lg-5" style="margin-left:10px;"></div>').insertAfter('#file_upload_container');
-  */
   disableElement('projects_select', true);
   disableElement('addBtn', true);
 });
@@ -105,17 +63,13 @@ function invoices_select(){
   if($('#invoices_select').val() != ''){
     disableElement('projects_select', false);
     disableElement('addBtn', false);
-    $("#file_upload").uploadify("disable",false);
     reloadFormElement('toggleInvoice','invoices',$('#invoices_select').val());
     reloadFormElement('current_projects', 'invoices', $('#invoices_select').val());
-    //reloadFormElement('file_link', 'invoices', $('#invoices_select').val());
   } else {
     disableElement('projects_select', true);
     disableElement('addBtn', true);
-    $("#file_upload").uploadify("disable",true);
     reloadFormElement('toggleInvoice','invoices');
     reloadFormElement('current_projects', 'invoices');
-    //reloadFormElement('file_link', 'invoices');
   }
   statusApp.hidePleaseWait();
 }
@@ -137,8 +91,6 @@ function reloadPageElements(collection, ajax){
   reloadFormElement('current_projects', 'invoices');
   disableElement('projects_select', true);
   disableElement('addBtn', true);
-  $("#file_upload").uploadify("disable",true);
-  //reloadFormElement('file_link', 'invoices');
   if(ajax){
     reloadFormElement('invoices_select_container','invoices');
     $('#invoices_select').change(function(){
@@ -219,24 +171,3 @@ function removeProject(projectID){
   reloadFormElement('current_projects', 'invoices', $('#invoices_select').val());
   reloadFormElement('projects_select_container', 'invoices', $('#clients_select').val());
 }
-
-/**
- * Remove invoice file from media 
- 
-function destroyInvoiceFile(_id){
-  statusApp.showPleaseWait();
-  var result = $.ajax({
-    type: "POST",
-    url: site_url+"invoices",
-    async: false,
-    data: {_id: _id, _ajaxFunc: "removeInvoiceFile"}
-  });
-  statusApp.hidePleaseWait();
-  if(result.responseText != 'pass'){
-    popUpMsg(result.responseText);  
-  } else {
-    reloadFormElement('file_link', 'invoices', $('#invoices_select').val());
-    popUpMsg('Invoice file successfully deleted.');
-  }
-}
-*/

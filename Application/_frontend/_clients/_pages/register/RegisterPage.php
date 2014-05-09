@@ -103,7 +103,7 @@
           $message = array('body' => 'Thank you for joining!', 'altbody' => 'Thank you for joining!');
           foo(new Email($to, $from, $reply, $subject, $message, $this->config->smtpInfo))->sendEmail();
 
-          $cem_to = array('email' => 'bryan.lowe@contentequalsmoney.com', 'name' => 'Bryan Lowe');
+          $cem_to = array('email' => 'amie@contentequalsmoney.com', 'name' => 'Amie Marse');
           $cem_from = array('email' => 'dashboard@contentequalsmoney.com', 'name' => 'Content Equals Money');
           $cem_reply = array('email' => 'dashboard@contentequalsmoney.com', 'name' => 'Content Equals Money');
           $cem_subject = 'A new client has signed up!';
