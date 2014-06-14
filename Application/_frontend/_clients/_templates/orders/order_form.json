@@ -3,6 +3,35 @@
 	"form": [
 		{ 
 			"order": 1, 
+			"required": 0, 
+			"type": "hidden", 
+			"id": "timestamp",
+			"value": ""
+		},
+		{ 
+			"order": 1, 
+			"required": 0, 
+			"type": "hidden", 
+			"id": "token",
+			"value": ""
+		},
+		{ 
+			"order": 1, 
+			"required": 0, 
+			"type": "hidden", 
+			"id": "client_id",
+			"value": ""
+		},
+		{ 
+			"order": 1, 
+			"required": 0, 
+			"type": "button", 
+			"id": "file_upload",
+			"label": "Any resources needed to process your order may be uploaded via the button below",
+			"value": "UPLOAD ATTACHMENTS"
+		},
+		{ 
+			"order": 2, 
 			"required": 1, 
 			"type": "textarea", 
 			"id": "description",
@@ -10,7 +39,7 @@
 			"class": "form-control input-lg"
 		},
 		{ 
-			"order": 2, 
+			"order": 3, 
 			"required": 0, 
 			"type": "checkbox-v", 
 			"label": "What is type of order is this? (Check all that apply)",

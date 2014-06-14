@@ -80,6 +80,24 @@
 		},
 		{ 
 			"order": 2, 
+			"required": 0, 
+			"type": "text", 
+			"label": "Approximate Words",
+			"id": "approx_words",
+			"value": "", 
+			"class": "form-control"
+		},
+		{ 
+			"order": 2, 
+			"required": 0, 
+			"type": "text", 
+			"label": "Estimated Cost",
+			"id": "estimated_cost",
+			"value": "", 
+			"class": "form-control"
+		},
+		{ 
+			"order": 3, 
 			"required": 1, 
 			"type": "textarea", 
 			"label": "Description",

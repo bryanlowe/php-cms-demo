@@ -342,25 +342,25 @@ namespace Framework\_engine\_db\_mongo;
       $compareOp = "";
       switch($compareType){
         case self::COMPARE_GT:
-            $compareOp = "$gt";
+            $compareOp = '$gt';
             break;
         case self::COMPARE_GTE:
-            $compareOp = "$gte";
+            $compareOp = '$gte';
             break;
         case self::COMPARE_LT:
-            $compareOp = "$lt";
+            $compareOp = '$lt';
             break;
         case self::COMPARE_LTE:
-            $compareOp = "$lte";
+            $compareOp = '$lte';
             break;
         case self::COMPARE_IN:
-            $compareOp = "$in";
+            $compareOp = '$in';
             break;
         case self::COMPARE_NIN:
-            $compareOp = "$nin";
+            $compareOp = '$nin';
             break;
         case self::COMPARE_NE:
-            $compareOp = "$ne";
+            $compareOp = '$ne';
             break;
       }
       return array($key => array($compareOp => $compareVal));    
@@ -379,16 +379,16 @@ namespace Framework\_engine\_db\_mongo;
       $logicOperator = "";
       switch($logicType){
         case self::LOGICAL_OR:
-            $logicOperator = "$or";
+            $logicOperator = '$or';
             break;
         case self::LOGICAL_AND:
-            $logicOperator = "$and";
+            $logicOperator = '$and';
             break;
         case self::LOGICAL_NOT:
-            $logicOperator = "$not";
+            $logicOperator = '$not';
             break;
         case self::LOGICAL_NOR:
-            $logicOperator = "$nor";
+            $logicOperator = '$nor';
             break;
       }
       return array($logicOperator => $expArr);    

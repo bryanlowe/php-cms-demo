@@ -1,0 +1,44 @@
+{
+	"id": "opt_in",
+	"form": [
+		{ 
+			"order": 1, 
+			"required": 0, 
+			"type": "hidden", 
+			"id": "_id",
+			"value": ""
+		},
+		{ 
+			"order": 1, 
+			"required": 1, 
+			"type": "text", 
+			"label": "Title",
+			"id": "title",
+			"value": "", 
+			"class": "form-control"
+		},
+		{ 
+			"order": 1, 
+			"required": 1, 
+			"type": "select", 
+			"label": "Active Status",
+			"id": "status",
+			"value": "",
+			"options": [
+				{
+					"name": "Select Status",
+					"value": ""
+				},
+				{
+					"name": "Active",
+					"value": 1
+				},
+				{
+					"name": "In Active",
+					"value": 0
+				}		
+			], 
+			"class": "form-control"
+		}
+	]
+}

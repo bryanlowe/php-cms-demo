@@ -31,23 +31,32 @@
 
                                 'writers' => array(
                                  '/writers' => array('dir' => 'home', 'class' => 'HomePage'),
+                                 '/writers/account' => array('dir' => 'account', 'class' => 'AccountPage'),
+                                 '/writers/feedback' => array('dir' => 'feedback', 'class' => 'FeedbackPage'),
+                                 '/writers/forgot-password' => array('dir' => 'forgot_password', 'class' => 'ForgotPasswordPage'),
+                                 '/writers/invoices' => array('dir' => 'invoices', 'class' => 'InvoicesPage'),
                                  '/writers/login' => array('dir' => 'login', 'class' => 'LoginPage'),
-                                 '/writers/logout' => array('dir' => 'logout', 'class' => 'LogoutPage')),
+                                 '/writers/logout' => array('dir' => 'logout', 'class' => 'LogoutPage'),
+                                 '/writers/projects' => array('dir' => 'projects', 'class' => 'ProjectsPage'),
+                                 '/writers/schedule' => array('dir' => 'schedule', 'class' => 'SchedulePage')),
 
                                 'admin' => array(
                                  '/admin' => array('dir' => 'home', 'class' => 'HomePage'),
                                  '/admin/appointments' => array('dir' => 'appointments', 'class' => 'AppointmentsPage'),
                                  '/admin/clients' => array('dir' => 'clients', 'class' => 'ClientsPage'),
+                                 '/admin/client-resources' => array('dir' => 'client_resources', 'class' => 'ClientResourcesPage'),
                                  '/admin/feedback' => array('dir' => 'feedback', 'class' => 'FeedbackPage'),
                                  '/admin/invoices' => array('dir' => 'invoices', 'class' => 'InvoicesPage'),
                                  '/admin/preview-invoices' => array('dir' => 'preview_invoices', 'class' => 'InvoicesPage'),
                                  '/admin/login' => array('dir' => 'login', 'class' => 'LoginPage'),
                                  '/admin/logout' => array('dir' => 'logout', 'class' => 'LogoutPage'),
+                                 '/admin/opt_in' => array('dir' => 'opt_in', 'class' => 'OptInPage'),
                                  '/admin/orders' => array('dir' => 'orders', 'class' => 'OrdersPage'),
                                  '/admin/projects' => array('dir' => 'projects', 'class' => 'ProjectsPage'),
                                  '/admin/preview-projects' => array('dir' => 'preview_projects', 'class' => 'ProjectsPage'),
-                                 '/admin/settings' => array('dir' => 'settings', 'class' => 'SettingsPage'),
-                                 '/admin/users' => array('dir' => 'users', 'class' => 'UsersPage'))
+                                 '/admin/schedule' => array('dir' => 'schedule', 'class' => 'SchedulePage'),
+                                 '/admin/users' => array('dir' => 'users', 'class' => 'UsersPage'),
+                                 '/admin/writers' => array('dir' => 'writers', 'class' => 'WritersPage'))
                                 );
     
     /**

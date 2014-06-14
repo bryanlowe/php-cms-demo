@@ -50,6 +50,9 @@
       $this->mongodb->switchCollection('clients');
       $nonuser_clients = $this->mongodb->getDocuments(array("is_user" => 0),array("company" => 1, "client_name" => 1));
       $this->setDisplayVariables('NONUSER_CLIENTS', $nonuser_clients);
+      $this->mongodb->switchCollection('writers');
+      $nonuser_writers = $this->mongodb->getDocuments(array("is_user" => 0),array("writer_name" => 1));
+      $this->setDisplayVariables('NONUSER_WRITERS', $nonuser_writers);
     }
 
     /**
@@ -63,11 +66,13 @@
         $this->mongodb->switchCollection('users');
         $select_users = $this->mongodb->getDocuments(array(),array("fullname" => 1));
         echo $this->twig->render('users/users_select.html', array('SELECT_USERS' => $select_users));
-      } else if($params['dom_id'] == 'client-list'){
+      } else if($params['dom_id'] == 'client-writer-list'){
         $this->mongodb->switchCollection('clients');
         $nonuser_clients = $this->mongodb->getDocuments(array("is_user" => 0),array("company" => 1, "client_name" => 1));
-        echo $this->twig->render('users/list-group-item.html', array('NONUSER_CLIENTS' => $nonuser_clients));
-      }
+        $this->mongodb->switchCollection('writers');
+        $nonuser_writers = $this->mongodb->getDocuments(array("is_user" => 0),array("writer_name" => 1));
+        echo $this->twig->render('users/list-group-item.html', array('NONUSER_CLIENTS' => $nonuser_clients, 'NONUSER_WRITERS' => $nonuser_writers));
+      } 
     }
 
     /**
@@ -92,13 +97,22 @@
      */
     public function saveEntry($params){
       if($this->isAdminUser()){
-        $params['doc']['values']['password'] = base64_encode($this->pass_enc->encrypt($params['doc']['values']['password'], $this->config->passwords['login']));
+        if($params['doc']['values']['password'] != ''){
+          $params['doc']['values']['password'] = base64_encode($this->pass_enc->encrypt($params['doc']['values']['password'], $this->config->passwords['login']));
+        }
         $results = foo(new MongoAccessLayer($params['doc']['collection']))->saveDocEntry($params['doc']['values'], $params['doc']['_id']);
         $this->mongodb->switchCollection('clients');
         if(($clientCount = $this->mongodb->getCount(array('_id' => new \MongoId($params['doc']['_id'])))) == 1){
           $client = $this->mongodb->getDocument(array('_id' => new \MongoId($params['doc']['_id'])), array('_id' => 0));
           $client['is_user'] = 1;
           foo(new MongoAccessLayer('clients'))->saveDocEntry($client, $params['doc']['_id']);
+        }
+        $this->mongodb->switchCollection('writers');
+        if(($writerCount = $this->mongodb->getCount(array('_id' => new \MongoId($params['doc']['_id'])))) == 1){
+          $writer = $this->mongodb->getDocument(array('_id' => new \MongoId($params['doc']['_id'])), array('_id' => 0));
+          $writer['is_user'] = 1;
+          $writer['writer_type'] = $params['doc']['values']['type'];
+          foo(new MongoAccessLayer('writers'))->saveDocEntry($writer, $params['doc']['_id']);
         }
         echo json_encode($results);
       }
@@ -115,9 +129,15 @@
         $results = foo(new MongoAccessLayer($params['doc']['collection']))->deleteDocEntry($params['doc']['_id'], $params['doc']['mongoid']);
         $this->mongodb->switchCollection('clients');
         if(($clientCount = $this->mongodb->getCount(array('_id' => new \MongoId($params['doc']['_id'])))) == 1){
-          $client = $this->mongodb->getDocument(array('_id' => new \MongoId($params['doc']['_id'])));
-          $client['is_user'] = 1;
+          $client = $this->mongodb->getDocument(array('_id' => new \MongoId($params['doc']['_id'])), array('_id' => 0));
+          $client['is_user'] = 0;
           foo(new MongoAccessLayer('clients'))->saveDocEntry($client, $params['doc']['_id']);
+        }
+        $this->mongodb->switchCollection('writers');
+        if(($writerCount = $this->mongodb->getCount(array('_id' => new \MongoId($params['doc']['_id'])))) == 1){
+          $writer = $this->mongodb->getDocument(array('_id' => new \MongoId($params['doc']['_id'])), array('_id' => 0));
+          $writer['is_user'] = 0;
+          foo(new MongoAccessLayer('writers'))->saveDocEntry($writer, $params['doc']['_id']);
         }
         echo json_encode($results);
       }

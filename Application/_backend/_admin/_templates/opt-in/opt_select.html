@@ -1,0 +1,7 @@
+<label for="opt_select">Select a opt-in to edit</label><br>
+<select class="form-control" name="opt_select" id="opt_select">
+	<option value="">Please select an opt-in</option>
+	{% for opt in SELECT_OPT %}
+	    <option value="{{ opt._id }}">{{ opt.title }}</option>
+	{% endfor %}
+</select>

@@ -1,0 +1,27 @@
+{% if PROJECT_ENTRIES %}
+	{% for project in PROJECT_ENTRIES %}
+		<tr>
+			<td>
+				<a id="project_{{project._id}}" class="toggleDesc">
+					{{project.project_title}}
+				</a>
+				<div id="project_{{project._id}}_desc" class="hide">
+					{% if invoice.project_tags %}
+						<h3>Project Tags:</h3>
+						<div class="list-group">
+							{% for tag in project.project_tags %}
+								<div class="list-group-item">{{ tag }}</div>
+							{% endfor %}
+						</div>
+						<div class="clear"><hr></div>
+					{% endif %}
+					<h3>Description:</h3>
+					<p>{{project.project_description}}</p>
+				</div>
+			</td>
+			<td>{{project.project_date}}</td>
+		</tr>
+	{% endfor %}
+{% else %}
+<tr><td colspan="2"><p align="center">There are no active projects to show.</p></td></tr>
+{% endif %}

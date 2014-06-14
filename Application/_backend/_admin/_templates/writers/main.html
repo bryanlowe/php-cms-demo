@@ -1,0 +1,43 @@
+{% extends "_common/base.html" %}
+
+{% block content %}
+<div class="container">
+	<div class="row task-panel">
+		<div class="col-lg-6 col-lg-offset-1">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Update or Add Writer</h3>
+				</div>
+				<div class="panel-body">
+					<div id="writers_select_container" class="input_container">
+						{% include "writers/writers_select.html" %}
+					</div>
+					<div class="clear"></div>
+					{{WRITER_FORM|raw}}
+					<div class="clear"></div>
+					<div class="button_panel">
+						<div class="btn_container">
+							<input type="button" class="btn btn-success" value="SAVE" name="submitBtn" id="submitBtn">
+						</div>
+						<div class="btn_container">
+							<input type="button" class="btn btn-info" value="RESET" name="resetBtn" id="resetBtn">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Opt Ins</h3>
+				</div>
+				<div class="panel-body">
+					<div id="opt-in-list" class="list-group">
+						{% include "writers/list-group-item.html" %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

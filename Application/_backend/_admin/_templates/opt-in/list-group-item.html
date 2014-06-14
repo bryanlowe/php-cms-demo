@@ -1,0 +1,7 @@
+{% if WRITERS %}
+	{% for writer in WRITERS %}
+	    <div class="list-group-item">{{ writer.writer_name }}</div>
+	{% endfor %}
+{% else %}
+	<p align="center">No writers in this opt-in</p>
+{% endif %}

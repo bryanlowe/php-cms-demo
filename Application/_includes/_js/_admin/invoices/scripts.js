@@ -59,7 +59,7 @@ $(document).ready(function(){
 
 function invoices_select(){
   statusApp.showPleaseWait();
-  updateForm($('#invoices_select').val(),'invoices',['mongoid','client_id','invoice_number','wp_invoice_id','invoice_cost','invoice_description']);
+  updateForm($('#invoices_select').val(),'invoices',['mongoid','client_id','invoice_number','wp_invoice_id','invoice_cost','invoice_status','invoice_description']);
   if($('#invoices_select').val() != ''){
     disableElement('projects_select', false);
     disableElement('addBtn', false);
@@ -136,6 +136,8 @@ function updateForm(_id, collection, fields){
     $('#'+collection+'_form')[0].reset();
     $('#'+collection+'_form #_id').val('');
     $('#'+collection+'_form #client_id').val('');
+    $('#clients_select').prop('selectedIndex',0);
+    disableElement('clients_select', false);
   }
 }
 

@@ -1,7 +1,25 @@
-{% for client in NONUSER_CLIENTS %}
-<span>
-	<a class="list-group-item" href="javascript:clientToUserForm('{{client._id}}');">
-	   {{client.client_name}} -- {{client.company}}
-	</a>
-</span>
-{% endfor %}
+<h3>Client List</h3>
+{% if NONUSER_CLIENTS|length > 0 %}
+	{% for client in NONUSER_CLIENTS %}
+	<span>
+		<a class="list-group-item" href="javascript:clientToUserForm('{{client._id}}');">
+		   {{client.client_name}} -- {{client.company}}
+		</a>
+	</span>
+	{% endfor %}
+{% else %}
+	<h2 class="no-entries" align="center">No new clients</h2>
+{% endif %}
+<hr>
+<h3>Writer List</h3>
+{% if NONUSER_WRITERS|length > 0 %}
+	{% for writer in NONUSER_WRITERS %}
+	<span>
+		<a class="list-group-item" href="javascript:writerToUserForm('{{writer._id}}');">
+		   {{writer.writer_name}}
+		</a>
+	</span>
+	{% endfor %}
+{% else %}
+	<h2 class="no-entries" align="center">No new writers</h2>
+{% endif %}

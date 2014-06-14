@@ -1,0 +1,7 @@
+{% if RESOURCE_LIST%}
+	{% for resource in RESOURCE_LIST %}
+	    <div class="list-group-item"><a href="/Media/_documents/_clients/{{ CLIENT_ID }}/{{ resource }}" target="_blank">File: {{ resource }}</a> <button class="close" type="button" onclick="removeResource('{{ resource }}');">×</button></div>
+	{% endfor %}
+{% else %}
+	<p align="center">No Files Found</p>
+{% endif %}

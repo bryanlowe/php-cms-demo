@@ -2,10 +2,8 @@
 
 {% block content %}
 <div class="container task-panel">
-  <div class="alert alert-success alert-dismissable">
-    Welcome to the Content Equals Money Dashboard - Admin Edition! In this portal you are able to manage various aspects of the client dashboard. Please choose a task from the buttons below in order to edit or view information on the client dashboard.
-  </div>
-	<div class="row task-panel">
+	<div class="row">
+    <h1 class="col-lg-12"><i class="fa fa-money"></i> Client Control Panel</h1>
 		<!-- Feedback Block -->
 		<div class="col-lg-3">
         {% if POST_COUNT > 0 %}
@@ -248,9 +246,94 @@
             </a>
         </div>
     </div>
-    <!-- End Project Block -->
-
-    
+    <!-- End Project Block --> 
 	</div>
+  <div class="row">
+    <h1 class="col-lg-12"><i class="fa fa-pencil-square-o"></i> Writer Control Panel</h1>
+    <!-- Writer Block -->
+    <div class="col-lg-3">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+              <div class="row">
+                  <div class="col-xs-6">
+                    <i class="fa fa-pencil fa-5x"></i>
+                  </div>
+                  <div class="col-xs-6 text-right">
+                    <p class="task-title">Writers</p>
+                  </div>
+              </div>
+            </div>
+            <a href="{{SITE_URL}}/admin/writers">
+              <div class="panel-footer announcement-bottom">
+                  <div class="row">
+                    <div class="col-xs-6">
+                      Edit Writers
+                    </div>
+                    <div class="col-xs-6 text-right">
+                        <i class="fa fa-arrow-circle-right"></i>
+                    </div>
+                  </div>
+              </div>
+            </a>
+        </div>
+    </div>
+    <!-- End Writer Block -->
+    <!-- Opt-in Block -->
+    <div class="col-lg-3">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+              <div class="row">
+                  <div class="col-xs-6">
+                    <i class="fa fa-share-square fa-5x"></i>
+                  </div>
+                  <div class="col-xs-6 text-right">
+                    <p class="task-title">Opt-ins</p>
+                  </div>
+              </div>
+            </div>
+            <a href="{{SITE_URL}}/admin/opt_in">
+              <div class="panel-footer announcement-bottom">
+                  <div class="row">
+                    <div class="col-xs-8">
+                      Edit Writer Opt-ins
+                    </div>
+                    <div class="col-xs-4 text-right">
+                        <i class="fa fa-arrow-circle-right"></i>
+                    </div>
+                  </div>
+              </div>
+            </a>
+        </div>
+    </div>
+    <!-- End Opt-in Block -->
+    <!-- Schedule Block -->
+    <div class="col-lg-3">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+              <div class="row">
+                  <div class="col-xs-6">
+                    <i class="fa fa-calendar fa-5x"></i>
+                  </div>
+                  <div class="col-xs-6 text-right">
+                    <p class="task-title">Schedule</p>
+                  </div>
+              </div>
+            </div>
+            <a href="{{SITE_URL}}/admin/schedule">
+              <div class="panel-footer announcement-bottom">
+                  <div class="row">
+                    <div class="col-xs-8">
+                      Edit/View Schedule
+                    </div>
+                    <div class="col-xs-4 text-right">
+                        <i class="fa fa-arrow-circle-right"></i>
+                    </div>
+                  </div>
+              </div>
+            </a>
+        </div>
+    </div>
+    <!-- End Schedule Block -->
+  </div>
 </div>
 {% endblock %}

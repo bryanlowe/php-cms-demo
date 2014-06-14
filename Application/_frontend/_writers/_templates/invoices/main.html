@@ -1,0 +1,44 @@
+{% extends "_common/base.html" %}
+
+{% block content %}
+<div id="container">
+	<div class="row task-panel">
+		<div class="col-lg-8">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title"><i class="fa fa-envelope"></i> Invoices</h3>
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table id="invoiceHistoryTbl" class="table table-bordered table-hover table-striped tablesorter">
+							<thead>
+		                    	<tr>
+			                        <th class="header">Invoice # <i class="fa fa-sort"></i></th>
+			                        <th class="header">Last Updated <i class="fa fa-sort"></i></th>
+			                        <th class="header">Amount (USD) <i class="fa fa-sort"></i></th>
+			                        <th class="header">File <i class="fa fa-sort"></i></th>
+			                        <th class="header">Status <i class="fa fa-sort"></i></th>
+			                        <th>&nbsp;</th>
+		                      	</tr>
+	                      	</thead>
+	                      	<tbody id="invoice_entries">
+	                      		{% include 'invoices/invoice-entry.html' %}
+              				</tbody>
+                 	 	</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title"><i class="fa fa-search"></i> Invoice Description</h3>
+				</div>
+				<div id="invoiceDesc" class="panel-body">
+					<p>Click on an invoice number to view its description.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -28,6 +28,8 @@
      */
     public function init(){
       parent::init();
+      $this->addCSS('_common/uploadifive.css');
+      $this->addJS('_common/jquery.uploadifive.js');
       $this->addJS('_clients/orders/scripts.min.js');
       $this->setTitle('CEM Dashboard - Place An Order');
       $this->setTemplate('orders/main.html');
@@ -40,8 +42,14 @@
      */
     protected function assemblePage(){   
       parent::assemblePage();   
-      $tagOpts = array('project_tags' => array('value' => '', 'options' => $this->gatherTagOptions()));
-      $orderForm = foo(new FormGenerator($this->config->dir($this->source).'/orders/order_form.json', $tagOpts))->getFormHTML();
+      $time = date('U');
+      $formVals = array(
+        'project_tags' => array('value' => '', 'options' => $this->gatherTagOptions()),
+        'timestamp' => array('value' => $time),
+        'token' => array('value' => md5($this->config->passwords['uploads'] . $time)),
+        'client_id' => array('value' => $_SESSION[$this->config->sessionID]['CLIENT_INFO']['_id'])
+      );
+      $orderForm = foo(new FormGenerator($this->config->dir($this->source).'/orders/order_form.json', $formVals))->getFormHTML();
       $this->setDisplayVariables('ORDER_FORM', $orderForm);
     }
 
@@ -90,6 +98,32 @@
       $messageBody = '<p>You have recieved a new order from '.$_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_name'].'.</p><p>Please <a href="https://dashboard.contentequalsmoney.com/admin" target="_blank">login</a> for more details.</p>';
       $cem_message = array('body' => $messageBody, 'altbody' => $messageBody);
       foo(new Email($cem_to, $cem_from, $cem_reply, $cem_subject, $cem_message, $this->config->smtpInfo))->sendEmail();
+    }
+
+    /**
+     * Notification to the admin email of new files that have been uploaded to the server
+     *
+     * @param mixed array params
+     * @access public
+     */
+    public function sendUploadNotification($params){
+      $fileList = 'The following files have been added to Client Resources for '.$_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_name'].':<br /><br />';
+      $postfix = "_".$_SESSION[$this->config->sessionID]['CLIENT_INFO']['_id']."_".date('m-d-Y');
+      $maxFiles = count($params['filenames']);
+      for($i = 0; $i < $maxFiles; $i++){
+        $fileNameParts = explode('.', $params['filenames'][$i]);
+        $fileNameParts[0] = $fileNameParts[0].$postfix;
+        $fileList .= implode('.', $fileNameParts).'<br /><br />';
+      }
+      $fileList .= 'You may find these files by logging into the Admin Dashboard and navigating to the Client Resources page.<br />';
+      $fileList .= 'Select "'.$_SESSION[$this->config->sessionID]['CLIENT_INFO']['company'].' -- '.$_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_name'].'" in the client dropdown selection.';
+
+      $to = array('email' => 'amie@contentequalsmoney.com', 'name' => 'Amie Marse');
+      $from = array('email' => 'dashboard@contentequalsmoney.com', 'name' => 'Content Equals Money');
+      $reply = array('email' => 'amie@contentequalsmoney.com', 'name' => 'Amie Marse');
+      $subject = 'Client - '.$_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_name'].' has provided new resources';
+      $message = array('body' => $fileList, 'altbody' => $fileList);
+      foo(new Email($to, $from, $reply, $subject, $message, $this->config->smtpInfo))->sendEmail();
     }
   }
 ?>

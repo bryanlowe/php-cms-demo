@@ -38,7 +38,7 @@ $(document).ready(function(){
 
 function projects_select(){
 	statusApp.showPleaseWait();
-	updateForm($('#projects_select').val(),'projects',['mongoid','client_id','project_title','project_status','project_description']);
+	updateForm($('#projects_select').val(),'projects',['mongoid','client_id','project_title','project_status','approx_words','estimated_words','project_description']);
 	if($('#projects_select').val() != ''){
 		disableElement('clients_select', true);
 		disableElement('project_tags', false);

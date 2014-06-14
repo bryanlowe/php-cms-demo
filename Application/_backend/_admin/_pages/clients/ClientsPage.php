@@ -6,7 +6,7 @@
   /**
    * Class: ClientsPage
    *    
-   * Handles the Customer Page
+   * Handles the Client Page
    */
   class ClientsPage extends Backend{
 
@@ -82,7 +82,7 @@
      * @access public
      */
     public function saveEntry($params){
-      if($params['doc']['values']['_id'] == ''){
+      if($params['doc']['_id'] == ''){
         $params['doc']['values']['is_user'] = 0;
       }
       parent::saveEntry($params);  

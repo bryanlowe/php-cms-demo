@@ -21,14 +21,28 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav side-nav">
-            <li><a href="{{SITE_URL}}/admin/feedback"><i class="fa fa-comments"></i> View Feedback</a></li>
-            <li><a href="{{SITE_URL}}/admin/orders"><i class="fa fa-pencil-square"></i> View Orders</a></li>
-            <li><a href="{{SITE_URL}}/admin/clients"><i class="fa fa-suitcase"></i> Edit Clients</a></li>
-            <li><a href="{{SITE_URL}}/admin/invoices"><i class="fa fa-envelope"></i> Edit Invoices</a></li>
-            <li><a href="{{SITE_URL}}/admin/preview-invoices"><i class="fa fa-eye"></i> Preview Invoices</a></li>
-            <li><a href="{{SITE_URL}}/admin/projects"><i class="fa fa-tasks"></i> Edit Projects</a></li>
-            <li><a href="{{SITE_URL}}/admin/preview-projects"><i class="fa fa-eye"></i> Preview Projects</a></li>
-            <li><a href="{{SITE_URL}}/admin/users"><i class="fa fa-users"></i> Edit Users</a></li>
+            <li class="dropdown">
+              <a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fa fa-money"></i> Client Control Panel <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="{{SITE_URL}}/admin/feedback"><i class="fa fa-comments"></i> View Feedback</a></li>
+                <li><a href="{{SITE_URL}}/admin/orders"><i class="fa fa-pencil-square"></i> View Orders</a></li>
+                <li><a href="{{SITE_URL}}/admin/clients"><i class="fa fa-suitcase"></i> Edit Clients</a></li>
+                <li><a href="{{SITE_URL}}/admin/client-resources"><i class="fa fa-files-o"></i> Client Resources</a></li>
+                <li><a href="{{SITE_URL}}/admin/invoices"><i class="fa fa-envelope"></i> Edit Invoices</a></li>
+                <li><a href="{{SITE_URL}}/admin/preview-invoices"><i class="fa fa-eye"></i> Preview Invoices</a></li>
+                <li><a href="{{SITE_URL}}/admin/projects"><i class="fa fa-tasks"></i> Edit Projects</a></li>
+                <li><a href="{{SITE_URL}}/admin/preview-projects"><i class="fa fa-eye"></i> Preview Projects</a></li>
+                <li><a href="{{SITE_URL}}/admin/users"><i class="fa fa-users"></i> Edit Users</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="fa fa-pencil-square-o"></i> Writer Control Panel <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="{{SITE_URL}}/admin/writers"><i class="fa fa-pencil"></i> Edit Writers</a></li>
+                <li><a href="{{SITE_URL}}/admin/opt_in"><i class="fa fa-share-square"></i> Edit Opt-ins</a></li>
+                <li><a href="{{SITE_URL}}/admin/schedule"><i class="fa fa-calendar"></i> Writer Scheduler</a></li>
+              </ul>
+            </li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right navbar-user">

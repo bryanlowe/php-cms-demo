@@ -19,7 +19,7 @@
 		},
 		{ 
 			"order": 2, 
-			"required": 1, 
+			"required": 0, 
 			"type": "password", 
 			"label": "Password",
 			"id": "password",
@@ -54,6 +54,10 @@
 				{
 					"name": "Client",
 					"value": "CLIENT"
+				},
+				{
+					"name": "Editor",
+					"value": "EDITOR"
 				},
 				{
 					"name": "Writer",

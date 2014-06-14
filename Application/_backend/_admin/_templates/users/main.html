@@ -31,14 +31,14 @@
 		<div class="col-lg-4">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<h3 class="panel-title">Click on a client you want to create as a user</h3>
+					<h3 class="panel-title">Click on an entry you want to create as a user</h3>
 				</div>
 				<div class="panel-body">
-					<div id="client-list" class="list-group">
-						{% if NONUSER_CLIENTS %}
+					<div id="client-writer-list" class="list-group">
+						{% if NONUSER_CLIENTS or NONUSER_WRITERS %}
 							{% include "users/list-group-item.html" %}
 						{% else %}
-						<h2 class="no-entries" align="center">No new clients</h2>
+							<h2 class="no-entries" align="center">No new entries</h2>
 						{% endif %}
 					</div>
 				</div>
