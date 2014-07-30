@@ -2,13 +2,6 @@
 
 {% block content %}
 <div class="container">
-	<div id="order_tips" class="alert alert-success alert-dismissable">
-	    <p><strong>Tip #1:</strong> The rate calculator is only available if we have already calulated your rate for the year. If you do not have a rate, please contact us at <a href="mailto:info@contentequalsmoney.com">info@contentequalsmoney.com</a></p>
-
-		<p><strong>Tip #2:</strong> If your rate has been calculated already then the rate calculator is avialable to you. Your rate is represented next to "Current Rate:". The first slider represents the amounts of words your project will have per piece. The second slider represents the amount of pieces that will be created for your order. When each slider has a value, a dollar amount next to "Price:" will be presented as the quote for the order.</p>
-
-		<p><strong>Tip #3:</strong> In order to calculate many different orders together, you need to press the "Update Quote" button. This will add quotes as your create them and total them in "Project Total:".</p>
-	</div>
 	<div class="row task-panel">
 		<div class="col-lg-6">
 			<div class="panel panel-primary">
@@ -16,7 +9,7 @@
 					<h3 class="panel-title">Edit Account Information</h3>
 				</div>
 				<div class="panel-body">
-					{{CLIENT_FORM|raw}}
+					{{WRITER_FORM|raw}}
 					<div class="clear"></div>
 					<div class="button_panel">
 						<div class="btn_container">
@@ -26,53 +19,28 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-5">
-			<div class="panel panel-primary" style="margin-bottom: 15px;">
+		<div class="col-lg-6">
+			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<h3 class="panel-title">Rate Calculator</h3>
+					<h3 class="panel-title">Performance Statistics</h3>
 				</div>
-				<div id="rateCalc" class="panel-body">
-					{% if CLIENT_RATE > 0 %}
-						<form id="formCalc">
-							<p class="pricepara form-control-static">Current Rate: ${{CLIENT_RATE}} per word</p>
-							<p class="pricepara">
-		                        Price:  
-		                        <label for="total" id="totalprice" style=""></label>
-		                        <input name="totalprice" type="text" id="total" disabled="disabled" style="" />
-		                    </p>    
-		                    <div id="quoteme">
-		                        <div id="slider"></div>
-		                        <label for="amount"></label>
-		                        <input name="one" style="width: 266px;" type="text" id="amount" value= disabled="disabled" />
-		                        <label for="price"></label>
-		                        <input name="onea" type="text" id="price" value= disabled="disabled" />
-
-		                        <div id="sliderb"></div>
-		                        <label for="amountb"></label>
-		                        <input name="two" style="width: 266px;"  type="text" id="amountb" value= disabled="disabled" />
-		                        <label for="priceb"></label>
-		                        <input name="twoa" type="text" id="priceb" value= disabled="disabled" />
-		                    </div>
-		                </form>
-		                <div class="clear"><hr></div>
-	                    <p id="project_total_container" class="pricepara">
-	                        Project Total:  
-	                        <input name="project_total" type="text" id="project_total" readonly style="" />
-	                    </p>
-	                    <div class="clear"></div>
-	                    <div class="saveBtn_container"><input type="button" class="btn btn-success" id="updateQuote" value="UPDATE QUOTE"></div>
-                    {% else %}
-                    	<p>Looks like you don&#39;t have an established per word rate. Make an appt with Amie for your initial consult or use our <a href="https://contentequalsmoney.com/price1/" target="_blank">pricing wizard</a> to find your rate. Once your rate is established it stays consistent for any project in {{COPY_YEAR}}.</p>
-                    {% endif %}
+				<div class="panel-body">
+					{% if RATING %}
+					<h2>Rating: {{ RATING }}</h2>
+					{% else %}
+					<h2>Rating: N/A</h2>
+					{% endif %}
+					<div class="clear"></div>
+					{% if WPH %}
+					<h2>Words Per Hour: {{ WPH }}</h2>
+					{% else %}
+					<h2>Words Per Hour: N/A</h2>
+					{% endif %}
+					<div class="clear"></div>
+					<p><i>* as of {{ AS_OF_DATE }}</i></p>
 				</div>
 			</div>
-			{% if CLIENT_RATE > 0 %}
-			<h3>Having trouble with multiple quotes?</h3>
-			<p>Check the example below:</p>
-			<p><img src="{{IMAGEPATH}}/_cem/quote_example.jpg" /></p>
-			{% endif %}
 		</div>
 	</div>
 </div>
-<input type="hidden" id="client_rate" value="{{CLIENT_RATE}}" />
 {% endblock %}

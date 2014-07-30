@@ -3,6 +3,7 @@
   use Application\_frontend\Frontend as Frontend;
   use Framework\_engine\_core\Encryption as Encryption;
   use Framework\_widgets\JSONForm\_engine\_core\FormGenerator as FormGenerator;
+  use Framework\_engine\_dal\_mongo\MongoAccessLayer as MongoAccessLayer;
   
   /**
    * Class: AccountPage
@@ -17,6 +18,7 @@
      */
     public function __construct(){
       $this->source = "client-templates";
+      $this->siteCache = "/_clients";
       parent::__construct();
     }
     
@@ -56,24 +58,38 @@
      * @access public
      */
     public function saveEntry($params){
-      $client = array(
-        'client_name' => $params['doc']['values']['client_name'],
-        'email' => $params['doc']['values']['email'],
-        'company' => $params['doc']['values']['company'],
-        'phone_number' => $params['doc']['values']['phone_number'],
-        'address' => $params['doc']['values']['address'],
-        'city' => $params['doc']['values']['city'],
-        'zip' => $params['doc']['values']['zip'],
-        'state' => $params['doc']['values']['state'],
-      );
-      $user = array(
-        'password' => base64_encode($this->pass_enc->encrypt($params['doc']['values']['password'], $this->config->passwords['login']))
-      );
-      foo(new MongoAccessLayer('users'))->saveDocEntry($user, $params['doc']['_id']);
-      $result = foo(new MongoAccessLayer('clients'))->saveDocEntry($client, $params['doc']['_id']);
-      echo json_encode($result);
-      $this->mongodb->switchCollection('clients');
-      $_SESSION[$this->config->sessionID]['CLIENT_INFO'] = $this->mongodb->getDocument(array('_id' => new \MongoId($params['doc']['_id'])));
+      $duplicate = false;
+      // catch duplicate entries. If there is a duplicate, send an error for account changes
+      $this->mongodb->switchCollection('users');
+      $regexEmail = new \MongoRegex("/^".$params['doc']['values']['email']."$/i"); 
+      $userCount = $this->mongodb->getCount(array('email' => $regexEmail));
+      if($userCount > 0 && strtolower($params['doc']['values']['email']) != strtolower($_SESSION[$this->config->sessionID]['CLIENT_INFO']['email'])){
+        $duplicate = true;
+      }
+      // catch duplicate entries. If there is a duplicate, send an error for account changes
+      if(!$duplicate){
+        $client = array(
+          'client_name' => $params['doc']['values']['client_name'],
+          'email' => $params['doc']['values']['email'],
+          'company' => $params['doc']['values']['company'],
+          'phone_number' => $params['doc']['values']['phone_number'],
+          'address' => $params['doc']['values']['address'],
+          'city' => $params['doc']['values']['city'],
+          'zip' => $params['doc']['values']['zip'],
+          'state' => $params['doc']['values']['state'],
+        );
+        $user = array(
+          'password' => base64_encode($this->pass_enc->encrypt($params['doc']['values']['password'], $this->config->passwords['login'])),
+          'email' => $params['doc']['values']['email']
+        );
+        foo(new MongoAccessLayer('users'))->saveDocEntry($user, $params['doc']['_id']);
+        $result = foo(new MongoAccessLayer('clients'))->saveDocEntry($client, $params['doc']['_id']);
+        echo json_encode($result);
+        $this->mongodb->switchCollection('clients');
+        $_SESSION[$this->config->sessionID]['CLIENT_INFO'] = $this->mongodb->getDocument(array('_id' => new \MongoId($params['doc']['_id'])));  
+      } else {
+        echo json_encode(array('err' => 'This email already exists. Please use a different email.'));
+      }      
     }
   }
 ?>

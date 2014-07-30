@@ -2,6 +2,10 @@
 <select class="form-control" name="invoices_select" id="invoices_select">
 	<option value="">Please select an invoice</option>
 	{% for invoice in SELECT_INVOICES %}
-	    <option value="{{ invoice._id }}">{{ invoice.clients.company }} -- #{{ invoice.invoice_number}}</option>
+		{% if invoice.invoice_status == "OPEN" %}
+	    	<option style="background-color: #d9534f; color: #fff;" value="{{ invoice._id }}">{{ invoice.clients.company }} -- #{{ invoice.invoice_number}}</option>
+	    {% else %}
+	    	<option value="{{ invoice._id }}">{{ invoice.clients.company }} -- #{{ invoice.invoice_number}}</option>
+	    {% endif %}
 	{% endfor %}
 </select>

@@ -82,10 +82,29 @@
      * @access public
      */
     public function saveEntry($params){
+      $duplicate = false;
       if($params['doc']['_id'] == ''){
         $params['doc']['values']['is_user'] = 0;
+        $this->mongodb->switchCollection('clients');
+        $regexEmail = new \MongoRegex("/^".$params['doc']['values']['email']."$/i"); 
+        $clientCount = $this->mongodb->getCount(array('email' => $regexEmail));
+        if($clientCount > 0){
+          $duplicate = true;
+        }
+      } else {
+        $this->mongodb->switchCollection('clients');
+        $client = $this->mongodb->getDocument(array('_id' => new \MongoId($params['doc']['_id'])));
+        $regexEmail = new \MongoRegex("/^".$params['doc']['values']['email']."$/i"); 
+        $clientCount = $this->mongodb->getCount(array('email' => $regexEmail));
+        if($clientCount > 0 && strtolower($params['doc']['values']['email']) != strtolower($client['email'])){
+          $duplicate = true;
+        }
       }
-      parent::saveEntry($params);  
+      if(!$duplicate){
+        parent::saveEntry($params);  
+      } else {
+        echo json_encode(array('err' => 'This email already exists. Please use a different email.'));
+      }
     }
 
     /**

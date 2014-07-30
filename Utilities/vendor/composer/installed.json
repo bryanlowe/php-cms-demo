@@ -1,27 +1,27 @@
 [
     {
         "name": "twig/twig",
-        "version": "v1.15.1",
-        "version_normalized": "1.15.1.0",
+        "version": "v1.16.0",
+        "version_normalized": "1.16.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/fabpot/Twig.git",
-            "reference": "1fb5784662f438d7d96a541e305e28b812e2eeed"
+            "reference": "8ce37115802e257a984a82d38254884085060024"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/fabpot/Twig/zipball/1fb5784662f438d7d96a541e305e28b812e2eeed",
-            "reference": "1fb5784662f438d7d96a541e305e28b812e2eeed",
+            "url": "https://api.github.com/repos/fabpot/Twig/zipball/8ce37115802e257a984a82d38254884085060024",
+            "reference": "8ce37115802e257a984a82d38254884085060024",
             "shasum": ""
         },
         "require": {
             "php": ">=5.2.4"
         },
-        "time": "2014-02-13 10:19:29",
+        "time": "2014-07-05 12:19:05",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.15-dev"
+                "dev-master": "1.16-dev"
             }
         },
         "installation-source": "dist",
@@ -59,18 +59,97 @@
         ]
     },
     {
+        "name": "phenx/php-font-lib",
+        "version": "0.2.2",
+        "version_normalized": "0.2.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/PhenX/php-font-lib.git",
+            "reference": "c30c7fc00a6b0d863e9bb4c5d5dd015298b2dc82"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/PhenX/php-font-lib/zipball/c30c7fc00a6b0d863e9bb4c5d5dd015298b2dc82",
+            "reference": "c30c7fc00a6b0d863e9bb4c5d5dd015298b2dc82",
+            "shasum": ""
+        },
+        "time": "2014-02-01 15:22:28",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "classes/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Ménager",
+                "email": "fabien.menager@gmail.com"
+            }
+        ],
+        "description": "A library to read, parse, export and make subsets of different types of font files.",
+        "homepage": "https://github.com/PhenX/php-font-lib"
+    },
+    {
+        "name": "dompdf/dompdf",
+        "version": "v0.6.1",
+        "version_normalized": "0.6.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/dompdf/dompdf.git",
+            "reference": "cf7d8a0a27270418850cc7d7ea532159e5eeb3eb"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/dompdf/dompdf/zipball/cf7d8a0a27270418850cc7d7ea532159e5eeb3eb",
+            "reference": "cf7d8a0a27270418850cc7d7ea532159e5eeb3eb",
+            "shasum": ""
+        },
+        "require": {
+            "phenx/php-font-lib": "0.2.*"
+        },
+        "time": "2014-03-11 01:59:52",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "include/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Ménager",
+                "email": "fabien.menager@gmail.com"
+            },
+            {
+                "name": "Brian Sweeney",
+                "email": "eclecticgeek@gmail.com"
+            }
+        ],
+        "description": "DOMPDF is a CSS 2.1 compliant HTML to PDF converter",
+        "homepage": "https://github.com/dompdf/dompdf"
+    },
+    {
         "name": "phpmailer/phpmailer",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/PHPMailer/PHPMailer.git",
-            "reference": "7b384d0bedf7feb1d3cdfaae689d8c5b68eb0515"
+            "reference": "022382c9bf970409dae5c3e7d248b38e2e2f9b74"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/7b384d0bedf7feb1d3cdfaae689d8c5b68eb0515",
-            "reference": "7b384d0bedf7feb1d3cdfaae689d8c5b68eb0515",
+            "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/022382c9bf970409dae5c3e7d248b38e2e2f9b74",
+            "reference": "022382c9bf970409dae5c3e7d248b38e2e2f9b74",
             "shasum": ""
         },
         "require": {
@@ -78,9 +157,9 @@
         },
         "require-dev": {
             "phpdocumentor/phpdocumentor": "*",
-            "phpunit/phpunit": "4.0.*"
+            "phpunit/phpunit": "4.1.*"
         },
-        "time": "2014-04-12 07:49:59",
+        "time": "2014-06-13 09:18:30",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

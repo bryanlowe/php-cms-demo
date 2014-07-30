@@ -30,6 +30,7 @@
       $this->config = Register::getInstance()->get('config');
       $this->mongodb = Register::getInstance()->get('mongodb');
       $this->source = "client-templates";
+      $this->siteCache = "/_clients";
       $this->pass_enc = new Encryption(MCRYPT_BlOWFISH, MCRYPT_MODE_CBC);
       $this->loader = new \Twig_Loader_Filesystem($this->config->dir($this->source));
       $this->twig = new \Twig_Environment($this->loader, array(
@@ -70,11 +71,12 @@
      */
     public function processForgotPassword($params){
       $this->mongodb->switchCollection('users');
-      $userCount = $this->mongodb->getCount(array('email' => $params['email'], 'type' => 'CLIENT'));
+      $regexEmail = new \MongoRegex("/^".$params['email']."$/i"); 
+      $userCount = $this->mongodb->getCount(array('email' => $regexEmail, 'type' => 'CLIENT'));
       if($userCount != 1){
         echo 'Email not found in database.';
       } else {
-        $userInfo = $this->mongodb->getDocument(array('email' => $params['email']), array('email' => 1, 'fullname' => 1));
+        $userInfo = $this->mongodb->getDocument(array('email' => $regexEmail), array('email' => 1, 'fullname' => 1));
         $randomString = $this->generateRandomString();
         $password = array('password' => base64_encode($this->pass_enc->encrypt($randomString, $this->config->passwords['login'])));
         foo(new MongoAccessLayer('users'))->saveDocEntry($password, (string)$userInfo['_id']);

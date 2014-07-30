@@ -61,6 +61,24 @@
 		{ 
 			"order": 3, 
 			"required": 0, 
+			"type": "text", 
+			"label": "Pending Rate",
+			"id": "pending_rate",
+			"value": "", 
+			"class": "form-control"
+		},
+		{ 
+			"order": 3, 
+			"required": 0, 
+			"type": "text", 
+			"id": "pending_date",
+			"label": "Activation Date",
+			"value": "",
+			"class": "form-control"
+		},
+		{ 
+			"order": 4, 
+			"required": 0, 
 			"type": "select", 
 			"label": "Opt-ins",
 			"id": "opt_in",
@@ -69,7 +87,7 @@
 			"class": "form-control"
 		},
 		{ 
-			"order": 3, 
+			"order": 4, 
 			"required": 0, 
 			"type": "button", 
 			"id": "addOptIn",

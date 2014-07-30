@@ -35,6 +35,13 @@
     protected $siteDir = "/";
 
     /**
+     * site cache folder for Twig
+     *
+     * @access protected 
+     */
+    protected $siteCache = "";
+
+    /**
      * Template config directory
      *    
      * @var string $source
@@ -57,7 +64,7 @@
       }
       $this->loader = new \Twig_Loader_Filesystem($this->config->dir($this->source));
       $this->twig = new \Twig_Environment($this->loader, array(
-          'cache' => $this->config->dir('temp-cache').'/_twig/_frontend',
+          'cache' => $this->config->dir('temp-cache').'/_twig/_frontend'.$this->siteCache,
           'auto_reload' => true,
           'autoescape' => false
       ));
@@ -183,7 +190,9 @@
      * @access protected
      */
     protected function isWriterUser(){
-      if($_SESSION[$this->config->sessionID]['LOGGED_IN'] && $_SESSION[$this->config->sessionID]['USER_TYPE'] == "WRITER"){
+      if($_SESSION[$this->config->sessionID]['LOGGED_IN'] 
+      && ($_SESSION[$this->config->sessionID]['USER_TYPE'] == "WRITER"
+      || $_SESSION[$this->config->sessionID]['USER_TYPE'] == "EDITOR")){
         return true;
       }
       return false;  

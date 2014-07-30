@@ -1,11 +1,12 @@
 <?php
-  namespace Application\_frontend\_clients\_pages\forgot_password;
+  namespace Application\_frontend\_writers\_pages\forgot_password;
   use Application\_frontend\Frontend as Frontend;
   use Framework\_engine\_core\Register as Register;
   use Framework\_engine\_core\Email as Email;
   use Framework\_widgets\JSONForm\_engine\_core\FormGenerator as FormGenerator;
   use Framework\_engine\_core\Encryption as Encryption;
   use Framework\_engine\_dal\_mongo\MongoAccessLayer as MongoAccessLayer;
+  use Framework\_engine\_db\_mongo\MongoGenerator as MongoGenerator;
   
   /**
    * Class: ForgotPasswordPage
@@ -29,8 +30,15 @@
     public function __construct(){
       $this->config = Register::getInstance()->get('config');
       $this->mongodb = Register::getInstance()->get('mongodb');
-      $this->source = "client-templates";
+      $this->source = "writer-templates";
+      $this->userType = "WRITER";
+      $this->siteDir = "/writers/";
+      $this->siteCache = "/_writers";
+      if(substr_count($this->config->homeURL, 'writers') == 0){
+        $this->config->homeURL = $this->config->homeURL . "/writers";
+      }
       $this->pass_enc = new Encryption(MCRYPT_BlOWFISH, MCRYPT_MODE_CBC);
+      $this->mongoGen = new MongoGenerator();
       $this->loader = new \Twig_Loader_Filesystem($this->config->dir($this->source));
       $this->twig = new \Twig_Environment($this->loader, array(
           'cache' => $this->config->dir('temp-cache').'/_twig/_frontend',
@@ -46,8 +54,8 @@
      */
     public function init(){
       parent::init();
-      $this->addJS('_clients/forgot-password/scripts.min.js');
-      $this->setTitle('CEM Dashboard - Forgot Password');
+      $this->addJS('_writers/forgot-password/scripts.min.js');
+      $this->setTitle('CEM Writer Dashboard - Forgot Password');
       $this->setTemplate('forgot-password/main.html');
     }
 
@@ -70,11 +78,13 @@
      */
     public function processForgotPassword($params){
       $this->mongodb->switchCollection('users');
-      $userCount = $this->mongodb->getCount(array('email' => $params['email'], 'type' => 'CLIENT'));
+      $regexEmail = new \MongoRegex("/^".$params['email']."$/i"); 
+      $query = $this->mongoGen->logicOp(array(array('email' => $regexEmail), $this->mongoGen->logicOp(array(array('type' => 'WRITER'),array('type' => 'EDITOR')),MongoGenerator::LOGICAL_OR)),MongoGenerator::LOGICAL_AND);
+      $userCount = $this->mongodb->getCount($query);
       if($userCount != 1){
         echo 'Email not found in database.';
       } else {
-        $userInfo = $this->mongodb->getDocument(array('email' => $params['email']), array('email' => 1, 'fullname' => 1));
+        $userInfo = $this->mongodb->getDocument(array('email' => $regexEmail), array('email' => 1, 'fullname' => 1));
         $randomString = $this->generateRandomString();
         $password = array('password' => base64_encode($this->pass_enc->encrypt($randomString, $this->config->passwords['login'])));
         foo(new MongoAccessLayer('users'))->saveDocEntry($password, (string)$userInfo['_id']);
@@ -83,7 +93,7 @@
         $from = array('email' => 'dashboard@contentequalsmoney.com', 'name' => 'Content Equals Money');
         $reply = array('email' => 'amie@contentequalsmoney.com', 'name' => 'Amie Marse');
         $subject = 'Forgotten Password';
-        $msg = '<p>Hello '.$userInfo['fullname'].', your new password is "'.$randomString.'". Please click <a href="https://dashboard.contentequalsmoney.com/login">here</a> to login.</p>';
+        $msg = '<p>Hello '.$userInfo['fullname'].', your new password is "'.$randomString.'". Please click <a href="https://dashboard.contentequalsmoney.com/writers/login">here</a> to login.</p>';
         $message = array('body' => $msg, 'altbody' => $msg);
         foo(new Email($to, $from, $reply, $subject, $message, $this->config->smtpInfo))->sendEmail();
         echo 'pass';

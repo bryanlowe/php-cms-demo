@@ -1,8 +1,9 @@
 <?php
-  namespace Application\_frontend\_clients\_pages\account;
+  namespace Application\_frontend\_writers\_pages\account;
   use Application\_frontend\Frontend as Frontend;
   use Framework\_engine\_core\Encryption as Encryption;
   use Framework\_widgets\JSONForm\_engine\_core\FormGenerator as FormGenerator;
+  use Framework\_engine\_db\_mongo\MongoGenerator as MongoGenerator;
   
   /**
    * Class: AccountPage
@@ -16,8 +17,14 @@
      * @access public
      */
     public function __construct(){
-      $this->source = "client-templates";
+      $this->source = "writer-templates";
+      $this->userType = 'WRITER';
+      $this->siteDir = "/writers/";
+      $this->siteCache = "/_writers";
       parent::__construct();
+      if(substr_count($this->config->homeURL, 'writers') == 0){
+        $this->config->homeURL = $this->config->homeURL . "/writers";
+      }
     }
     
     /**
@@ -29,8 +36,8 @@
       parent::init();
       $this->addCSS('_common/jquery-ui.css');
       $this->addJS('_common/jquery-ui.js');
-      $this->addJS('_clients/account/scripts.min.js');
-      $this->setTitle('CEM Dashboard - Edit Account');
+      $this->addJS('_writers/account/scripts.min.js');
+      $this->setTitle('CEM Writer Dashboard - Edit Account');
       $this->setTemplate('account/main.html');
     }
 
@@ -41,12 +48,22 @@
      */
     protected function assemblePage(){   
       parent::assemblePage();  
-      $clientInfo = $_SESSION[$this->config->sessionID]['CLIENT_INFO'];
-      $clientInfo['_id'] = (string) $clientInfo['_id'];
-      $clientInfo['password'] = $this->pass_enc->decrypt(base64_decode($_SESSION[$this->config->sessionID]['USER_INFO']['password']), $this->config->passwords['login']);
-      $clientForm = foo(new FormGenerator($this->config->dir($this->source).'/account/clients_form.json', $clientInfo))->getFormHTML();
-      $this->setDisplayVariables('CLIENT_FORM', $clientForm);
-      $this->setDisplayVariables('CLIENT_RATE', number_format($clientInfo['client_rate'], 2, '.', ','));
+      $writerInfo = $_SESSION[$this->config->sessionID]['WRITER_INFO'];
+      $writerInfo['_id'] = (string) $writerInfo['_id'];
+      $writerInfo['password'] = $this->pass_enc->decrypt(base64_decode($_SESSION[$this->config->sessionID]['USER_INFO']['password']), $this->config->passwords['login']);
+      $writerForm = foo(new FormGenerator($this->config->dir($this->source).'/account/writers_form.json', $writerInfo))->getFormHTML();
+      $this->setDisplayVariables('WRITER_FORM', $writerForm);
+      $this->mongodb->switchCollection('feedback');
+      $query = $this->mongoGen->logicOp(array(array('writer_id' => new \MongoId($_SESSION[$this->config->sessionID]['WRITER_INFO']['_id'])), $this->mongoGen->inequalityOp('date',(string)strtotime('-1 month'),MongoGenerator::COMPARE_GTE)),MongoGenerator::LOGICAL_AND);
+      $pipeline = array(
+        $this->mongoGen->projectStage(array("writer_id" => 1, "date" => 1, "rating" => 1, "words_per_hour" => 1)),
+        $this->mongoGen->matchStage($query),
+        $this->mongoGen->groupStage(array('_id' => null, 'avg_rating' => array('$avg' => '$rating'), 'avg_wph' => array('$avg' => '$words_per_hour')))
+      );
+      $feedback = $this->mongodb->aggregateDocs($pipeline);
+      $this->setDisplayVariables('RATING', $feedback['result'][0]['avg_rating']);
+      $this->setDisplayVariables('WPH', $feedback['result'][0]['avg_wph']);
+      $this->setDisplayVariables('AS_OF_DATE', date('m/d/Y', strtotime('-1 month')));
     }
 
     /**
@@ -56,24 +73,33 @@
      * @access public
      */
     public function saveEntry($params){
-      $client = array(
-        'client_name' => $params['doc']['values']['client_name'],
-        'email' => $params['doc']['values']['email'],
-        'company' => $params['doc']['values']['company'],
-        'phone_number' => $params['doc']['values']['phone_number'],
-        'address' => $params['doc']['values']['address'],
-        'city' => $params['doc']['values']['city'],
-        'zip' => $params['doc']['values']['zip'],
-        'state' => $params['doc']['values']['state'],
-      );
-      $user = array(
-        'password' => base64_encode($this->pass_enc->encrypt($params['doc']['values']['password'], $this->config->passwords['login']))
-      );
-      foo(new MongoAccessLayer('users'))->saveDocEntry($user, $params['doc']['_id']);
-      $result = foo(new MongoAccessLayer('clients'))->saveDocEntry($client, $params['doc']['_id']);
-      echo json_encode($result);
-      $this->mongodb->switchCollection('clients');
-      $_SESSION[$this->config->sessionID]['CLIENT_INFO'] = $this->mongodb->getDocument(array('_id' => new \MongoId($params['doc']['_id'])));
+      $duplicate = false;
+      // catch duplicate entries. If there is a duplicate, send an error for account changes
+      $this->mongodb->switchCollection('users');
+      $regexEmail = new \MongoRegex("/^".$params['doc']['values']['email']."$/i"); 
+      $userCount = $this->mongodb->getCount(array('email' => $regexEmail));
+      if($userCount > 0 && strtolower($params['doc']['values']['email']) != strtolower($_SESSION[$this->config->sessionID]['WRITER_INFO']['email'])){
+        $duplicate = true;
+      }
+      // catch duplicate entries. If there is a duplicate, send an error for account changes
+      if(!$duplicate){
+        $writer = array(
+          'writer_name' => $params['doc']['values']['writer_name'],
+          'email' => $params['doc']['values']['email']
+        );
+        $user = array(
+          'fullname' => $params['doc']['values']['writer_name'],
+          'password' => base64_encode($this->pass_enc->encrypt($params['doc']['values']['password'], $this->config->passwords['login'])),
+          'email' => $params['doc']['values']['email']
+        );
+        foo(new MongoAccessLayer('users'))->saveDocEntry($user, $params['doc']['_id']);
+        $result = foo(new MongoAccessLayer('writers'))->saveDocEntry($writer, $params['doc']['_id']);
+        echo json_encode($result);
+        $this->mongodb->switchCollection('writers');
+        $_SESSION[$this->config->sessionID]['WRITER_INFO'] = $this->mongodb->getDocument(array('_id' => new \MongoId($params['doc']['_id'])));
+      } else {
+        echo json_encode(array('err' => 'This email already exists. Please use a different email.'));
+      }  
     }
   }
 ?>

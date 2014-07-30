@@ -1,0 +1,7 @@
+<label for="writers_select">Select a writer to review</label><br>
+<select class="form-control" name="writers_select" id="writers_select">
+	<option value="">Please select a writer</option>
+	{% for writer in SELECT_WRITERS %}
+	    <option value="{{ writer._id }}">{{ writer.writer_name }}</option>
+	{% endfor %}
+</select>

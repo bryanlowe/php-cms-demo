@@ -2,8 +2,7 @@
   namespace Application\_frontend\_writers\_pages\logout;
   use Application\_frontend\Frontend as Frontend;
   use Framework\_engine\_core\Register as Register;
-  use Framework\_engine\_dal\Collection as Collection;
-  use Framework\_engine\_dal\Selection as Selection;
+  
   
   /**
    * Class: LogoutPage
@@ -19,16 +18,20 @@
      */
     public function __construct(){
       $this->config = Register::getInstance()->get('config');
-      $this->pageRequests = Register::getInstance()->get('pageRequests');
-      $this->db = Register::getInstance()->get('db');
-      $this->uri = Register::getInstance()->get('uri');
       $this->source = "writer-templates";
-      $this->userType = "WRITER";
+      $this->userType = 'WRITER';
       $this->siteDir = "/writers/";
+      $this->siteCache = "/_writers";
       if(substr_count($this->config->homeURL, 'writers') == 0){
         $this->config->homeURL = $this->config->homeURL . "/writers";
       }
       $this->unsetAllVars();
+      $this->loader = new \Twig_Loader_Filesystem($this->config->dir($this->source));
+      $this->twig = new \Twig_Environment($this->loader, array(
+          'cache' => $this->config->dir('temp-cache').'/_twig/_frontend',
+          'auto_reload' => true,
+          'autoescape' => false
+      ));
     }
     
     /**
@@ -38,28 +41,8 @@
      */
     public function init(){
       parent::init();
-      $this->setTitle('CEM Dashboard - Log Out');
-    }
-
-    /**
-     * Set LogoutPage header
-     *    
-     * @access protected
-     */
-    protected function header(){
-      $this->setHeader("logout/header.html");
-      $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'HEADER');
-      $this->setDisplayVariables('SITE_URL', $this->config->homeURL, 'HEADER');
-    }
-
-    /**
-     * Set LogoutPage body
-     *    
-     * @access protected
-     */
-    protected function body(){
-      $this->setBody('logout/main.html');
-      $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
+      $this->setTitle('CEM Writer Dashboard - Log Out');
+      $this->setTemplate('logout/main.html');
     }
 
     /**
@@ -70,6 +53,7 @@
     private function unsetAllVars(){
       $_SESSION[$this->config->sessionID]['LOGGED_IN'] = false;
       unset($_SESSION[$this->config->sessionID]['USER_INFO']);
+      unset($_SESSION[$this->config->sessionID]['WRITER_INFO']);
       unset($_SESSION[$this->config->sessionID]['USER_TYPE']);
     }
   }

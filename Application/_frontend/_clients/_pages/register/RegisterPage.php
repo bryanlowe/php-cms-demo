@@ -30,6 +30,7 @@
       $this->config = Register::getInstance()->get('config');
       $this->mongodb = Register::getInstance()->get('mongodb');
       $this->source = "client-templates";
+      $this->siteCache = "/_clients";
       $this->pass_enc = new Encryption(MCRYPT_BlOWFISH, MCRYPT_MODE_CBC);
       $this->loader = new \Twig_Loader_Filesystem($this->config->dir($this->source));
       $this->twig = new \Twig_Environment($this->loader, array(

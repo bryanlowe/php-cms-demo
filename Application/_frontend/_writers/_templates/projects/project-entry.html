@@ -2,22 +2,12 @@
 	{% for project in PROJECT_ENTRIES %}
 		<tr>
 			<td>
-				<a id="project_{{project._id}}" class="toggleDesc">
+				<a id="project_{{project._id}}" class="project_link">
 					{{project.project_title}}
 				</a>
-				<div id="project_{{project._id}}_desc" class="hide">
-					{% if invoice.project_tags %}
-						<h3>Project Tags:</h3>
-						<div class="list-group">
-							{% for tag in project.project_tags %}
-								<div class="list-group-item">{{ tag }}</div>
-							{% endfor %}
-						</div>
-						<div class="clear"><hr></div>
-					{% endif %}
-					<h3>Description:</h3>
-					<p>{{project.project_description}}</p>
-				</div>
+				{% if project.solve_link is defined and project.solve_link != '' %}
+					<br /><a href="{{ project.solve_link }}" target="_blank">Solve Link</a>
+				{% endif %}
 			</td>
 			<td>{{project.project_date}}</td>
 		</tr>

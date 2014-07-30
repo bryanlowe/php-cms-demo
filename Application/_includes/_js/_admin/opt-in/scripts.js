@@ -11,7 +11,7 @@ $(document).ready(function(){
 });
 
 function opt_select(){
-  updateForm($('#opt_select').val(),'opt_in',['mongoid','title','status']);
+  updateForm($('#opt_select').val(),'opt_in',['mongoid','title','status','description']);
   if($('#opt_select').val() != ''){
     reloadFormElement('writer-list', 'opt_in', $('#opt_select').val());
   } else {

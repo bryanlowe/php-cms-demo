@@ -23,7 +23,7 @@ function processForgottenPassword(){
   statusApp.hidePleaseWait();  
   results = result.responseText;
   if(results == 'pass'){
-    popUpMsg('Your password has been reset and sent to your email. Once you get it, please try again <a href="/login">here</a>.'); 
+    popUpMsg('Your password has been reset and sent to your email. Once you get it, please try again <a href="/writers/login">here</a>.'); 
     return true;
   } else {
     popUpMsg(results);

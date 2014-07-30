@@ -1,0 +1,64 @@
+{% extends "_common/base.html" %}
+
+{% block content %}
+<div class="container">
+	<div class="row task-panel">
+		<div class="col-lg-12">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Edit Writer Invoice</h3>
+				</div>
+				<div class="panel-body">
+					<div id="writers_select_container" class="input_container">
+						{% include "edit-invoice/writers_select.html" %}
+					</div>
+					<div id="toggle-invoice-type" class="input_container">
+						<div class="form-group">
+			                <label>Toggle Invoice Type</label><br />
+			                <div class="radio-inline">
+			                  <label>
+			                    <input type="radio" value="OPEN" checked="" id="toggle_invoice_1" name="toggle_invoice">
+			                    Open
+			                  </label>
+			                </div>
+			               	<div class="radio-inline">
+			                  <label>
+			                    <input type="radio" value="PAID" id="toggle_invoice_2" name="toggle_invoice">
+			                    Paid
+			                  </label>
+			                </div>
+			            </div>
+					</div>
+					<div id="invoices_select_container" class="input_container">
+						{% include "edit-invoice/invoices_select.html" %}
+					</div>
+					<div class="button_panel" style="margin-top: 26px;">
+						<div class="btn_container">
+							<input type="button" class="btn btn-info" value="LOAD INVOICE" name="loadBtn" id="loadBtn">
+						</div>
+						<div class="btn_container" style="margin-top: -25px;">
+							<label style="margin-left: 10px;">Change Status</label><br />
+							<div class="btn_container">
+								<input type="button" class="btn btn-success" value="PAID" name="paidBtn" id="paidBtn">
+							</div>
+							<div class="btn_container">
+								<input type="button" class="btn btn-danger" value="OPEN" name="openBtn" id="openBtn">
+							</div>
+						</div>
+						<div class="btn_container">
+							<input type="button" class="btn btn-info" value="RESET" name="resetBtn" id="resetBtn">
+						</div>
+						<div class="btn_container">
+							<input type="button" class="btn btn-danger" value="DELETE" name="deleteBtn" id="deleteBtn">
+						</div>
+					</div>
+					<div class="clear"><hr></div>
+					<div id="writer-invoice" class="table-responsive">
+	                    {% include 'create-invoice/invoice-entry.html' %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

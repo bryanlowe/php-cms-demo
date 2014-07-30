@@ -1,4 +1,7 @@
 $(document).ready(function(){
+	$('#project_toggle').change(function(){
+		toggleProjectDropdown($(this).val());
+	});
 	$('#projects_select').change(function(){
 		projects_select();
 	});
@@ -38,7 +41,7 @@ $(document).ready(function(){
 
 function projects_select(){
 	statusApp.showPleaseWait();
-	updateForm($('#projects_select').val(),'projects',['mongoid','client_id','project_title','project_status','approx_words','estimated_words','project_description']);
+	updateForm($('#projects_select').val(),'projects',['mongoid','client_id','project_title','project_status','approx_words','estimated_words','solve_link','project_description']);
 	if($('#projects_select').val() != ''){
 		disableElement('clients_select', true);
 		disableElement('project_tags', false);
@@ -147,4 +150,33 @@ function removeProjectTag(tag){
   docObj.mongoid = 1;
   removeSetFromDoc(docObj);
   reloadFormElement('current_tags', 'projects', $('#projects_select').val());
+}
+
+/**
+ * Toggles project dropdown by project status
+ */
+function toggleProjectDropdown(status){
+	statusApp.showPleaseWait();
+	$('#projects_form')[0].reset();
+  	$('#projects_form #_id').val('');
+  	$('#client_id').val('');
+  	$('#projects_select').prop('selectedIndex',0);
+  	$('#clients_select').prop('selectedIndex',0);
+  	disableElement('clients_select', false);
+  	reloadFormElement('project_tags_container', 'projects');
+  	reloadFormElement('current_tags', 'projects');
+  	disableElement('project_tags', true);
+	disableElement('addTagBtn', true);
+  	var result = $.ajax({
+	    type: "POST",
+	    dataType: "json",
+	    url: site_url+'projects',
+	    async: false,
+	    data: {dom_id: 'projects_select_container', project_status: status, _ajaxFunc: "renderPageElement"}
+	});
+	$('#projects_select_container').html(result.responseText);
+	$('#projects_select').change(function(){
+		projects_select();
+	});
+	statusApp.hidePleaseWait();
 }

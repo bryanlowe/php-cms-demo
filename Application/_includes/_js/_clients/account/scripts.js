@@ -1,9 +1,9 @@
 $(document).ready(function(){
-    $('#zip_container').css('padding-left', '30px');
-    $('#client_name_container').addClass('col-lg-offset-2');
-    $('#phone_number_container').addClass('col-lg-offset-2');
-    $('#city_container').addClass('col-lg-offset-2');
-    $('#zip_container').addClass('col-lg-offset-2');
+    $('#zip_container').css('padding-left', '40px');
+    $('#client_name_container').addClass('col-lg-offset-1');
+    $('#phone_number_container').addClass('col-lg-offset-1');
+    $('#city_container').addClass('col-lg-offset-1');
+    $('#zip_container').addClass('col-lg-offset-1');
     $('<h3>Required Fields:</h3>').insertBefore('#company_container');
     $('<div class="clear"><hr></div><h3>Optional Fields:</h3>').insertBefore('#address_container');
 	$('#submitBtn').click(function(){

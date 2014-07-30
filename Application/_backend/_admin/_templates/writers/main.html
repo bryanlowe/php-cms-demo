@@ -6,7 +6,7 @@
 		<div class="col-lg-6 col-lg-offset-1">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<h3 class="panel-title">Update or Add Writer</h3>
+					<h3 class="panel-title">Add or Update Writer</h3>
 				</div>
 				<div class="panel-body">
 					<div id="writers_select_container" class="input_container">
@@ -27,13 +27,25 @@
 			</div>
 		</div>
 		<div class="col-lg-4">
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<h3 class="panel-title">Opt Ins</h3>
+			<div class="row">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title">Performance Statistics</h3>
+					</div>
+					<div id="writer-performance" class="panel-body">
+						{% include "writers/performance-entry.html" %}
+					</div>
 				</div>
-				<div class="panel-body">
-					<div id="opt-in-list" class="list-group">
-						{% include "writers/list-group-item.html" %}
+			</div>
+			<div class="row">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title">Opt Ins</h3>
+					</div>
+					<div class="panel-body">
+						<div id="opt-in-list" class="list-group">
+							{% include "writers/list-group-item.html" %}
+						</div>
 					</div>
 				</div>
 			</div>

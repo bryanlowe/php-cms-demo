@@ -2,8 +2,6 @@
   namespace Application\_frontend\_clients\_pages\logout;
   use Application\_frontend\Frontend as Frontend;
   use Framework\_engine\_core\Register as Register;
-  use Framework\_engine\_dal\_mysql\Collection as Collection;
-  use Framework\_engine\_dal\_mysql\Selection as Selection;
   
   /**
    * Class: LogoutPage
@@ -19,10 +17,8 @@
      */
     public function __construct(){
       $this->config = Register::getInstance()->get('config');
-      $this->pageRequests = Register::getInstance()->get('pageRequests');
-      $this->db = Register::getInstance()->get('db');
-      $this->uri = Register::getInstance()->get('uri');
       $this->source = "client-templates";
+      $this->siteCache = "/_clients";
       $this->unsetAllVars();
       $this->loader = new \Twig_Loader_Filesystem($this->config->dir($this->source));
       $this->twig = new \Twig_Environment($this->loader, array(

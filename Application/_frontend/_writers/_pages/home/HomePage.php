@@ -16,8 +16,9 @@
      */
     public function __construct(){
       $this->source = "writer-templates";
-      $this->userType = "WRITER";
+      $this->userType = 'WRITER';
       $this->siteDir = "/writers/";
+      $this->siteCache = "/_writers";
       parent::__construct();
       if(substr_count($this->config->homeURL, 'writers') == 0){
         $this->config->homeURL = $this->config->homeURL . "/writers";
@@ -31,26 +32,8 @@
      */
     public function init(){
       parent::init();
-      $this->setTitle('CEM Dashboard - Home');
-    }
-
-    /**
-     * Set HomePage header
-     *    
-     * @access protected
-     */
-    protected function header(){
-      parent::header();
-    }
-    
-    /**
-     * Set HomePage body
-     *    
-     * @access protected
-     */
-    public function body(){
-      $this->setBody('home/main.html');
-      $this->setDisplayVariables('IMAGEPATH', $this->config->dir('images'), 'BODY');
+      $this->setTitle('CEM Writer Dashboard - Home');
+      $this->setTemplate('home/main.html');
     }
   }
 ?>

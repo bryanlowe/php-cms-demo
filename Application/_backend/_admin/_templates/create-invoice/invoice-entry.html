@@ -1,0 +1,47 @@
+{% if INVOICE_ENTRIES %}
+	<h2 align="center">Period: {{ START_DATE }} to {{ END_DATE }}</h2>
+	<table id="invoiceTbl" class="table table-bordered table-hover table-striped tablesorter">
+		<thead>
+	    	<tr>
+	            <th class="header">Project Title <i class="fa fa-sort"></i></th>
+	            <th class="header">Work Description <i class="fa fa-sort"></i></th>
+	            <th class="header">Date <i class="fa fa-sort"></i></th>
+	            <th class="header">Hours <i class="fa fa-sort"></i></th>
+	            <th class="header">Rate <i class="fa fa-sort"></i></th>
+	            <th class="header">Total <i class="fa fa-sort"></i></th>
+	      	</tr>
+	  	</thead>
+	  	<tbody id="invoice_entries">
+		{% for invoice in INVOICE_ENTRIES %}
+			<tr>
+				<td>{{ invoice.project_title }}</td>
+				<td>{{ invoice.work_hours.description }}</td>
+				<td align="right">{{ invoice.work_hours.date }}</td>
+				<td align="right">{{ invoice.work_hours.hours }}</td>
+				<td align="right">${{ WRITER_RATE }}</td>
+				<td align="right">${{ invoice.total_pay }}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+    </table>
+    <p align="right"><strong>Total Due: ${{ TOTAL_DUE }}</strong></p>
+    <script type="text/javascript">
+    <!--
+    	invoice_attrs = [
+    		{% for invoice in INVOICE_ENTRIES %}
+    			{
+    				project_id: '{{ invoice._id }}',
+    				work_id: '{{ invoice.work_hours.work_id }}',
+    				total_due: '{{ invoice.total_pay }}'
+    			}
+    			{% if loop.last != true %}
+    				,
+    			{% endif %}
+    		{% endfor %}
+    	];
+    	invoice_total = '{{ TOTAL_DUE }}';
+    //-->
+    </script>
+{% else %}
+	<p align="center">There are no active invoices to show.</p>
+{% endif %}

@@ -68,11 +68,12 @@
      */
     public function processLogin($params){
       $this->mongodb->switchCollection('users');
-      $userCount = $this->mongodb->getCount(array('email' => $params['values']['email'], 'type' => 'ADMIN'));
+      $regexEmail = new \MongoRegex("/^".$params['values']['email']."$/i"); 
+      $userCount = $this->mongodb->getCount(array('email' => $regexEmail, 'type' => 'ADMIN'));
       if($userCount != 1){
         echo 'restricted';
       } else {
-        $userInfo = $this->mongodb->getDocument(array('email' => $params['values']['email']));
+        $userInfo = $this->mongodb->getDocument(array('email' => $regexEmail));
         $decryptedPassword = $this->pass_enc->decrypt(base64_decode($userInfo['password']), $this->config->passwords['login']);
         if($decryptedPassword == $params['values']['password']){
           $_SESSION[$this->config->sessionID]['LOGGED_IN'] = true;

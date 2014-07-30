@@ -2,37 +2,16 @@
 	{% for invoice in INVOICE_ENTRIES %}
 		<tr>
 			<td>
-				<a id="invoice_{{invoice._id}}" class="toggleDesc">{{invoice.invoice_number}}</a>
-				<div id="invoice_{{invoice._id}}_desc" class="hide">
-					{% if invoice.project_list %}
-						<h3>Project List:</h3>
-						<div class="list-group">
-							{% for project in invoice.project_list %}
-								<div class="list-group-item">{{ project.project_title }}</div>
-							{% endfor %}
-						</div>
-						<div class="clear"><hr></div>
-					{% endif %}
-					<h3>Description:</h3>
-					<p>{{invoice.invoice_description}}</p>
-				</div>
+				<a id="invoice_{{invoice._id}}" class="loadInvoice">Period: {{invoice.period_start}} - {{invoice.period_end}}</a>
 			</td>
 			<td style="white-space: nowrap;">{{invoice.invoice_date}}</td>
 			<td>${{invoice.invoice_cost}}</td>
-			<td>
-				<a href="https://contentequalsmoney.com/pay-invoice-online/?invoice_id={{invoice.wp_invoice_id}}&format=pdf" target="_blank">PDF</a>
-			</td>
 			{% if invoice.invoice_status == "PAID" %}
-				<td><span class="btn btn-success">{{invoice.invoice_status}}</span></td>
-				<td>
-					<a href="https://contentequalsmoney.com/pay-invoice-online/?invoice_id={{invoice.wp_invoice_id}}" target="_blank">View</a>
-				</td>
+				<td style="text-align: center"><span class="btn btn-success">{{invoice.invoice_status}}</span></td>
 			{% else %}
-				<td><span class="btn btn-danger">{{invoice.invoice_status}}</span></td>
-				<td>
-					<a href="https://contentequalsmoney.com/pay-invoice-online/?invoice_id={{invoice.wp_invoice_id}}" target="_blank">Pay</a>
-				</td>
+				<td style="text-align: center"><span class="btn btn-info">{{invoice.invoice_status}}</span></td>
 			{% endif %}
+			<td style="text-align: center"><a id="print_{{invoice._id}}" class="btn btn-info printInvoice">PDF</a></td>
 		</tr>		
 	{% endfor %}
 {% else %}

@@ -15,6 +15,7 @@
      */
     public function __construct(){
       $this->source = "client-templates";
+      $this->siteCache = "/_clients";
       parent::__construct();
     }
     
@@ -39,7 +40,7 @@
     protected function assemblePage(){   
       parent::assemblePage();   
       $this->mongodb->switchCollection('invoices');
-      $result =  $this->mongodb->aggregateDocs(array($this->mongoGen->matchStage(array('client_id' => $_SESSION[$this->config->sessionID]['CLIENT_INFO']['_id'])),$this->mongoGen->sortStage(array("invoice_date" => -1))));
+      $result =  $this->mongodb->aggregateDocs(array($this->mongoGen->matchStage(array('client_id' => new \MongoId($_SESSION[$this->config->sessionID]['CLIENT_INFO']['_id']))),$this->mongoGen->sortStage(array("invoice_date" => -1))));
       $invoice_entries = $result['result'];
       $maxResults = count($invoice_entries);
       $this->mongodb->switchCollection('projects');

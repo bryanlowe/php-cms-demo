@@ -46,7 +46,7 @@
       array('color' => '#3104B4', 'textColor' => '#ffffff'),
       array('color' => '#8000FF', 'textColor' => '#ffffff'),
       array('color' => '#3A2F0B', 'textColor' => '#ffffff'),
-      array('color' => '#000000', 'textColor' => '#ffffff'),
+      array('color' => '#000000', 'textColor' => '#ffffff')
     );
 
     /**
@@ -76,7 +76,7 @@
       $this->addJS('_widgets/_fullCal/lib/moment.min.js');
       $this->addJS('_widgets/_jquery_ui/jquery-ui-1.10.4.custom.min.js');
       $this->addJS('_widgets/_fullCal/fullcalendar.min.js');
-      $this->addJS('_admin/schedule/scripts.js');
+      $this->addJS('_admin/schedule/scripts.min.js');
       $this->setTitle('CEM Dashboard - Writer Schedule');
       $this->setTemplate('schedule/main.html');
     }
@@ -129,8 +129,9 @@
      */
     public function addSetToEntry($params){
       $result = null;
-      $params['doc']['values']['id'] = $params['doc']['_id'].'_'.date("l",strtotime($params['doc']['values']['start'])); 
+      $params['doc']['values']['id'] = $params['doc']['_id'].'_'.date("m_d_Y",strtotime($params['doc']['values']['start'])); 
       $this->mongodb->switchCollection('writers');
+      $this->mongodb->updateDocument(array('_id' => new \MongoId($params['doc']['_id'])), $this->mongoGen->pullOp('schedule', array('start' => array('$lt' => date('m/d/Y', strtotime('last Monday'))))));
       $exists = $this->mongodb->getCount(array('_id' => new \MongoId($params['doc']['_id']), 'schedule.id' => $params['doc']['values']['id']));
       if($exists){
         $setID = $params['doc']['values']['id'];

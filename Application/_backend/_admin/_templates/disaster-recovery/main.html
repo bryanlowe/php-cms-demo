@@ -1,0 +1,38 @@
+{% extends "_common/base.html" %}
+
+{% block content %}
+<div class="clear"></div><br /><br />
+<div class="alert alert-danger">
+  This page is used to recover from database crashes that may happen over the course of this site's life. If you were to lose a massive amount of information or accidentally deleted records you didn't intend to delete, you can use this system to restore the data. For records you have changed on accident but the data record still exists, this will not revert the data back. You would still have to delete the record in question to recover the record using this system. It is recommended that you backup the database before using this option.
+</div>
+<div class="row">
+	<div class="col-lg-12">
+		<div class="panel panel-danger">
+			<div class="panel-heading">
+				<h3 class="panel-title">Recover Database</h3>
+			</div>
+			<div class="panel-body">
+				<div class="btn_container">
+					<label>Create a new backup?</label><br />
+					<input type="button" class="btn btn-info" value="BACKUP" name="backupBtn" id="backupBtn">
+				</div>
+				<div class="clear"><hr></div>
+				<div class="table-responsive">
+					<table id="backupTbl" class="table table-bordered table-hover table-striped tablesorter">
+						<thead>
+	                    	<tr>
+		                        <th class="header">Database <i class="fa fa-sort"></i></th>
+		                        <th class="header">Backup Date <i class="fa fa-sort"></i></th>
+		                        <th class="header"></th>
+	                      	</tr>
+                      	</thead>
+                      	<tbody id="backup_entries">
+          					{% include 'disaster-recovery/backup-entry.html' %}
+          				</tbody>
+             	 	</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -14,7 +14,7 @@ function saveEntry(docObj){
   });
     
   statusApp.hidePleaseWait();
-  return result.responseText; 
+  return $.parseJSON(result.responseText); 
 }
 
 /**
@@ -31,7 +31,7 @@ function addSetToDoc(docObj){
     data: {doc: docObj, _ajaxFunc: "addSetToEntry"}
   });
   statusApp.hidePleaseWait();
-  return result.responseText; 
+  return $.parseJSON(result.responseText);
 }
 
 /**
@@ -48,7 +48,7 @@ function removeSetFromDoc(docObj){
     data: {doc: docObj, _ajaxFunc: "removeSetFromEntry"}
   });
   statusApp.hidePleaseWait();
-  return result.responseText; 
+  return $.parseJSON(result.responseText); 
 }
 
 /**
@@ -159,7 +159,7 @@ function deleteEntry(docObj){
   });
     
   statusApp.hidePleaseWait();
-  return result.responseText;  
+  return $.parseJSON(result.responseText);  
 }
 
 /**
@@ -185,7 +185,7 @@ function saveDoc(collection, mongoid){
     docObj.collection = collection;
     docObj.mongoid = mongoid;
     var results = saveEntry(docObj);
-    if(results.err == null){
+    if(results.err === null){
       popUpMsg("Save was successful!");
       reloadPageElements(collection, true); 
       return true;
@@ -219,7 +219,7 @@ function deleteDoc(collection, mongoid){
           docObj.collection = collection;
           docObj.mongoid = mongoid;
           var results = deleteEntry(docObj);
-          if(results.err == null){
+          if(results.err === null){
             reloadPageElements(collection, true); 
             deleteResult = true;
           }

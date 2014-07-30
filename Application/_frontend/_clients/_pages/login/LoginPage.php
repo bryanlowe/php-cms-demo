@@ -29,10 +29,11 @@
       $this->config = Register::getInstance()->get('config');
       $this->mongodb = Register::getInstance()->get('mongodb');
       $this->source = "client-templates";
+      $this->siteCache = "/_clients";
       $this->pass_enc = new Encryption(MCRYPT_BlOWFISH, MCRYPT_MODE_CBC);
       $this->loader = new \Twig_Loader_Filesystem($this->config->dir($this->source));
       $this->twig = new \Twig_Environment($this->loader, array(
-          'cache' => $this->config->dir('temp-cache').'/_twig/_frontend',
+          'cache' => $this->config->dir('temp-cache').'/_twig/_frontend/'.$this->siteCache,
           'auto_reload' => true,
           'autoescape' => false
       ));
@@ -69,11 +70,12 @@
      */
     public function processLogin($params){
       $this->mongodb->switchCollection('users');
-      $userCount = $this->mongodb->getCount(array('email' => $params['values']['email'], 'type' => 'CLIENT'));
+      $regexEmail = new \MongoRegex("/^".$params['values']['email']."$/i"); 
+      $userCount = $this->mongodb->getCount(array('email' => $regexEmail, 'type' => 'CLIENT'));
       if($userCount != 1){
         echo 'restricted';
       } else {
-        $userInfo = $this->mongodb->getDocument(array('email' => $params['values']['email']));
+        $userInfo = $this->mongodb->getDocument(array('email' => $regexEmail));
         $decryptedPassword = $this->pass_enc->decrypt(base64_decode($userInfo['password']), $this->config->passwords['login']);
         if($decryptedPassword == $params['values']['password']){
           $_SESSION[$this->config->sessionID]['LOGGED_IN'] = true;

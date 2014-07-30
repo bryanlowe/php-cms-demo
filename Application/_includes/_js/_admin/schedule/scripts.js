@@ -11,6 +11,11 @@ $(document).ready(function() {
           _ajaxFunc: 'gatherScheduledEvents'
       }
     },
+    eventRender: function(event, element) {
+      if(event.description != ''){
+        element.append('Description: '+event.description);
+      }
+    },
     firstDay: 1,
     defaultView: 'basicWeek',
     editable: false
@@ -62,18 +67,22 @@ $(document).ready(function() {
   });
   $('#datepicker').prop('disabled', true);
   $('#hours').prop('disabled', true);
+  $('#description').prop('disabled', true);
 });
 
 function writers_select(){
   if($('#writers_select').val() != ''){
     $('#datepicker').prop('disabled', false);
     $('#hours').prop('disabled', false);
+    $('#description').prop('disabled', false);
     refreshCalendarForWriter($('#writers_select').val());
   } else {
     $('#datepicker').val('');
     $('#datepicker').prop('disabled', true);
     $('#hours').prop('selectedIndex',0);
     $('#hours').prop('disabled', true);
+    $('#description').val('');
+    $('#description').prop('disabled', true);
     $('#writer-schedule').fullCalendar( 'refetchEvents' );
   }
 }
@@ -97,6 +106,7 @@ function saveTheDate(){
     docObj.values = {};
     docObj.values.title = $('#writers_select option:selected').text() + '\nHours: ' + $('#hours').val();
     docObj.values.start = $('#datepicker').val();
+    docObj.values.description = $('#description').val();
     docObj._id = $('#writers_select').val();
     docObj.mongoid = 1;
     addSetToDoc(docObj);

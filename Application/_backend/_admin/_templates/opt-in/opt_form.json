@@ -39,6 +39,15 @@
 				}		
 			], 
 			"class": "form-control"
+		},
+		{ 
+			"order": 2, 
+			"required": 0, 
+			"type": "textarea", 
+			"label": "Description",
+			"id": "description",
+			"value": "", 
+			"class": "form-control"
 		}
 	]
 }

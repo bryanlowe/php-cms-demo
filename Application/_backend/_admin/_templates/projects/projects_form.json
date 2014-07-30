@@ -97,6 +97,15 @@
 			"class": "form-control"
 		},
 		{ 
+			"order": 2, 
+			"required": 0, 
+			"type": "text", 
+			"label": "Solve Link",
+			"id": "solve_link",
+			"value": "", 
+			"class": "form-control"
+		},
+		{ 
 			"order": 3, 
 			"required": 1, 
 			"type": "textarea", 

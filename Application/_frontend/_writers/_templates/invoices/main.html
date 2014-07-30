@@ -3,7 +3,7 @@
 {% block content %}
 <div id="container">
 	<div class="row task-panel">
-		<div class="col-lg-8">
+		<div class="col-lg-12">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<h3 class="panel-title"><i class="fa fa-envelope"></i> Invoices</h3>
@@ -13,12 +13,11 @@
 						<table id="invoiceHistoryTbl" class="table table-bordered table-hover table-striped tablesorter">
 							<thead>
 		                    	<tr>
-			                        <th class="header">Invoice # <i class="fa fa-sort"></i></th>
+			                        <th class="header">Pay Period <i class="fa fa-sort"></i></th>
 			                        <th class="header">Last Updated <i class="fa fa-sort"></i></th>
 			                        <th class="header">Amount (USD) <i class="fa fa-sort"></i></th>
-			                        <th class="header">File <i class="fa fa-sort"></i></th>
 			                        <th class="header">Status <i class="fa fa-sort"></i></th>
-			                        <th>&nbsp;</th>
+			                        <th class="header">&nbsp;</th>
 		                      	</tr>
 	                      	</thead>
 	                      	<tbody id="invoice_entries">
@@ -26,16 +25,10 @@
               				</tbody>
                  	 	</table>
 					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-4">
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<h3 class="panel-title"><i class="fa fa-search"></i> Invoice Description</h3>
-				</div>
-				<div id="invoiceDesc" class="panel-body">
-					<p>Click on an invoice number to view its description.</p>
+					<div class="clear"><hr></div>
+					<div id="writer-invoice" class="table-responsive">
+	                    {% include 'invoices/invoice-details.html' %}
+					</div>
 				</div>
 			</div>
 		</div>

@@ -1,0 +1,10 @@
+{% if WRITER_LIST_EXISTS %}
+	<h2>Writer List</h2>
+	{% for writer in WRITER_LIST %}
+	    <div class="list-group-item">{{ writer.writer_name }} <button class="close" type="button" onclick="removeWriter('{{ writer._id }}');">×</button></div>
+	{% endfor %}
+{% else %}
+	<div id="writer-list" class="list-group">
+		<p align="center">No current writers assigned to this project.</p>
+	</div>
+{% endif %}

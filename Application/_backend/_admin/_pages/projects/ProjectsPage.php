@@ -84,6 +84,10 @@
     public function renderPageElement($params){
       if($params['dom_id'] == 'projects_select_container'){
         $this->mongodb->switchCollection('projects');
+        if($params['project_status'] != ""){
+          $match = array('project_status' => $params['project_status']);
+          $this->project_select_pipeline = array_merge(array($this->mongoGen->matchStage($match)), $this->project_select_pipeline);
+        }
         $results = $this->mongodb->aggregateDocs($this->project_select_pipeline);
         $select_projects = foo(new MongoAccessLayer('projects'))->joinCollectionsByID($results['result'], 'clients', 'client_id');
         echo $this->twig->render('projects/projects_select.html', array('SELECT_PROJECTS' => $select_projects));

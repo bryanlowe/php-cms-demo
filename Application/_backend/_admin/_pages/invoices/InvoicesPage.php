@@ -3,6 +3,7 @@
   use Application\_backend\Backend as Backend;
   use Framework\_widgets\JSONForm\_engine\_core\FormGenerator as FormGenerator;
   use Framework\_engine\_dal\_mongo\MongoAccessLayer as MongoAccessLayer;
+  use Framework\_engine\_db\_mongo\MongoGenerator as MongoGenerator;
   
   /**
    * Class: InvoicesPage
@@ -39,9 +40,23 @@
         $this->mongoGen->projectStage(array("company" => 1, "client_name" => 1)),
         $this->mongoGen->sortStage(array("client_name" => 1, 'company' => 1))
       );
+      $invoiceMatch = $this->mongoGen->logicOp(
+        array(
+          $this->mongoGen->existOp('client_id',true),
+          $this->mongoGen->logicOp(
+            array(
+              array('invoice_status' => 'OPEN'),
+              $this->mongoGen->inequalityOp('invoice_date',(string)strtotime('-2 weeks'),MongoGenerator::COMPARE_GTE)
+            ),
+            MongoGenerator::LOGICAL_OR
+          )
+        ),
+        MongoGenerator::LOGICAL_AND
+      );
       $this->invoice_select_pipeline = array(
-        $this->mongoGen->projectStage(array("invoice_number" => 1, "client_id" => 1)),
-        $this->mongoGen->sortStage(array("client_id" => 1))
+        $this->mongoGen->matchStage($invoiceMatch),
+        $this->mongoGen->projectStage(array("client_id" => 1, "invoice_number" => 1, "invoice_status" => 1)),
+        $this->mongoGen->sortStage(array("client_id" => 1, "invoice_number" => 1))
       );
     }
     
@@ -107,6 +122,7 @@
       $this->mongodb->switchCollection('invoices');
       $results = $this->mongodb->aggregateDocs($this->invoice_select_pipeline);
       $select_invoices = foo(new MongoAccessLayer('invoices'))->joinCollectionsByID($results['result'], 'clients', 'client_id');
+      usort($select_invoices, 'sortClients');
       echo $this->twig->render('invoices/invoices_select.html', array('SELECT_INVOICES' => $select_invoices));
     }
 
@@ -279,6 +295,19 @@
           echo $result['err'];
         }
       }
+    }
+
+    /**
+     * Sorts clients by client name
+     *
+     * @param $invoices
+     * @access private
+     */
+    private function sortClients($a, $b){
+      if($a['clients']['client_name'] == $b['clients']['client_name']){
+        return 0;
+      }
+      return ($a['clients']['client_name'] < $b['clients']['client_name']) ? -1 : 1;
     }
   }
 ?>

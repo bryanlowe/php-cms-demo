@@ -1,7 +1,0 @@
-{% if OPT_INS %}
-	{% for opt_in in OPT_INS %}
-	    <div class="list-group-item">{{ opt_in.title }} <button class="close" type="button" onclick="removeOptIn('{{ opt_in._id }}');">×</button></div>
-	{% endfor %}
-{% else %}
-	<p align="center">No Current Opt Ins</p>
-{% endif %}

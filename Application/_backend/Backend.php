@@ -177,5 +177,23 @@
       }
       return false;  
     }
+
+    /**
+     * Searches the database for the writer by ID, if the writer has a pending rate change, it is applied to their rate.
+     *
+     * @param MongoId $writer_id
+     * @access protected
+     */
+    protected function applyRateChange($writer_id){
+      $this->mongodb->switchCollection('writers');
+      $query = $this->mongoGen->logicOp(array(array('_id' => $writer_id),$this->mongoGen->inequalityOp('pending_date',(int)date('U'),MongoGenerator::COMPARE_LTE)),MongoGenerator::LOGICAL_AND);
+      $writer = $this->mongodb->getDocument($query, array('_id' => 0, 'writer_rate' => 1, 'pending_rate' => 1, 'pending_date' => 1));
+      if($writer != null && $writer['pending_date'] != ''){
+        $writer['writer_rate'] = $writer['pending_rate'];
+        $writer['pending_rate'] = '';
+        $writer['pending_date'] = '';
+        foo(new MongoAccessLayer('writers'))->saveDocEntry($writer, (string)$writer_id);
+      }
+    }
   }
 ?>

@@ -1,0 +1,17 @@
+{% if HOUR_LIST_EXISTS %}
+	<h2>Hour Entries</h2>
+	{% for project in HOUR_LIST %}
+	    <div class="list-group-item">
+	    	{% if project.work_hours.invoice_id is not defined %}
+	    		<button class="close" type="button" onclick="removeHourEntry('{{ project.work_hours.work_id }}');">×</button>
+	    	{% endif %}
+	    	Description: {{ project.work_hours.description }}<br /> 
+	    	Date: {{ project.work_hours.date }}<br />
+	    	Duration: {{ project.work_hours.hours }} hours
+	    </div>
+	{% endfor %}
+{% else %}
+	<div id="hour-list" class="list-group">
+		<p align="center">Please click a project title to display your hours.</p>
+	</div>
+{% endif %}

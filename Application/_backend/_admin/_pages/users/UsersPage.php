@@ -10,7 +10,15 @@
    *    
    * Handles the Users Page
    */
-  class UsersPage extends Backend{
+  class UsersPage extends Backend {
+
+    /**
+     * User Select Pipeline - this is an aggregation pipeline of values that are needed for the user select drop down
+     * 
+     * mixed array
+     * @access private
+     */
+    private $user_select_pipeline = array();
 
     /**
      * Construct a new UsersPage object
@@ -21,6 +29,10 @@
       $this->source = "admin-templates";
       $this->pass_enc = new Encryption(MCRYPT_BLOWFISH, MCRYPT_MODE_CBC);
       parent::__construct();
+      $this->user_select_pipeline = array(
+        $this->mongoGen->projectStage(array("fullname" => 1)),
+        $this->mongoGen->sortStage(array("fullname" => 1))
+      );
     }
     
     /**
@@ -43,8 +55,8 @@
     protected function assemblePage(){   
       parent::assemblePage();   
       $this->mongodb->switchCollection('users');
-      $select_users = $this->mongodb->getDocuments(array(),array("fullname" => 1));
-      $this->setDisplayVariables('SELECT_USERS', $select_users);
+      $select_users = $this->mongodb->aggregateDocs($this->user_select_pipeline);
+      $this->setDisplayVariables('SELECT_USERS', $select_users['result']);
       $userForm = foo(new FormGenerator($this->config->dir($this->source).'/users/user_form.json'))->getFormHTML();
       $this->setDisplayVariables('USER_FORM', $userForm);
       $this->mongodb->switchCollection('clients');
@@ -84,7 +96,9 @@
     public function getEntry($params){
       if($this->isAdminUser()){
         $results = foo(new MongoAccessLayer($params['collection']))->getDocByID($params['_id'], $params['mongoid']);
-        $results['password'] = $this->pass_enc->decrypt(base64_decode($results['password']), $this->config->passwords['login']);
+        if($results['password'] != ''){
+          $results['password'] = $this->pass_enc->decrypt(base64_decode($results['password']), $this->config->passwords['login']);
+        }
         echo json_encode($results);
       }
     }
@@ -97,22 +111,38 @@
      */
     public function saveEntry($params){
       if($this->isAdminUser()){
+        $duplicate = false;
         if($params['doc']['values']['password'] != ''){
           $params['doc']['values']['password'] = base64_encode($this->pass_enc->encrypt($params['doc']['values']['password'], $this->config->passwords['login']));
         }
-        $results = foo(new MongoAccessLayer($params['doc']['collection']))->saveDocEntry($params['doc']['values'], $params['doc']['_id']);
-        $this->mongodb->switchCollection('clients');
-        if(($clientCount = $this->mongodb->getCount(array('_id' => new \MongoId($params['doc']['_id'])))) == 1){
-          $client = $this->mongodb->getDocument(array('_id' => new \MongoId($params['doc']['_id'])), array('_id' => 0));
-          $client['is_user'] = 1;
-          foo(new MongoAccessLayer('clients'))->saveDocEntry($client, $params['doc']['_id']);
+
+        // catch duplicate entries. If there is a duplicate, send an error for new user logins
+        if($params['doc']['_id'] == ""){
+          $this->mongodb->switchCollection('users');
+          $regexEmail = new \MongoRegex("/^".$params['doc']['values']['email']."$/i"); 
+          $userCount = $this->mongodb->getCount(array('email' => $regexEmail));
+          if($userCount > 0){
+            $duplicate = true;
+          }
         }
-        $this->mongodb->switchCollection('writers');
-        if(($writerCount = $this->mongodb->getCount(array('_id' => new \MongoId($params['doc']['_id'])))) == 1){
-          $writer = $this->mongodb->getDocument(array('_id' => new \MongoId($params['doc']['_id'])), array('_id' => 0));
-          $writer['is_user'] = 1;
-          $writer['writer_type'] = $params['doc']['values']['type'];
-          foo(new MongoAccessLayer('writers'))->saveDocEntry($writer, $params['doc']['_id']);
+        // catch duplicate entries. If there is a duplicate, send an error for new user logins
+        if(!$duplicate){
+          $results = foo(new MongoAccessLayer($params['doc']['collection']))->saveDocEntry($params['doc']['values'], $params['doc']['_id']);
+          $this->mongodb->switchCollection('clients');
+          if(($clientCount = $this->mongodb->getCount(array('_id' => new \MongoId($params['doc']['_id'])))) == 1){
+            $client = $this->mongodb->getDocument(array('_id' => new \MongoId($params['doc']['_id'])), array('_id' => 0));
+            $client['is_user'] = 1;
+            foo(new MongoAccessLayer('clients'))->saveDocEntry($client, $params['doc']['_id']);
+          }
+          $this->mongodb->switchCollection('writers');
+          if(($writerCount = $this->mongodb->getCount(array('_id' => new \MongoId($params['doc']['_id'])))) == 1){
+            $writer = $this->mongodb->getDocument(array('_id' => new \MongoId($params['doc']['_id'])), array('_id' => 0));
+            $writer['is_user'] = 1;
+            $writer['writer_type'] = $params['doc']['values']['type'];
+            foo(new MongoAccessLayer('writers'))->saveDocEntry($writer, $params['doc']['_id']);
+          }
+        } else {
+          $results = array('err' => 'This email already exists. Please use a different email.');
         }
         echo json_encode($results);
       }

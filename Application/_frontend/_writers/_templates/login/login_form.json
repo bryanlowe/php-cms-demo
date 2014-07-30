@@ -1,23 +1,23 @@
 {
 	"id": "login",
-	"form": {
-		"input1": { 
+	"form": [
+		{ 
 			"order": 1, 
 			"required": 1, 
 			"type": "hidden", 
 			"id": "login_type",
 			"value": "WRITER"
 		},
-		"input2": { 
+		{ 
 			"order": 1, 
 			"required": 1, 
 			"type": "text", 
 			"id": "login_email",
-			"label": "User:",
+			"label": "Email:",
 			"value": "",
 			"class": "form-control"
 		},
-		"input3": { 
+		{ 
 			"order": 2,
 			"required": 1, 
 			"type": "password",
@@ -26,7 +26,7 @@
 			"value": "",
 			"class": "form-control"
 		},
-		"input4": { 
+		{ 
 			"order": 3,  
 			"type": "button", 
 			"class": "action-button", 
@@ -35,5 +35,5 @@
 			"onclick": "processLogin();",
 			"class": "btn btn-success"
 		}
-	}
+	]
 }

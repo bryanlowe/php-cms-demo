@@ -9,9 +9,21 @@
 					<h3 class="panel-title">Update or Add Projects</h3>
 				</div>
 				<div class="panel-body">
+					<div id="toggle_projects_container" class="input_container">
+						<label for="project_toggle">Toggle projects by status</label><br>
+						<select class="form-control" name="project_toggle" id="project_toggle">
+							<option value="">Show All</option>
+							<option value="Created">Created</option>
+							<option value="Waiting on Writer">Waiting on Writer</option>
+							<option value="Waiting on Editor">Waiting on Editor</option>
+							<option value="Completed">Completed</option>
+						</select>
+					</div>
+					<div class="clear"></div>
 					<div id="projects_select_container" class="input_container">
 						{% include "projects/projects_select.html" %}
 					</div>
+					<div class="clear"></div>
 					<div id="clients_select_container" class="input_container">
 						{% include "projects/clients_select.html" %}
 					</div>

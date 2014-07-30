@@ -1,0 +1,153 @@
+{% extends "_common/base.html" %}
+
+{% block content %}
+<div class="container">
+	<div class="row task-panel">
+    <!-- Project Block -->
+    <div class="col-lg-3 col-lg-offset-3">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+              <div class="row">
+                  <div class="col-xs-6">
+                    <i class="fa fa-tasks fa-5x"></i>
+                  </div>
+                  <div class="col-xs-6 text-right">
+                    <p class="task-title">Projects</p>
+                  </div>
+              </div>
+            </div>
+            <a href="{{SITE_URL}}/projects">
+              <div class="panel-footer announcement-bottom">
+                  <div class="row">
+                    <div class="col-xs-9">
+                      View Assignments
+                    </div>
+                    <div class="col-xs-3 text-right">
+                        <i class="fa fa-arrow-circle-right"></i>
+                    </div>
+                  </div>
+              </div>
+            </a>
+        </div>
+    </div>
+    <!-- End Project Block -->
+
+		<!-- Feedback Block -->
+		<div class="col-lg-3">
+        <div id="feedback-container" class="panel panel-success">
+          	<div class="panel-heading">
+            	<div class="row">
+                	<div class="col-xs-4">
+                  	<i class="fa fa-comment fa-5x"></i>
+                	</div>
+                	<div id="feedback-title" class="col-xs-8 text-right">
+                  	  <p class="task-title">Project Feedback</p>
+                	</div>
+            	</div>
+          	</div>
+          	<a href="{{SITE_URL}}/feedback">
+            	<div class="panel-footer announcement-bottom">
+                	<div class="row">
+                  	<div class="col-xs-8">
+                   		View Feedback
+                  	</div>
+                  	<div class="col-xs-4 text-right">
+                    		<i class="fa fa-arrow-circle-right"></i>
+                  	</div>
+                	</div>
+            	</div>
+          	</a>
+        </div>
+    </div>
+    <!-- End Feedback Block -->
+	</div>
+	<div class="row">
+    <!-- Schedule Block -->
+    <div class="col-lg-3 col-lg-offset-1" style="margin-left: 135px;">
+      <div id="order-container" class="panel panel-success">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-xs-6">
+              <i class="fa fa-calendar fa-5x"></i>
+            </div>
+            <div id="order-title" class="col-xs-6 text-right">
+                <p class="task-title">Schedule</p>
+            </div>
+          </div>
+        </div>
+        <a href="{{SITE_URL}}/schedule">
+          <div class="panel-footer announcement-bottom">
+            <div class="row">
+              <div class="col-xs-8">
+                Set Your Schedule
+              </div>
+              <div class="col-xs-4 text-right">
+                <i class="fa fa-arrow-circle-right"></i>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <!-- End Schedule Block -->
+
+    <!-- Invoice Block -->
+    <div class="col-lg-3">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-xs-6">
+              <i class="fa fa-envelope fa-5x"></i>
+            </div>
+            <div class="col-xs-6 text-right">
+              <p class="task-title">Invoices</p>
+            </div>
+          </div>
+        </div>
+        <a href="{{SITE_URL}}/invoices">
+          <div class="panel-footer announcement-bottom">
+            <div class="row">
+              <div class="col-xs-9">
+                View Invoice History
+              </div>
+              <div class="col-xs-3 text-right">
+                <i class="fa fa-arrow-circle-right"></i>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <!-- End Invoice Block -->
+
+    <!-- Account Block -->
+    <div class="col-lg-3">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-xs-6">
+              <i class="fa fa-users fa-5x"></i>
+            </div>
+            <div class="col-xs-6 text-right">
+              <p class="task-title">Account</p>
+            </div>
+          </div>
+        </div>
+        <a href="{{SITE_URL}}/account">
+          <div class="panel-footer announcement-bottom">
+            <div class="row">
+              <div class="col-xs-6">
+                Edit Account
+              </div>
+              <div class="col-xs-6 text-right">
+                <i class="fa fa-arrow-circle-right"></i>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <!-- End Account Block -->
+	</div>
+</div>
+{% endblock %}

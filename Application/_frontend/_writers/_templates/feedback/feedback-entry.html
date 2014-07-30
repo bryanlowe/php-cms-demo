@@ -1,0 +1,15 @@
+{% if FEEDBACK_ENTRIES %}
+	{% for feedback in FEEDBACK_ENTRIES %}
+		<tr>
+			<td>
+				<a id="feedback_{{feedback._id}}" class="toggleDesc">{{feedback.projects.project_title}}</a>
+				<div id="details_{{feedback._id}}" class="hide">{{feedback.description}}</div>
+			</td>
+			<td style="white-space: nowrap;">{{feedback.date}}</td>
+			<td>{{feedback.rating}}</td>
+			<td>{{feedback.words_per_hour}}</td>
+		</tr>		
+	{% endfor %}
+{% else %}
+<tr><td colspan="4"><p align="center">There are no recent feedback to show.</p></td></tr>
+{% endif %}

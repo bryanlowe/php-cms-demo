@@ -321,7 +321,7 @@ namespace Framework\_engine\_db\_mongo;
      * 
      * @return array 
      * @param string $key
-     * @param string $existType
+     * @param boolean $existType
      * @access public
      */
     public function existOp($key, $existType){

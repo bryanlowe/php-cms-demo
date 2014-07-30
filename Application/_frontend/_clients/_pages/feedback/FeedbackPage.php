@@ -18,6 +18,7 @@
      */
     public function __construct(){
       $this->source = "client-templates";
+      $this->siteCache = "/_clients";
       parent::__construct();
     }
     
@@ -44,7 +45,7 @@
       $this->setDisplayVariables('FEEDBACK_FORM', $feedbackForm);
       $this->mongodb->switchCollection('projects');
       $pipeline = array(
-        $this->mongoGen->matchStage(array("client_id" => $_SESSION[$this->config->sessionID]['CLIENT_INFO']['_id'], '$or' => array(array('invoiced' => 0), $this->mongoGen->inequalityOp('project_date',strtotime('+1 month'),MongoGenerator::COMPARE_LTE)))),
+        $this->mongoGen->matchStage(array("client_id" => new \MongoId($_SESSION[$this->config->sessionID]['CLIENT_INFO']['_id']), '$or' => array(array('invoiced' => 0), $this->mongoGen->inequalityOp('project_date',(string)strtotime('-1 month'),MongoGenerator::COMPARE_GTE)))),
         $this->mongoGen->projectStage(array("project_title" => 1, "project_date" => 1)),
         $this->mongoGen->sortStage(array("project_date" => -1))
       );

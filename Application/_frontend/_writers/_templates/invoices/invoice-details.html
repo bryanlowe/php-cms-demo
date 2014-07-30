@@ -1,0 +1,36 @@
+{% if INVOICE_DETAILS %}
+	<h2 align="center">Period: {{ START_DATE }} to {{ END_DATE }}</h2>
+	<table id="invoiceDetailsTbl" class="table table-bordered table-hover table-striped tablesorter">
+		<thead>
+	    	<tr>
+	            <th class="header">Project Title <i class="fa fa-sort"></i></th>
+	            <th class="header">Work Description <i class="fa fa-sort"></i></th>
+	            <th class="header">Date <i class="fa fa-sort"></i></th>
+	            <th class="header">Hours <i class="fa fa-sort"></i></th>
+	            <th class="header">Total <i class="fa fa-sort"></i></th>
+	      	</tr>
+	  	</thead>
+	  	<tbody id="INVOICE_DETAILS">
+		{% for invoice in INVOICE_DETAILS %}
+			<tr>
+				<td>{{ invoice.work_details.project_title }}</td>
+				<td>{{ invoice.work_details.work_hours.description }}</td>
+				<td align="right">{{ invoice.work_details.work_hours.date }}</td>
+				<td align="right">{{ invoice.work_details.work_hours.hours }}</td>
+				<td align="right">${{ invoice.total_due }}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+    </table>
+    {% if INVOICE_STATUS == "OPEN" %}
+    	<p align="right"><strong>Total Due: ${{ TOTAL_DUE }}</strong></p>
+    	{% if TOTAL_DUE != TOTAL_PENDING %}
+    		<p align="right"><strong>Total Pending: ${{ TOTAL_PENDING }}</strong></p>	
+    	{% endif %}
+    {% else %}
+    	<p align="right"><strong>Total Paid: ${{ TOTAL_DUE }}</strong></p>
+    	<p align="right"><strong>Total Paid to date: ${{ TOTAL_PAID }}</strong></p>
+    {% endif %}
+{% else %}
+	<p align="center">There are no invoice details to show.</p>
+{% endif %}

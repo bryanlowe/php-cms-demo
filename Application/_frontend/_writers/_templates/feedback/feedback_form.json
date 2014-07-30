@@ -6,8 +6,48 @@
 			"required": 1, 
 			"type": "textarea", 
 			"id": "description",
+			"label": "Please provide feedback",
 			"value": "", 
 			"class": "form-control input-lg"
+		},
+		{ 
+			"order": 2, 
+			"required": 1, 
+			"type": "radio-h", 
+			"id": "rating",
+			"label": "Rate writer's performance from 5 (Good) to 1 (Bad)",
+			"options": [
+				{
+					"name": 5,
+					"value": 5
+				},
+				{
+					"name": 4,
+					"value": 4
+				},
+				{
+					"name": 3,
+					"value": 3
+				},
+				{
+					"name": 2,
+					"value": 2
+				},
+				{
+					"name": 1,
+					"value": 1
+				}
+			], 
+			"class": "form-control"
+		},
+		{ 
+			"order": 3, 
+			"required": 1, 
+			"type": "number", 
+			"id": "words_per_hour",
+			"label": "Words Per Hour",
+			"value": "", 
+			"class": "form-control"
 		}
 	]
 }

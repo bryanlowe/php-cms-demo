@@ -18,6 +18,7 @@
      */
     public function __construct(){
       $this->source = "client-templates";
+      $this->siteCache = "/_clients";
       parent::__construct();
     }
     

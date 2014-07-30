@@ -1,0 +1,11 @@
+{% if BACKUP_ENTRIES %}
+	{% for backup in BACKUP_ENTRIES %}
+		<tr>
+			<td>{{ backup.database }}</td>
+			<td>{{ backup.date }}</td>
+			<td align="center"><input type="button" class="btn btn-success" value="RECOVER" onclick="restoreDatabase('{{ backup.database }}','{{ backup.timestamp }}');" /></td>
+		</tr>
+	{% endfor %}
+{% else %}
+<tr><td colspan="3"><p align="center">There are no active backups to show.</p></td></tr>
+{% endif %}

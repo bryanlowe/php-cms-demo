@@ -1,14 +1,14 @@
 <?php
-  namespace Application\_frontend\_clients\_pages\feedback;
+  namespace Application\_frontend\_writers\_pages\feedback;
   use Application\_frontend\Frontend as Frontend;
-  use Framework\_engine\_core\Email as Email;
   use Framework\_widgets\JSONForm\_engine\_core\FormGenerator as FormGenerator;
   use Framework\_engine\_db\_mongo\MongoGenerator as MongoGenerator;
+  use Framework\_engine\_dal\_mongo\MongoAccessLayer as MongoAccessLayer;
     
   /**
    * Class: FeedbackPage
    *    
-   * Handles the Order Page
+   * Handles the Feedback Page
    */
   class FeedbackPage extends Frontend{
     /**
@@ -17,8 +17,14 @@
      * @access public
      */
     public function __construct(){
-      $this->source = "client-templates";
+      $this->source = "writer-templates";
+      $this->userType = 'WRITER';
+      $this->siteDir = "/writers/";
+      $this->siteCache = "/_writers";
       parent::__construct();
+      if(substr_count($this->config->homeURL, 'writers') == 0){
+        $this->config->homeURL = $this->config->homeURL . "/writers";
+      }
     }
     
     /**
@@ -28,8 +34,9 @@
      */
     public function init(){
       parent::init();
-      $this->addJS('_clients/feedback/scripts.min.js');
-      $this->setTitle('CEM Dashboard - Submit Feedback');
+      $this->addJS('_common/jquery.tablesorter.min.js');
+      $this->addJS('_writers/feedback/scripts.min.js');
+      $this->setTitle('CEM Dashboard - Writer Feedback');
       $this->setTemplate('feedback/main.html');
     }
 
@@ -44,16 +51,68 @@
       $this->setDisplayVariables('FEEDBACK_FORM', $feedbackForm);
       $this->mongodb->switchCollection('projects');
       $pipeline = array(
-        $this->mongoGen->matchStage(array("client_id" => $_SESSION[$this->config->sessionID]['CLIENT_INFO']['_id'], '$or' => array(array('invoiced' => 0), $this->mongoGen->inequalityOp('project_date',strtotime('+1 month'),MongoGenerator::COMPARE_LTE)))),
+        $this->mongoGen->matchStage(array('$or' => array(array('invoiced' => 0), $this->mongoGen->inequalityOp('project_date',(string)strtotime('-1 month'),MongoGenerator::COMPARE_GTE)))),
         $this->mongoGen->projectStage(array("project_title" => 1, "project_date" => 1)),
         $this->mongoGen->sortStage(array("project_date" => -1))
       );
       $projects = $this->mongodb->aggregateDocs($pipeline);
-      $maxProjects = count($projects['result']);
       $this->setDisplayVariables('PROJECTS', $projects['result']);
+      $this->mongodb->switchCollection('feedback');
+      $query = $this->mongoGen->logicOp(array(array('writer_id' => new \MongoId($_SESSION[$this->config->sessionID]['WRITER_INFO']['_id'])), $this->mongoGen->inequalityOp('date',(string)strtotime('-1 month'),MongoGenerator::COMPARE_GTE)),MongoGenerator::LOGICAL_AND);
+      $pipeline = array(
+        $this->mongoGen->matchStage($query),
+        $this->mongoGen->projectStage(array("project_id" => 1, "date" => 1, "description" => 1, "rating" => 1, "words_per_hour" => 1)),
+        $this->mongoGen->sortStage(array("date" => -1))
+      );
+      $feedback = $this->mongodb->aggregateDocs($pipeline);
+      $feedback = foo(new MongoAccessLayer('projects'))->joinCollectionsByID($feedback['result'], 'projects', 'project_id'); 
+      $maxResults = count($feedback);
+      for($i = 0; $i < $maxResults; $i++){
+        $feedback[$i]['date'] = date('m-d-Y h:ia', $feedback[$i]['date']).' EST';
+      }
+      $this->setDisplayVariables('FEEDBACK_ENTRIES', $feedback);
+      $this->setDisplayVariables('WRITER_TYPE', $_SESSION[$this->config->sessionID]['WRITER_INFO']['writer_type']);
     }
 
+    /**
+     * Reloads the dom elements
+     *
+     * @param string array $params    
+     * @access public
+     */
+    public function renderPageElement($params){
+      if($params['dom_id'] == 'writers_select_container'){
+        $this->refreshWriterDropDown($params);
+      }
+    }
 
+    /**
+     * Gathers writers from the database to refresh the dom drop down.
+     *
+     * @param string array $params    
+     * @access private
+     */
+    private function refreshWriterDropDown($params){
+      if($params['_id'] != 0){
+        $this->mongodb->switchCollection('projects');
+        $project = $this->mongodb->getDocument(array('_id' => new \MongoId($params['_id'])), array('_id' => 0, 'work_hours.writer_id' => 1));
+        $temp = array();
+        $maxProjects = count($project['work_hours']);
+        for($i = 0; $i < $maxProjects; $i++){
+          if($project['work_hours'][$i]['writer_id'] != $_SESSION[$this->config->sessionID]['WRITER_INFO']['_id']){
+            $temp[] = $project['work_hours'][$i]['writer_id'];
+          }
+        }
+        $writers = array();
+        if(count($temp) > 0){
+          $this->mongodb->switchCollection('writers');
+          $writers = $this->mongodb->getDocuments($this->mongoGen->inequalityOp('_id',$temp,MongoGenerator::COMPARE_IN), array('writer_name' => 1));
+        }
+        echo $this->twig->render('feedback/writers_select.html', array('SELECT_WRITERS' => $writers));
+      } else {
+        echo $this->twig->render('feedback/writers_select.html', array('SELECT_WRITERS' => array()));
+      }
+    }
 
     /**
      * Saves a doc to the database
@@ -64,33 +123,15 @@
     public function saveEntry($params){
       $params['doc']['_id'] = '';
       $params['doc']['collection'] = "feedback";
-      if($params['doc']['project_id'] != ''){
-        $this->mongodb->switchCollection('projects');
-        $project = $this->mongodb->getDocument(array('_id' => new \MongoId($params['doc']['project_id'])));
-        $projectDesc = '<div><p><strong>This concerns project "'.$project['project_title'].'". This project was last updated '.date('m-d-Y h:ia EST', $project['project_date']).'.</strong></p><p>Project Description: '.$project['project_description'].'</p></div>';
-        $params['doc']['values']['description'] = $projectDesc.'\n\nFeedback: '.$params['doc']['values']['description'];
-      } else {
-        $params['doc']['values']['description'] = $params['doc']['values']['description'];
-      }
-      $params['doc']['values']['client_id'] = ($params['doc']['anonymous'] == 1) ? $_SESSION[$this->config->sessionID]['CLIENT_INFO']['_id'] : new \MongoId();
+      $params['doc']['values']['editor_id'] = $_SESSION[$this->config->sessionID]['WRITER_INFO']['_id'];
+      $params['doc']['values']['writer_id'] = new \MongoId($params['doc']['writer_id']);
+      $params['doc']['values']['project_id'] = new \MongoId($params['doc']['project_id']);
       $params['doc']['values']['date'] = date("U");
       $params['doc']['values']['read'] = 0;
-      $params['doc']['values']['type'] = 'testimonial';
+      $params['doc']['values']['rating'] = (int) $params['doc']['values']['rating'];
+      $params['doc']['values']['words_per_hour'] = (int) $params['doc']['values']['words_per_hour'];
+      $params['doc']['values']['type'] = 'project';
       parent::saveEntry($params);
-      $to = array('email' => $_SESSION[$this->config->sessionID]['CLIENT_INFO']['email'], 'name' => $_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_name']);
-      $from = array('email' => 'dashboard@contentequalsmoney.com', 'name' => 'Content Equals Money');
-      $reply = array('email' => 'amie@contentequalsmoney.com', 'name' => 'Amie Marse');
-      $subject = 'Thank you for your feedback!';
-      $message = array('body' => 'Your feedback has been recieved. We look forward to hearing from you again!', 'altbody' => 'Your feedback has been recieved. We look forward to hearing from you again!');
-      foo(new Email($to, $from, $reply, $subject, $message, $this->config->smtpInfo))->sendEmail();
-
-      $cem_to = array('email' => 'amie@contentequalsmoney.com', 'name' => 'Amie Marse');
-      $cem_from = array('email' => 'dashboard@contentequalsmoney.com', 'name' => 'Content Equals Money');
-      $cem_reply = array('email' => 'dashboard@contentequalsmoney.com', 'name' => 'Content Equals Money');
-      $cem_subject = 'New Feedback Submission From: '.$_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_name'].', Date: '.$params['doc']['values']['date'];
-      $messageBody = '<p>You have recieved feedback from '.$_SESSION[$this->config->sessionID]['CLIENT_INFO']['client_name'].'.</p><p>Please <a href="https://dashboard.contentequalsmoney.com/admin" target="_blank">login</a> for more details.</p>';
-      $cem_message = array('body' => $messageBody, 'altbody' => $messageBody);
-      foo(new Email($cem_to, $cem_from, $cem_reply, $cem_subject, $cem_message, $this->config->smtpInfo))->sendEmail();
     }
   }
 ?>

@@ -1,0 +1,15 @@
+{% if RATING %}
+<h2>Rating: {{ RATING }}</h2>
+{% else %}
+<h2>Rating: N/A</h2>
+{% endif %}
+<div class="clear"></div>
+{% if WPH %}
+<h2>Words Per Hour: {{ WPH }}</h2>
+{% else %}
+<h2>Words Per Hour: N/A</h2>
+{% endif %}
+<div class="clear"></div>
+{% if AS_OF_DATE %}
+<p><i>* as of {{ AS_OF_DATE }}</i></p>
+{% endif %}

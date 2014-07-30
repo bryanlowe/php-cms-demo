@@ -1,0 +1,8 @@
+{
+    "require": {
+        "twig/twig": "1.*",
+        "phpmailer/phpmailer": "dev-master",
+        "ensepar/html2pdf": "1.0.1",
+        "dompdf/dompdf" : "0.6.*"
+    }
+}
